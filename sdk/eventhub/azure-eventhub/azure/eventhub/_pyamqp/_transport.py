@@ -44,7 +44,8 @@ from ssl import SSLError
 from contextlib import contextmanager
 from io import BytesIO
 import logging
-from threading import Lock
+from threading import Lock, Thread
+from time import sleep
 
 import certifi
 
@@ -673,6 +674,9 @@ class WebSocketTransport(_AbstractTransport):
         super().__init__(host, port=port, connect_timeout=connect_timeout, **kwargs)
         self.ws = None
         self._http_proxy = kwargs.get("http_proxy", None)
+        self.lock = Lock()
+        self.ws_stream = b''
+        self.t = None
 
     def connect(self):
         http_proxy_host, http_proxy_port, http_proxy_auth = None, None, None
@@ -684,50 +688,74 @@ class WebSocketTransport(_AbstractTransport):
             if username or password:
                 http_proxy_auth = (username, password)
         try:
-            from websocket import create_connection
-
-            self.ws = create_connection(
+            #from websocket import create_connection
+            from websocket import WebSocketApp
+            
+            # self.ws = create_connection(
+            #     url="wss://{}".format(self._custom_endpoint or self._host),
+            #     subprotocols=[AMQP_WS_SUBPROTOCOL],
+            #     timeout=self._connect_timeout,
+            #     skip_utf8_validation=True,
+            #     sslopt=self.sslopts,
+            #     http_proxy_host=http_proxy_host,
+            #     http_proxy_port=http_proxy_port,
+            #     http_proxy_auth=http_proxy_auth,
+            # )
+            self.ws = WebSocketApp(
                 url="wss://{}".format(self._custom_endpoint or self._host),
                 subprotocols=[AMQP_WS_SUBPROTOCOL],
-                timeout=self._connect_timeout,
-                skip_utf8_validation=True,
-                sslopt=self.sslopts,
-                http_proxy_host=http_proxy_host,
-                http_proxy_port=http_proxy_port,
-                http_proxy_auth=http_proxy_auth,
+                on_message=self.on_message,
+                )
+            self.t = Thread(
+                target=self.ws.run_forever, 
+                kwargs={
+                    'skip_utf8_validation':True,
+                    'sslopt':self.sslopts,
+                    'http_proxy_host':http_proxy_host,
+                    'http_proxy_port':http_proxy_port,
+                    'http_proxy_auth':http_proxy_auth,
+                    'ping_interval':12,
+                    'ping_timeout':2,
+                },
+                daemon=True,
             )
+            self.t.start()
+            sleep(1)
         except ImportError:
             raise ValueError(
                 "Please install websocket-client library to use websocket transport."
             )
+    
+    def on_message(self, ws, message):
+        with self.lock:
+            self.ws_stream = b''.join([self.ws_stream, message])
 
     def _read(self, n, initial=False, buffer=None, _errnos=None):  # pylint: disable=unused-argument
         """Read exactly n bytes from the peer."""
-        from websocket import WebSocketTimeoutException
-
         length = 0
         view = buffer or memoryview(bytearray(n))
         nbytes = self._read_buffer.readinto(view)
         length += nbytes
         n -= nbytes
-        try:
-            while n:
-                data = self.ws.recv()
-
-                if len(data) <= n:
-                    view[length : length + len(data)] = data
-                    n -= len(data)
-                else:
-                    view[length : length + n] = data[0:n]
-                    self._read_buffer = BytesIO(data[n:])
-                    n = 0
-            return view
-        except WebSocketTimeoutException:
-            raise TimeoutError()
+        while n:
+            with self.lock:
+                data = self.ws_stream
+                self.ws_stream = b''
+            if len(data) == 0:
+                break
+            if len(data) <= n:
+                view[length : length + len(data)] = data
+                n -= len(data)
+            else:
+                view[length : length + n] = data[0:n]
+                self._read_buffer = BytesIO(data[n:])
+                n = 0
+        return view
 
     def _shutdown_transport(self):
         # TODO Sync and Async close functions named differently
         """Do any preliminary work in shutting down the connection."""
+        self.t.join()
         self.ws.close()
 
     def _write(self, s):
@@ -736,4 +764,9 @@ class WebSocketTransport(_AbstractTransport):
         See http://tools.ietf.org/html/rfc5234
         http://tools.ietf.org/html/rfc6455#section-5.2
         """
-        self.ws.send_binary(s)
+        from websocket import ABNF,WebSocketTimeoutException
+        try:
+            self.ws.send(data=s, opcode=ABNF.OPCODE_BINARY)
+        except WebSocketTimeoutException:
+            raise TimeoutError()
+        #self.ws.send_binary(s)
