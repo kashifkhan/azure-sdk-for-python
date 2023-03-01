@@ -15,6 +15,8 @@ from ..performatives import (
     DetachFrame,
 )
 
+from ..._transport._pyamqp_transport import PyamqpTransport
+
 from ..error import ErrorCondition, AMQPLinkError, AMQPLinkRedirect, AMQPConnectionError
 
 _LOGGER = logging.getLogger(__name__)
@@ -140,6 +142,9 @@ class Link(object):  # pylint: disable=too-many-instance-attributes
             await self._set_state(LinkState.DETACHED)
 
     async def _outgoing_attach(self):
+        import asyncio
+        task_name = asyncio.current_task().get_name()
+        print(f" outgoing_attach task_name = {task_name}")
         self.delivery_count = self.initial_delivery_count
         attach_frame = AttachFrame(
             name=self.name,
@@ -174,9 +179,10 @@ class Link(object):  # pylint: disable=too-many-instance-attributes
         self.remote_max_message_size = frame[10]  # max_message_size
         self.offered_capabilities = frame[11]  # offered_capabilities
         if self.properties:
-            self.properties.update(frame[13])  # properties
+            if frame[13]:
+                self.properties.update(PyamqpTransport.create_link_properties(frame[13]))  # properties
         else:
-            self.properties = frame[13]
+            self.properties = frame[13] if frame[13] is None else PyamqpTransport.create_link_properties(frame[13])
         if self.state == LinkState.DETACHED:
             await self._set_state(LinkState.ATTACH_RCVD)
         elif self.state == LinkState.ATTACH_SENT:
@@ -210,6 +216,9 @@ class Link(object):  # pylint: disable=too-many-instance-attributes
         pass
 
     async def _outgoing_detach(self, close=False, error=None):
+        import asyncio
+        task_name = asyncio.current_task().get_name()
+        print(f"outgoing_detach task_name = {task_name}")
         detach_frame = DetachFrame(handle=self.handle, closed=close, error=error)
         if self.network_trace:
             _LOGGER.debug("-> %r", detach_frame, extra=self.network_trace_params)
@@ -218,6 +227,9 @@ class Link(object):  # pylint: disable=too-many-instance-attributes
             self._is_closed = True
 
     async def _incoming_detach(self, frame):
+        import asyncio
+        task_name = asyncio.current_task().get_name()
+        print(f"incoming_attach task_name = {task_name}")
         if self.network_trace:
             _LOGGER.debug("<- %r", DetachFrame(*frame), extra=self.network_trace_params)
         if self.state == LinkState.ATTACHED:
