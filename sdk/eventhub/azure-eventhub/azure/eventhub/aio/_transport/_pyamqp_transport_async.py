@@ -227,9 +227,9 @@ class PyamqpTransportAsync(PyamqpTransport, AmqpTransportAsync):
         consumer._callback_task_run = True
         consumer._last_callback_called_time = time.time()
         callback_task = asyncio.create_task(
-            PyamqpTransportAsync._callback_task(consumer, batch, max_batch_size, max_wait_time)
+            PyamqpTransportAsync._callback_task(consumer, batch, max_batch_size, max_wait_time), name="callback_task"
         )
-        receive_task = asyncio.create_task(PyamqpTransportAsync._receive_task(consumer))
+        receive_task = asyncio.create_task(PyamqpTransportAsync._receive_task(consumer), name="receive_task")
 
         tasks = [callback_task, receive_task]
         try:

@@ -330,7 +330,8 @@ class AMQPClientAsync(AMQPClientSync):
         :rtype: bool
         :raises: TimeoutError if CBS authentication timeout reached.
         """
-
+        task_name = asyncio.current_task().get_name()
+        print(f" do_work_async task_name = {task_name}")
         if self._shutdown:
             return False
         if not await self.client_ready_async():
@@ -356,6 +357,8 @@ class AMQPClientAsync(AMQPClientSync):
         # The method also takes "status_code_field" and "status_description_field"
         # keyword arguments as alternate names for the status code and description
         # in the response body. Those two keyword arguments are used in Azure services only.
+        task_name = asyncio.current_task().get_name()
+        print(f"IN MGMT REQUEST task name = {task_name}")
         operation = kwargs.pop("operation", None)
         operation_type = kwargs.pop("operation_type", None)
         node = kwargs.pop("node", "$management")

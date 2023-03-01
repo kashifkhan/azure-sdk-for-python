@@ -151,7 +151,6 @@ class EventHubConsumer(
             if self._track_last_enqueued_event_properties
             else None
         )
-
         self._handler = self._amqp_transport.create_receive_client(
             config=self._client._config,  # pylint:disable=protected-access
             source=source,
