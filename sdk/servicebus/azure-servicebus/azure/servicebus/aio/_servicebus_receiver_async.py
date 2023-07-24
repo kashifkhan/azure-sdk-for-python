@@ -437,6 +437,7 @@ class ServiceBusReceiver(collections.abc.AsyncIterator, BaseHandler, ReceiverMix
         dead_letter_error_description=None,
     ):
         # pylint: disable=protected-access
+        print("checking to see if message is alive")
         self._check_live()
         if not isinstance(message, ServiceBusReceivedMessage):
             raise TypeError(
@@ -478,6 +479,7 @@ class ServiceBusReceiver(collections.abc.AsyncIterator, BaseHandler, ReceiverMix
         try:
             if not message._is_deferred_message:
                 try:
+                    print("trying to settle message via receiver link")
                     await self._amqp_transport.settle_message_via_receiver_link_async(
                         self._handler,
                         message,
@@ -487,6 +489,7 @@ class ServiceBusReceiver(collections.abc.AsyncIterator, BaseHandler, ReceiverMix
                     )
                     return
                 except RuntimeError as exception:
+                    print("Some weird run time error is raised")
                     _LOGGER.info(
                         "Message settling: %r has encountered an exception (%r)."
                         "Trying to settle through management link",
@@ -502,12 +505,14 @@ class ServiceBusReceiver(collections.abc.AsyncIterator, BaseHandler, ReceiverMix
                 if settle_operation == MESSAGE_DEAD_LETTER
                 else None
             )
+            print("Trying to settle over management link")
             await self._settle_message_via_mgmt_link(
                 MESSAGE_MGMT_SETTLEMENT_TERM_MAP[settle_operation],
                 [message.lock_token],
                 dead_letter_details=dead_letter_details,
             )
         except Exception as exception:
+            print("Now in the regular exception place while settling")
             _LOGGER.info(
                 "Message settling: %r has encountered an exception (%r) through management link",
                 settle_operation,
@@ -659,7 +664,7 @@ class ServiceBusReceiver(collections.abc.AsyncIterator, BaseHandler, ReceiverMix
         """Receive messages that have previously been deferred.
 
         When receiving deferred messages from a partitioned entity, all of the supplied
-        sequence numbers must be messages from the same partition.
+        sequence numbers must be messages from the same partition. 
 
         :param Union[int, list[int]] sequence_numbers: A list of the sequence numbers of messages that have been
          deferred.
@@ -803,6 +808,7 @@ class ServiceBusReceiver(collections.abc.AsyncIterator, BaseHandler, ReceiverMix
                 :caption: Complete a received message.
 
         """
+        print("complete message is now calling _settle_message")
         await self._settle_message_with_retry(message, MESSAGE_COMPLETE)
 
     async def abandon_message(self, message: ServiceBusReceivedMessage) -> None:

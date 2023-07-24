@@ -260,6 +260,11 @@ class BaseHandler:  # pylint:disable=too-many-instance-attributes
                 if operation_requires_timeout and abs_timeout_time:
                     remaining_timeout = abs_timeout_time - time.time()
                     kwargs["timeout"] = remaining_timeout
+                print(f"{operation} Lets go for a spin")
+                try:
+                    self._check_live()
+                except ValueError as ve:
+                    self._open()
                 return await operation(**kwargs)
             except StopAsyncIteration:
                 raise

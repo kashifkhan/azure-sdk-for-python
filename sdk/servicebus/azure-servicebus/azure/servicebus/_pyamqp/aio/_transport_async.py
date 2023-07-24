@@ -541,4 +541,7 @@ class WebSocketTransportAsync(
         See http://tools.ietf.org/html/rfc5234
         http://tools.ietf.org/html/rfc6455#section-5.2
         """
-        await self.sock.send_bytes(s)
+        try:
+            await self.sock.send_bytes(s)
+        except ConnectionRefusedError as cre:
+             raise ConnectionError('Websocket disconnected: %r' % cre) from cre

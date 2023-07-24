@@ -156,17 +156,24 @@ class AMQPClientAsync(AMQPClientSync):
                         self.__class__.__name__,
                         extra=self._network_trace_params
                     )
+                    print("staying alive calling listen !!")
                     await asyncio.shield(self._connection.listen(wait=self._socket_timeout,
                         batch=self._link.current_link_credit))
+                    if self._connection._error:
+                        self._error = self._connection._error
                     start_time = current_time
                 await asyncio.sleep(1)
         except Exception as e:  # pylint: disable=broad-except
+            print("oh nooooesss, error in keep alive yall")
             _logger.info(
                 "Connection keep-alive for %r failed: %r.",
                 self.__class__.__name__,
                 e,
                 extra=self._network_trace_params
             )
+            print("SHUTTING DOWN KEEP ALIVE")
+            self._shutdown = True
+            #raise
 
     async def __aenter__(self):
         """Run Client in an async context manager."""
@@ -284,6 +291,7 @@ class AMQPClientAsync(AMQPClientSync):
         If the client was opened using an external Connection,
         this will be left intact.
         """
+        print("CLOSING!!!!")
         self._shutdown = True
         if not self._session:
             return  # already closed.
@@ -941,6 +949,9 @@ class ReceiveClientAsync(ReceiveClientSync, AMQPClientAsync):
         ...
 
     async def settle_messages_async(self, delivery_id: Union[int, Tuple[int, int]], outcome: str, **kwargs):
+        if self._error:
+            print("SOMETHING WENT WRONG WHILE SETTLING")
+            raise self._error
         batchable = kwargs.pop('batchable', None)
         if outcome.lower() == 'accepted':
             state: Outcomes = Accepted()
