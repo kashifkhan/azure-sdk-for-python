@@ -63,7 +63,11 @@ class Link(object):  # pylint: disable=too-many-instance-attributes
                 capabilities=kwargs.get("target_capabilities"),
             )
         )
-        self.link_credit = kwargs.pop("link_credit", None) or DEFAULT_LINK_CREDIT
+        if 'link_credit' in kwargs and kwargs['link_credit'] == 0:
+            self.link_credit = 0
+        else:
+            self.link_credit = kwargs.pop("link_credit", None) or DEFAULT_LINK_CREDIT
+        print(f"Link credit: {self.link_credit}")
         self.current_link_credit = self.link_credit
         self.send_settle_mode = kwargs.pop("send_settle_mode", SenderSettleMode.Mixed)
         self.rcv_settle_mode = kwargs.pop("rcv_settle_mode", ReceiverSettleMode.First)
