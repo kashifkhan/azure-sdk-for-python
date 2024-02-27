@@ -155,12 +155,8 @@ class AMQPClient(
 
     def __init__(self, hostname, **kwargs):
         # I think these are just strings not instances of target or source
-        self._hostname = hostname
         self._auth = kwargs.pop("auth", None)
         self._name = kwargs.pop("client_name", str(uuid.uuid4()))
-        self._session = None
-        self._link = None
-        self._external_connection = False
         self._cbs_authenticator = None
         self._auth_timeout = kwargs.pop("auth_timeout", DEFAULT_AUTH_TIMEOUT)
         self._mgmt_links = {}
@@ -170,57 +166,9 @@ class AMQPClient(
        
         self._network_trace = kwargs.pop("network_trace", False)
         self._network_trace_params = {"amqpConnection": None, "amqpSession": None, "amqpLink": None}
-
-        # Session settings
-        self._outgoing_window = kwargs.pop("outgoing_window", OUTGOING_WINDOW)
-        self._incoming_window = kwargs.pop("incoming_window", INCOMING_WINDOW)
-        self._handle_max = kwargs.pop("handle_max", None)
-
-        # Link settings
-        self._send_settle_mode = kwargs.pop(
-            "send_settle_mode", SenderSettleMode.Unsettled
-        )
-        self._receive_settle_mode = kwargs.pop(
-            "receive_settle_mode", ReceiverSettleMode.Second
-        )
-        self._desired_capabilities = kwargs.pop("desired_capabilities", None)
-        self._on_attach = kwargs.pop("on_attach", None)
         
         self._socket_timeout = kwargs.pop("socket_timeout", None)
 
-    def __enter__(self):
-        """Run Client in a context manager.
-
-        :return: The Client object.
-        :rtype: ~pyamqp.AMQPClient
-        """
-        self.open()
-        return self
-
-    def __exit__(self, *args):
-        """Close and destroy Client on exiting a context manager.
-        :param any args: Ignored.
-        """
-        self.close()
-
-    def _client_ready(self):
-        """Determine whether the client is ready to start sending and/or
-        receiving messages. To be ready, the connection must be open and
-        authentication complete.
-
-        :returns: True if ready, False otherwise.
-        :rtype: bool
-        """
-        return True
-
-    def _client_run(self, **kwargs):
-        """Perform a single Connection iteration."""
-        self._connection.listen(wait=self._socket_timeout, **kwargs)
-
-    def _close_link(self):
-        if self._link and not self._link._is_closed:  # pylint: disable=protected-access
-            self._link.detach(close=True)
-            self._link = None
 
     def _do_retryable_operation(self, operation, *args, **kwargs):
         retry_settings = self._retry_policy.configure_retries()
@@ -253,54 +201,6 @@ class AMQPClient(
                 if absolute_timeout > 0:
                     absolute_timeout -= end_time - start_time
         raise retry_settings["history"][-1]
-
-    def open(self, connection=None):
-        """Open the client. The client can create a new Connection
-        or an existing Connection can be passed in. This existing Connection
-        may have an existing CBS authentication Session, which will be
-        used for this client as well. Otherwise a new Session will be
-        created.
-
-        :param connection: An existing Connection that may be shared between
-         multiple clients.
-        :type connection: ~pyamqp.Connection
-        """
-        # pylint: disable=protected-access
-        if self._session:
-            return  # already open.
-        
-        if self._auth.auth_type == AUTH_TYPE_CBS:
-            self._cbs_authenticator = CBSAuthenticator(
-                session=self._session, auth=self._auth, auth_timeout=self._auth_timeout
-            )
-            self._cbs_authenticator.open()
-        
-    def close(self):
-        """Close the client. This includes closing the Session
-        and CBS authentication layer as well as the Connection.
-        If the client was opened using an external Connection,
-        this will be left intact.
-
-        No further messages can be sent or received and the client
-        cannot be re-opened.
-
-        All pending, unsent messages will remain uncleared to allow
-        them to be inspected and queued to a new client.
-        """
-        self._shutdown = True
-        if not self._session:
-            return  # already closed.
-        self._close_link()
-        if self._cbs_authenticator:
-            self._cbs_authenticator.close()
-            self._cbs_authenticator = None
-        self._session.end()
-        self._session = None
-        if not self._external_connection:
-            self._connection.close()
-            self._connection = None
-        self._network_trace_params["amqpConnection"] = None
-        self._network_trace_params["amqpSession"] = None
 
     def auth_complete(self):
         """Whether the authentication handshake is complete during
@@ -496,6 +396,7 @@ class SendClient(AMQPClient):
         To be ready, the connection must be open and authentication complete,
         The Session, Link and MessageReceiver must be open and in non-errored
         states.
+
 
         :return: Whether the client is ready to start receiving messages.
         :rtype: bool
