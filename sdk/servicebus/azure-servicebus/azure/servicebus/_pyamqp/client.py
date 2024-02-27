@@ -545,8 +545,3 @@ class ReceiveClient(AMQPClient): # pylint:disable=too-many-instance-attributes
             self._shutdown = True
             return False
         return True
-
-
-    def close(self):
-        #self._received_messages = queue.Queue()
-        super(ReceiveClient, self).close()
