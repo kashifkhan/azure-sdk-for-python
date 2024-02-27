@@ -169,39 +169,6 @@ class AMQPClient(
         
         self._socket_timeout = kwargs.pop("socket_timeout", None)
 
-
-    def _do_retryable_operation(self, operation, *args, **kwargs):
-        retry_settings = self._retry_policy.configure_retries()
-        retry_active = True
-        absolute_timeout = kwargs.pop("timeout", 0) or 0
-        start_time = time.time()
-        while retry_active:
-            try:
-                if absolute_timeout < 0:
-                    raise TimeoutError("Operation timed out.")
-                return operation(*args, timeout=absolute_timeout, **kwargs)
-            except AMQPException as exc:
-                if not self._retry_policy.is_retryable(exc):
-                    raise
-                if absolute_timeout >= 0:
-                    retry_active = self._retry_policy.increment(retry_settings, exc)
-                    if not retry_active:
-                        break
-                    time.sleep(self._retry_policy.get_backoff_time(retry_settings, exc))
-                    if exc.condition == ErrorCondition.LinkDetachForced:
-                        self._close_link()  # if link level error, close and open a new link
-                    if exc.condition in (
-                        ErrorCondition.ConnectionCloseForced,
-                        ErrorCondition.SocketError,
-                    ):
-                        # if connection detach or socket error, close and open a new connection
-                        self.close()
-            finally:
-                end_time = time.time()
-                if absolute_timeout > 0:
-                    absolute_timeout -= end_time - start_time
-        raise retry_settings["history"][-1]
-
     def auth_complete(self):
         """Whether the authentication handshake is complete during
         connection initialization.
