@@ -383,14 +383,6 @@ class SendClient(AMQPClient):
     :paramtype connection_verify: str
     """
 
-    def __init__(self, hostname, target, **kwargs):
-        self.target = target
-        # Sender and Link settings
-        self._max_message_size = kwargs.pop("max_message_size", MAX_FRAME_SIZE_BYTES)
-        self._link_properties = kwargs.pop("link_properties", None)
-        self._link_credit = kwargs.pop("link_credit", None)
-        super(SendClient, self).__init__(hostname, **kwargs)
-
     def _client_ready(self):
         """Determine whether the client is ready to start receiving messages.
         To be ready, the connection must be open and authentication complete,
@@ -429,102 +421,6 @@ class SendClient(AMQPClient):
         self._link.update_pending_deliveries()
         self._connection.listen(wait=self._socket_timeout, **kwargs)
         return True
-
-    def _transfer_message(self, message_delivery, timeout=0):
-        message_delivery.state = MessageDeliveryState.WaitingForSendAck
-        on_send_complete = partial(self._on_send_complete, message_delivery)
-        delivery = self._link.send_transfer(
-            message_delivery.message,
-            on_send_complete=on_send_complete,
-            timeout=timeout,
-            send_async=True,
-        )
-        return delivery
-
-    @staticmethod
-    def _process_send_error(message_delivery, condition, description=None, info=None):
-        try:
-            amqp_condition = ErrorCondition(condition)
-        except ValueError:
-            error = MessageException(condition, description=description, info=info)
-        else:
-            error = MessageSendFailed(
-                amqp_condition, description=description, info=info
-            )
-        message_delivery.state = MessageDeliveryState.Error
-        message_delivery.error = error
-
-    def _on_send_complete(self, message_delivery, reason, state):
-        message_delivery.reason = reason
-        if reason == LinkDeliverySettleReason.DISPOSITION_RECEIVED:
-            if state and SEND_DISPOSITION_ACCEPT in state:
-                message_delivery.state = MessageDeliveryState.Ok
-            else:
-                try:
-                    error_info = state[SEND_DISPOSITION_REJECT]
-                    self._process_send_error(
-                        message_delivery,
-                        condition=error_info[0][0],
-                        description=error_info[0][1],
-                        info=error_info[0][2],
-                    )
-                except TypeError:
-                    self._process_send_error(
-                        message_delivery, condition=ErrorCondition.UnknownError
-                    )
-        elif reason == LinkDeliverySettleReason.SETTLED:
-            message_delivery.state = MessageDeliveryState.Ok
-        elif reason == LinkDeliverySettleReason.TIMEOUT:
-            message_delivery.state = MessageDeliveryState.Timeout
-            message_delivery.error = TimeoutError("Sending message timed out.")
-        else:
-            # NotDelivered and other unknown errors
-            self._process_send_error(
-                message_delivery, condition=ErrorCondition.UnknownError
-            )
-
-    def _send_message_impl(self, message, **kwargs):
-        timeout = kwargs.pop("timeout", 0)
-        expire_time = (time.time() + timeout) if timeout else None
-        self.open()
-        message_delivery = _MessageDelivery(
-            message, MessageDeliveryState.WaitingToBeSent, expire_time
-        )
-        while not self.client_ready():
-            time.sleep(0.05)
-
-        self._transfer_message(message_delivery, timeout)
-        running = True
-        while running and message_delivery.state not in MESSAGE_DELIVERY_DONE_STATES:
-            running = self.do_work()
-        if message_delivery.state not in MESSAGE_DELIVERY_DONE_STATES:
-            raise MessageException(
-                condition=ErrorCondition.ClientError,
-                description="Send failed - connection not running."
-            )
-
-        if message_delivery.state in (
-            MessageDeliveryState.Error,
-            MessageDeliveryState.Cancelled,
-            MessageDeliveryState.Timeout,
-        ):
-            try:
-                raise message_delivery.error  # pylint: disable=raising-bad-type
-            except TypeError:
-                # This is a default handler
-                raise MessageException(
-                    condition=ErrorCondition.UnknownError, description="Send failed."
-                ) from None
-
-    def send_message(self, message, **kwargs):
-        """
-        :param ~pyamqp.message.Message message:
-        :keyword float timeout: timeout in seconds. If set to
-         0, the client will continue to wait until the message is sent or error happens. The
-         default is 0.
-        """
-        self._do_retryable_operation(self._send_message_impl, message=message, **kwargs)
-
 
 class ReceiveClient(AMQPClient): # pylint:disable=too-many-instance-attributes
     """

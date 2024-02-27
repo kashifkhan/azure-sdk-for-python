@@ -3,6 +3,7 @@
 # Licensed under the MIT License. See License.txt in the project root for
 # license information.
 # --------------------------------------------------------------------------
+from functools import partial
 import struct
 import uuid
 import logging
@@ -10,8 +11,9 @@ import time
 
 from ._encode import encode_payload
 from .link import Link
-from .constants import ReceiverSettleMode, SessionTransferState, LinkDeliverySettleReason, LinkState, Role, SenderSettleMode, SessionState
-from .error import AMQPLinkError, ErrorCondition, MessageException
+from .constants import MESSAGE_DELIVERY_DONE_STATES, SEND_DISPOSITION_ACCEPT, SEND_DISPOSITION_REJECT, MessageDeliveryState, ReceiverSettleMode, SessionTransferState, LinkDeliverySettleReason, LinkState, Role, SenderSettleMode, SessionState
+from .error import AMQPException, AMQPLinkError, ErrorCondition, MessageException, MessageSendFailed, RetryPolicy
+from .message import _MessageDelivery, Message
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -45,6 +47,7 @@ class SenderLink(Link):
     def __init__(self, session, handle, target_address, *, send_settle_mode = SenderSettleMode.Unsettled, receive_settle_mode = ReceiverSettleMode.Second, **kwargs):
         name = kwargs.pop("name", None) or str(uuid.uuid4())
         role = Role.Sender
+        self._retry_policy = kwargs.pop("retry_policy", RetryPolicy())
         if "source_address" not in kwargs:
             kwargs["source_address"] = "sender-link-{}".format(name)
         super(SenderLink, self).__init__(
@@ -169,7 +172,7 @@ class SenderLink(Link):
             pending.append(delivery)
         self._pending_deliveries = pending
 
-    def send_transfer(self, message, *, send_async=False, **kwargs):
+    def _send_transfer(self, message, *, send_async=False, **kwargs):
         self._check_if_closed()
         if self.state != LinkState.ATTACHED:
             raise AMQPLinkError(
@@ -207,3 +210,121 @@ class SenderLink(Link):
             )
         delivery.on_settled(LinkDeliverySettleReason.CANCELLED, None)
         self._pending_deliveries.pop(index)
+
+    def _transfer_message(self, message_delivery, timeout=0):
+        message_delivery.state = MessageDeliveryState.WaitingForSendAck
+        on_send_complete = partial(self._on_send_complete, message_delivery)
+        delivery = self._send_transfer(
+            message_delivery.message,
+            on_send_complete=on_send_complete,
+            timeout=timeout,
+            send_async=True,
+        )
+        return delivery
+    
+    @staticmethod
+    def _process_send_error(message_delivery, condition, description=None, info=None):
+        try:
+            amqp_condition = ErrorCondition(condition)
+        except ValueError:
+            error = MessageException(condition, description=description, info=info)
+        else:
+            error = MessageSendFailed(
+                amqp_condition, description=description, info=info
+            )
+        message_delivery.state = MessageDeliveryState.Error
+        message_delivery.error = error
+    
+    def _on_send_complete(self, message_delivery, reason, state):
+        message_delivery.reason = reason
+        if reason == LinkDeliverySettleReason.DISPOSITION_RECEIVED:
+            if state and SEND_DISPOSITION_ACCEPT in state:
+                message_delivery.state = MessageDeliveryState.Ok
+            else:
+                try:
+                    error_info = state[SEND_DISPOSITION_REJECT]
+                    self._process_send_error(
+                        message_delivery,
+                        condition=error_info[0][0],
+                        description=error_info[0][1],
+                        info=error_info[0][2],
+                    )
+                except TypeError:
+                    self._process_send_error(
+                        message_delivery, condition=ErrorCondition.UnknownError
+                    )
+        elif reason == LinkDeliverySettleReason.SETTLED:
+            message_delivery.state = MessageDeliveryState.Ok
+        elif reason == LinkDeliverySettleReason.TIMEOUT:
+            message_delivery.state = MessageDeliveryState.Timeout
+            message_delivery.error = TimeoutError("Sending message timed out.")
+        else:
+            # NotDelivered and other unknown errors
+            self._process_send_error(
+                message_delivery, condition=ErrorCondition.UnknownError
+            )
+    
+    def _send_message_impl(self, message, **kwargs):
+        timeout = kwargs.pop("timeout", 0)
+        expire_time = (time.time() + timeout) if timeout else None
+        #self.open()
+        message_delivery = _MessageDelivery(
+            message, MessageDeliveryState.WaitingToBeSent, expire_time
+        )
+        while not self.client_ready():
+            time.sleep(0.05)
+
+        self._transfer_message(message_delivery, timeout)
+        running = True
+        while running and message_delivery.state not in MESSAGE_DELIVERY_DONE_STATES:
+            running = self.do_work()
+        if message_delivery.state not in MESSAGE_DELIVERY_DONE_STATES:
+            raise MessageException(
+                condition=ErrorCondition.ClientError,
+                description="Send failed - connection not running."
+            )
+
+        if message_delivery.state in (
+            MessageDeliveryState.Error,
+            MessageDeliveryState.Cancelled,
+            MessageDeliveryState.Timeout,
+        ):
+            try:
+                raise message_delivery.error  # pylint: disable=raising-bad-type
+            except TypeError:
+                # This is a default handler
+                raise MessageException(
+                    condition=ErrorCondition.UnknownError, description="Send failed."
+                ) from None
+    
+    def send_message(self, message: Message, **kwargs):
+        retry_settings = self._retry_policy.configure_retries()
+        retry_active = True
+        absolute_timeout = kwargs.pop("timeout", 0) or 0
+        start_time = time.time()
+        while retry_active:
+            try:
+                if absolute_timeout < 0:
+                    raise TimeoutError("Operation timed out.")
+                return self._send_message_impl(message, timeout=absolute_timeout, **kwargs)
+            except AMQPException as exc:
+                if not self._retry_policy.is_retryable(exc):
+                    raise
+                if absolute_timeout >= 0:
+                    retry_active = self._retry_policy.increment(retry_settings, exc)
+                    if not retry_active:
+                        break
+                    time.sleep(self._retry_policy.get_backoff_time(retry_settings, exc))
+                    if exc.condition == ErrorCondition.LinkDetachForced:
+                        self.detach(close=True)  
+                    if exc.condition in (
+                        ErrorCondition.ConnectionCloseForced,
+                        ErrorCondition.SocketError,
+                    ):
+                        # if connection detach or socket error, close and open a new connection
+                        self.detach(close=True)
+            finally:
+                end_time = time.time()
+                if absolute_timeout > 0:
+                    absolute_timeout -= end_time - start_time
+        raise retry_settings["history"][-1]
