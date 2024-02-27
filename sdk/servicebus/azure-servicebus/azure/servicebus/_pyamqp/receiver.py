@@ -10,7 +10,7 @@ from typing import Optional, Union
 
 from ._decode import decode_payload
 from .link import Link
-from .constants import LinkState, Role
+from .constants import LinkState, ReceiverSettleMode, Role, SenderSettleMode
 from .performatives import TransferFrame, DispositionFrame
 from .outcomes import Received, Accepted, Rejected, Released, Modified
 
@@ -19,12 +19,21 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class ReceiverLink(Link):
-    def __init__(self, session, handle, source_address, **kwargs):
+    def __init__(self, session, handle, source_address, *, send_settle_mode = SenderSettleMode.Unsettled, receive_settle_mode = ReceiverSettleMode.Second, **kwargs):
         name = kwargs.pop("name", None) or str(uuid.uuid4())
         role = Role.Receiver
         if "target_address" not in kwargs:
             kwargs["target_address"] = "receiver-link-{}".format(name)
-        super(ReceiverLink, self).__init__(session, handle, name, role, source_address=source_address, **kwargs)
+        super(ReceiverLink, self).__init__(
+            session, 
+            handle, 
+            name, 
+            role, 
+            source_address=source_address,
+            send_settle_mode=send_settle_mode,
+            receive_settle_mode=receive_settle_mode,
+            **kwargs
+            )
         self._on_transfer = kwargs.pop("on_transfer")
         self._received_payload = bytearray()
         self._first_frame = None

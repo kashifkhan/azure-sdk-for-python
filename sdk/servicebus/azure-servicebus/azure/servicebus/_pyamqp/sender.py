@@ -10,7 +10,7 @@ import time
 
 from ._encode import encode_payload
 from .link import Link
-from .constants import SessionTransferState, LinkDeliverySettleReason, LinkState, Role, SenderSettleMode, SessionState
+from .constants import ReceiverSettleMode, SessionTransferState, LinkDeliverySettleReason, LinkState, Role, SenderSettleMode, SessionState
 from .error import AMQPLinkError, ErrorCondition, MessageException
 
 _LOGGER = logging.getLogger(__name__)
@@ -42,12 +42,21 @@ class PendingDelivery(object):
 
 
 class SenderLink(Link):
-    def __init__(self, session, handle, target_address, **kwargs):
+    def __init__(self, session, handle, target_address, *, send_settle_mode = SenderSettleMode.Unsettled, receive_settle_mode = ReceiverSettleMode.Second, **kwargs):
         name = kwargs.pop("name", None) or str(uuid.uuid4())
         role = Role.Sender
         if "source_address" not in kwargs:
             kwargs["source_address"] = "sender-link-{}".format(name)
-        super(SenderLink, self).__init__(session, handle, name, role, target_address=target_address, **kwargs)
+        super(SenderLink, self).__init__(
+            session, 
+            handle, 
+            name, 
+            role, 
+            target_address=target_address, 
+            send_settle_mode = send_settle_mode, 
+            receive_settle_mode = receive_settle_mode, 
+            **kwargs
+        )
         self._pending_deliveries = []
 
     @classmethod
