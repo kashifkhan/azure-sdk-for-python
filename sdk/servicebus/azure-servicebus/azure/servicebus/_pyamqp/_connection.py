@@ -4,6 +4,7 @@
 # license information.
 # --------------------------------------------------------------------------
 
+import threading
 import uuid
 import logging
 import time
@@ -66,6 +67,10 @@ class Connection:  # pylint:disable=too-many-instance-attributes
     :keyword int max_frame_size: Proposed maximum frame size in bytes. Default value is 64kb.
     :keyword int channel_max: The maximum channel number that may be used on the Connection. Default value is 65535.
     :keyword float idle_timeout: Connection idle time-out in seconds.
+    :keyword int keep_alive_interval: If set, a thread will be started to keep the connection
+     alive during periods of user inactivity. The value will determine how long the
+     thread will sleep (in seconds) between pinging the connection. If 0 or None, no
+     thread will be started.
     :keyword list(str) outgoing_locales: Locales available for outgoing text.
     :keyword list(str) incoming_locales: Desired locales for incoming text in decreasing level of preference.
     :keyword list(str) offered_capabilities: The extension capabilities the sender supports.
@@ -98,6 +103,7 @@ class Connection:  # pylint:disable=too-many-instance-attributes
             max_frame_size: int = MAX_FRAME_SIZE_BYTES,
             channel_max: int = MAX_CHANNELS,
             idle_timeout: Optional[float] = None,
+            keep_alive_interval: Optional[int] = None,
             outgoing_locales: Optional[List[str]] = None,
             incoming_locales: Optional[List[str]] = None,
             offered_capabilities: Optional[List[str]] = None,
@@ -115,8 +121,18 @@ class Connection:  # pylint:disable=too-many-instance-attributes
 
         if parsed_url.hostname is None:
             raise ValueError(f"Invalid endpoint: {endpoint}")
+        
         self._hostname = parsed_url.hostname
         kwargs["http_proxy"] = http_proxy
+
+        # transport
+        if (
+            transport_type is TransportType.Amqp
+            and http_proxy is not None
+        ):
+            raise ValueError(
+                "Http proxy settings can't be passed if transport_type is explicitly set to Amqp"
+            )
         endpoint = self._hostname
         if parsed_url.port:
             self._port = parsed_url.port
@@ -193,6 +209,11 @@ class Connection:  # pylint:disable=too-many-instance-attributes
         self._outgoing_endpoints: Dict[int, Session] = {}
         self._incoming_endpoints: Dict[int, Session] = {}
 
+        self._keep_alive_interval = int(keep_alive_interval) if keep_alive_interval is not None else 0
+        self._keep_alive_thread: Optional[threading.Thread]= None
+
+        self._shutdown = False
+
     def __enter__(self) -> "Connection":
         self.open()
         return self
@@ -216,6 +237,20 @@ class Connection:  # pylint:disable=too-many-instance-attributes
         )
         for session in self._outgoing_endpoints.values():
             session._on_connection_state_change()  # pylint:disable=protected-access
+    
+    def _keep_alive(self):
+        start_time = time.time()
+        try:
+            while not self._shutdown:
+                current_time = time.time()
+                elapsed_time = current_time - start_time
+                if elapsed_time >= self._keep_alive_interval:
+                    _LOGGER.debug("Keeping %r connection alive.", self.__class__.__name__)
+                    self.listen(wait=self._socket_timeout, batch=1) # why was batch taking in link credit for keep alive
+                    start_time = current_time
+                time.sleep(1)
+        except Exception as e:  # pylint: disable=broad-except
+            _LOGGER.debug("Connection keep-alive for %r failed: %r.", self.__class__.__name__, e)
 
     def _connect(self) -> None:
         """Initiate the connection.
@@ -257,6 +292,12 @@ class Connection:  # pylint:disable=too-many-instance-attributes
         if self.state == ConnectionState.END:
             return
         self._set_state(ConnectionState.END)
+        if self._keep_alive_thread:
+            try:
+                self._keep_alive_thread.join()
+            except RuntimeError:  # Probably thread failed to start in .open()
+                logging.debug("Keep alive thread failed to join.", exc_info=True)
+            self._keep_alive_thread = None
         self._transport.close()
 
     def _can_read(self) -> bool:
@@ -870,6 +911,13 @@ class Connection:  # pylint:disable=too-many-instance-attributes
             raise ValueError(
                 "Connection has been configured to not allow piplined-open. Please set 'wait' parameter."
             )
+        
+        if self._keep_alive_interval:
+            self._keep_alive_thread = threading.Thread(target=self._keep_alive)
+            self._keep_alive_thread.daemon = True
+            self._keep_alive_thread.start()
+        
+        self._shutdown = False
 
 
     def close(self, error: Optional[AMQPError] = None, wait: bool = False) -> None:
@@ -888,6 +936,7 @@ class Connection:  # pylint:disable=too-many-instance-attributes
                 ConnectionState.DISCARDING,
             ]:
                 return
+            self._shutdown = True
             self._outgoing_close(error=error)
             if error:
                 self._error = AMQPConnectionError(

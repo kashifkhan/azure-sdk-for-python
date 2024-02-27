@@ -158,8 +158,6 @@ class AMQPClient(
         self._hostname = hostname
         self._auth = kwargs.pop("auth", None)
         self._name = kwargs.pop("client_name", str(uuid.uuid4()))
-        self._shutdown = False
-        self._connection = None
         self._session = None
         self._link = None
         self._external_connection = False
@@ -168,18 +166,8 @@ class AMQPClient(
         self._mgmt_links = {}
         self._mgmt_link_lock = threading.Lock()
         self._retry_policy = kwargs.pop("retry_policy", RetryPolicy())
-        self._keep_alive_interval = kwargs.get("keep_alive_interval", 0)
-        self._keep_alive_interval = int(self._keep_alive_interval) if self._keep_alive_interval is not None else 0
-        self._keep_alive_thread = None
 
-        # Connection settings
-        self._max_frame_size = kwargs.pop("max_frame_size", MAX_FRAME_SIZE_BYTES)
-        self._channel_max = kwargs.pop("channel_max", MAX_CHANNELS)
-        self._idle_timeout = kwargs.pop("idle_timeout", None)
-        self._properties = kwargs.pop("properties", None)
-        self._remote_idle_timeout_empty_frame_send_ratio = kwargs.pop(
-            "remote_idle_timeout_empty_frame_send_ratio", None
-        )
+       
         self._network_trace = kwargs.pop("network_trace", False)
         self._network_trace_params = {"amqpConnection": None, "amqpSession": None, "amqpLink": None}
 
@@ -197,22 +185,8 @@ class AMQPClient(
         )
         self._desired_capabilities = kwargs.pop("desired_capabilities", None)
         self._on_attach = kwargs.pop("on_attach", None)
-
-        # transport
-        if (
-            kwargs.get("transport_type") is TransportType.Amqp
-            and kwargs.get("http_proxy") is not None
-        ):
-            raise ValueError(
-                "Http proxy settings can't be passed if transport_type is explicitly set to Amqp"
-            )
-        self._transport_type = kwargs.pop("transport_type", TransportType.Amqp)
+        
         self._socket_timeout = kwargs.pop("socket_timeout", None)
-        self._http_proxy = kwargs.pop("http_proxy", None)
-
-        # Custom Endpoint
-        self._custom_endpoint_address = kwargs.get("custom_endpoint_address")
-        self._connection_verify = kwargs.get("connection_verify")
 
     def __enter__(self):
         """Run Client in a context manager.
@@ -228,20 +202,6 @@ class AMQPClient(
         :param any args: Ignored.
         """
         self.close()
-
-    def _keep_alive(self):
-        start_time = time.time()
-        try:
-            while self._connection and not self._shutdown:
-                current_time = time.time()
-                elapsed_time = current_time - start_time
-                if elapsed_time >= self._keep_alive_interval:
-                    _logger.debug("Keeping %r connection alive.", self.__class__.__name__)
-                    self._connection.listen(wait=self._socket_timeout, batch=self._link.current_link_credit)
-                    start_time = current_time
-                time.sleep(1)
-        except Exception as e:  # pylint: disable=broad-except
-            _logger.debug("Connection keep-alive for %r failed: %r.", self.__class__.__name__, e)
 
     def _client_ready(self):
         """Determine whether the client is ready to start sending and/or
@@ -308,45 +268,13 @@ class AMQPClient(
         # pylint: disable=protected-access
         if self._session:
             return  # already open.
-        if connection:
-            self._connection = connection
-            self._external_connection = True
-        elif not self._connection:
-            self._connection = Connection(
-                "amqps://" + self._hostname,
-                sasl_credential=self._auth.sasl,
-                ssl_opts={"ca_certs": self._connection_verify or certifi.where()},
-                container_id=self._name,
-                max_frame_size=self._max_frame_size,
-                channel_max=self._channel_max,
-                idle_timeout=self._idle_timeout,
-                properties=self._properties,
-                network_trace=self._network_trace,
-                transport_type=self._transport_type,
-                http_proxy=self._http_proxy,
-                custom_endpoint_address=self._custom_endpoint_address,
-                socket_timeout=self._socket_timeout,
-            )
-            self._connection.open()
-        if not self._session:
-            self._session = self._connection.create_session(
-                incoming_window=self._incoming_window,
-                outgoing_window=self._outgoing_window,
-            )
-            self._session.begin()
-        if self._keep_alive_interval:
-            self._keep_alive_thread = threading.Thread(target=self._keep_alive)
-            self._keep_alive_thread.daemon = True
-            self._keep_alive_thread.start()
+        
         if self._auth.auth_type == AUTH_TYPE_CBS:
             self._cbs_authenticator = CBSAuthenticator(
                 session=self._session, auth=self._auth, auth_timeout=self._auth_timeout
             )
             self._cbs_authenticator.open()
-        self._network_trace_params["amqpConnection"] = self._connection._container_id
-        self._network_trace_params["amqpSession"] = self._session.name
-        self._shutdown = False
-
+        
     def close(self):
         """Close the client. This includes closing the Session
         and CBS authentication layer as well as the Connection.
@@ -371,12 +299,6 @@ class AMQPClient(
         if not self._external_connection:
             self._connection.close()
             self._connection = None
-        if self._keep_alive_thread:
-            try:
-                self._keep_alive_thread.join()
-            except RuntimeError:  # Probably thread failed to start in .open()
-                logging.debug("Keep alive thread failed to join.", exc_info=True)
-            self._keep_alive_thread = None
         self._network_trace_params["amqpConnection"] = None
         self._network_trace_params["amqpSession"] = None
 
