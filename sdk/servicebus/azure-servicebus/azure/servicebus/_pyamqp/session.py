@@ -5,12 +5,14 @@
 # --------------------------------------------------------------------------
 
 from __future__ import annotations
+import threading
 import uuid
 import logging
 import time
 from typing import Union, Optional
 
 from azure.servicebus._pyamqp.cbs import CBSAuthenticator
+from azure.servicebus._pyamqp.management_operation import ManagementOperation
 
 from .constants import ConnectionState, SessionState, SessionTransferState, Role, AUTH_TYPE_CBS
 from .sender import SenderLink
@@ -69,6 +71,9 @@ class Session(object):  # pylint: disable=too-many-instance-attributes
         self._connection = connection
         self._output_handles = {}
         self._input_handles = {}
+
+        self._mgmt_links = {}
+        self._mgmt_link_lock = threading.Lock()
 
     def __enter__(self):
         self.begin()
@@ -531,3 +536,43 @@ class Session(object):  # pylint: disable=too-many-instance-attributes
             self._connection.listen(wait=self._socket_timeout)
             return False
         return True
+    
+    def mgmt_request(self, message, **kwargs):
+        """
+        :param message: The message to send in the management request.
+        :type message: ~pyamqp.message.Message
+        :keyword str operation: The type of operation to be performed. This value will
+         be service-specific, but common values include READ, CREATE and UPDATE.
+         This value will be added as an application property on the message.
+        :keyword str operation_type: The type on which to carry out the operation. This will
+         be specific to the entities of the service. This value will be added as
+         an application property on the message.
+        :keyword str node: The target node. Default node is `$management`.
+        :keyword float timeout: Provide an optional timeout in seconds within which a response
+         to the management request must be received.
+        :returns: The response to the management request.
+        :rtype: ~pyamqp.message.Message
+        """
+
+        # The method also takes "status_code_field" and "status_description_field"
+        # keyword arguments as alternate names for the status code and description
+        # in the response body. Those two keyword arguments are used in Azure services only.
+        operation = kwargs.pop("operation", None)
+        operation_type = kwargs.pop("operation_type", None)
+        node = kwargs.pop("node", "$management")
+        timeout = kwargs.pop("timeout", 0)
+        with self._mgmt_link_lock:
+            try:
+                mgmt_link = self._mgmt_links[node]
+            except KeyError:
+                mgmt_link = ManagementOperation(self._session, endpoint=node, **kwargs)
+                self._mgmt_links[node] = mgmt_link
+                mgmt_link.open()
+
+        while not mgmt_link.ready():
+            self._connection.listen(wait=False)
+        operation_type = operation_type or b"empty"
+        status, description, response = mgmt_link.execute(
+            message, operation=operation, operation_type=operation_type, timeout=timeout
+        )
+        return status, description, response
