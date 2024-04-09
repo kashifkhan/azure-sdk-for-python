@@ -153,14 +153,6 @@ class AMQPClient(
      and 1 for transport type AmqpOverWebsocket.
     """
 
-    def __init__(self, hostname, **kwargs):
-        # I think these are just strings not instances of target or source
-        
-        self._name = kwargs.pop("client_name", str(uuid.uuid4()))
-        self._retry_policy = kwargs.pop("retry_policy", RetryPolicy())
-        
-
-
     def client_ready(self):
         """
         Whether the handler has completed all start up processes such as

@@ -265,3 +265,8 @@ class Link:  # pylint: disable=too-many-instance-attributes
     def flow(self, *, link_credit: Optional[int] = None, **kwargs: Any) -> None:
         self.current_link_credit = link_credit if link_credit is not None else self.link_credit
         self._outgoing_flow(**kwargs)
+
+    def is_ready(self) -> bool:
+        return self.state == LinkState.ATTACHED
+    
+            
