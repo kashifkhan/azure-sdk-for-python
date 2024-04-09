@@ -157,23 +157,11 @@ class AMQPClient(
         # I think these are just strings not instances of target or source
         
         self._name = kwargs.pop("client_name", str(uuid.uuid4()))
-        self._cbs_authenticator = None
         self._mgmt_links = {}
         self._mgmt_link_lock = threading.Lock()
         self._retry_policy = kwargs.pop("retry_policy", RetryPolicy())
         
 
-    def auth_complete(self):
-        """Whether the authentication handshake is complete during
-        connection initialization.
-
-        :return: Whether the authentication handshake is complete.
-        :rtype: bool
-        """
-        if self._cbs_authenticator and not self._cbs_authenticator.handle_token():
-            self._connection.listen(wait=self._socket_timeout)
-            return False
-        return True
 
     def client_ready(self):
         """

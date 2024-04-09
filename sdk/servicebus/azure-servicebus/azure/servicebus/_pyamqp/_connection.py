@@ -924,6 +924,7 @@ class Connection:  # pylint:disable=too-many-instance-attributes
             self._keep_alive_thread.start()
         
         self._shutdown = False
+        self._network_trace_params["amqpConnection"] = self._connection._container_id
 
 
     def close(self, error: Optional[AMQPError] = None, wait: bool = False) -> None:

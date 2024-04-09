@@ -10,7 +10,9 @@ import logging
 import time
 from typing import Union, Optional
 
-from .constants import ConnectionState, SessionState, SessionTransferState, Role
+from azure.servicebus._pyamqp.cbs import CBSAuthenticator
+
+from .constants import ConnectionState, SessionState, SessionTransferState, Role, AUTH_TYPE_CBS
 from .sender import SenderLink
 from .receiver import ReceiverLink
 from .management_link import ManagementLink
@@ -456,6 +458,15 @@ class Session(object):  # pylint: disable=too-many-instance-attributes
             raise ValueError(
                 "Connection has been configured to not allow piplined-open. Please set 'wait' parameter."
             )
+        if self._connection._auth == AUTH_TYPE_CBS:
+            self._cbs_authenticator = CBSAuthenticator(
+                session=self,
+                auth=self._connection._auth,
+                auth_timeout=self._connection._auth_timeout,
+            )
+            self._cbs_authenticator.open()
+        self._connection._network_trace_params["amqpSession"] = self._session.name
+
 
     def end(self, error=None, wait=False):
         # type: (Optional[AMQPError], bool) -> None
@@ -507,3 +518,16 @@ class Session(object):  # pylint: disable=too-many-instance-attributes
             network_trace_params=dict(self.network_trace_params),
             **kwargs,
         )
+    
+    
+    def auth_complete(self):
+        """Whether the authentication handshake is complete during
+        connection initialization.
+
+        :return: Whether the authentication handshake is complete.
+        :rtype: bool
+        """
+        if self._cbs_authenticator and not self._cbs_authenticator.handle_token():
+            self._connection.listen(wait=self._socket_timeout)
+            return False
+        return True
