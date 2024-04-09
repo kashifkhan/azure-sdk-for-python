@@ -18,6 +18,7 @@ from .sasl import SASLTransport, SASLWithWebSocket
 from .session import Session
 from .performatives import OpenFrame, CloseFrame
 from .constants import (
+    DEFAULT_AUTH_TIMEOUT,
     PORT,
     SECURE_PORT,
     SOCKET_TIMEOUT,
@@ -142,6 +143,9 @@ class Connection:  # pylint:disable=too-many-instance-attributes
             self._port = PORT
         self.state: Optional[ConnectionState] = None
 
+        self._auth = kwargs.pop("auth", None)
+        self._auth_timeout = kwargs.pop("auth_timeout", DEFAULT_AUTH_TIMEOUT)
+
         # Custom Endpoint
         custom_endpoint_address = kwargs.get("custom_endpoint_address")
         custom_endpoint = None
@@ -155,7 +159,7 @@ class Connection:  # pylint:disable=too-many-instance-attributes
 
         transport = kwargs.get("transport")
         self._transport_type = transport_type
-        self._socket_timeout = socket_timeout
+        self._socket_timeout = kwargs.pop("socket_timeout", None)
 
         if self._transport_type.value == TransportType.Amqp.value and self._socket_timeout is None:
             self._socket_timeout = SOCKET_TIMEOUT
@@ -213,6 +217,8 @@ class Connection:  # pylint:disable=too-many-instance-attributes
         self._keep_alive_thread: Optional[threading.Thread]= None
 
         self._shutdown = False
+        self._network_trace = kwargs.pop("network_trace", False)
+        self._network_trace_params = {"amqpConnection": None, "amqpSession": None, "amqpLink": None}
 
     def __enter__(self) -> "Connection":
         self.open()

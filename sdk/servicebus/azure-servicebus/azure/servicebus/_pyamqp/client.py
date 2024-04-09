@@ -155,19 +155,13 @@ class AMQPClient(
 
     def __init__(self, hostname, **kwargs):
         # I think these are just strings not instances of target or source
-        self._auth = kwargs.pop("auth", None)
+        
         self._name = kwargs.pop("client_name", str(uuid.uuid4()))
         self._cbs_authenticator = None
-        self._auth_timeout = kwargs.pop("auth_timeout", DEFAULT_AUTH_TIMEOUT)
         self._mgmt_links = {}
         self._mgmt_link_lock = threading.Lock()
         self._retry_policy = kwargs.pop("retry_policy", RetryPolicy())
-
-       
-        self._network_trace = kwargs.pop("network_trace", False)
-        self._network_trace_params = {"amqpConnection": None, "amqpSession": None, "amqpLink": None}
         
-        self._socket_timeout = kwargs.pop("socket_timeout", None)
 
     def auth_complete(self):
         """Whether the authentication handshake is complete during
