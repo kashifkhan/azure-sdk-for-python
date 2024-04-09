@@ -153,41 +153,7 @@ class AMQPClient(
      and 1 for transport type AmqpOverWebsocket.
     """
 
-    def client_ready(self):
-        """
-        Whether the handler has completed all start up processes such as
-        establishing the connection, session, link and authentication, and
-        is not ready to process messages.
-
-        :return: Whether the handler is ready to process messages.
-        :rtype: bool
-        """
-        if not self.auth_complete():
-            return False
-        if not self._client_ready():
-            try:
-                self._connection.listen(wait=self._socket_timeout)
-            except ValueError:
-                return True
-            return False
-        return True
-
-    def do_work(self, **kwargs):
-        """Run a single connection iteration.
-        This will return `True` if the connection is still open
-        and ready to be used for further work, or `False` if it needs
-        to be shut down.
-
-        :return: Whether the connection is still open and ready to be used.
-        :rtype: bool
-        :raises: TimeoutError if CBS authentication timeout reached.
-        """
-        if self._shutdown:
-            return False
-        if not self.client_ready():
-            return True
-        return self._client_run(**kwargs)
-
+    
 
 class SendClient(AMQPClient):
     """
@@ -281,45 +247,9 @@ class SendClient(AMQPClient):
      Default is None in which case `certifi.where()` will be used.
     :paramtype connection_verify: str
     """
+    pass
 
-    def _client_ready(self):
-        """Determine whether the client is ready to start receiving messages.
-        To be ready, the connection must be open and authentication complete,
-        The Session, Link and MessageReceiver must be open and in non-errored
-        states.
-
-
-        :return: Whether the client is ready to start receiving messages.
-        :rtype: bool
-        """
-        # pylint: disable=protected-access
-        if not self._link:
-            self._link = self._session.create_sender_link(
-                target_address=self.target,
-                link_credit=self._link_credit,
-                send_settle_mode=self._send_settle_mode,
-                rcv_settle_mode=self._receive_settle_mode,
-                max_message_size=self._max_message_size,
-                properties=self._link_properties,
-            )
-            self._link.attach()
-            return False
-        if self._link.get_state().value != 3:  # ATTACHED
-            return False
-        return True
-
-    def _client_run(self, **kwargs):
-        """MessageSender Link is now open - perform message send
-        on all pending messages.
-        Will return True if operation successful and client can remain open for
-        further work.
-
-        :return: Whether the client can remain open for further work.
-        :rtype: bool
-        """
-        self._link.update_pending_deliveries()
-        self._connection.listen(wait=self._socket_timeout, **kwargs)
-        return True
+    
 
 class ReceiveClient(AMQPClient): # pylint:disable=too-many-instance-attributes
     """
@@ -413,67 +343,3 @@ class ReceiveClient(AMQPClient): # pylint:disable=too-many-instance-attributes
      Default is None in which case `certifi.where()` will be used.
     :paramtype connection_verify: str
     """
-
-    def __init__(self, hostname, source, **kwargs):
-        self.source = source
-        self._streaming_receive = kwargs.pop("streaming_receive", False)
-        self._received_messages = queue.Queue()
-        self._message_received_callback = kwargs.pop("message_received_callback", None)
-
-        # Sender and Link settings
-        self._max_message_size = kwargs.pop("max_message_size", MAX_FRAME_SIZE_BYTES)
-        self._link_properties = kwargs.pop("link_properties", None)
-        self._link_credit = kwargs.pop("link_credit", 300)
-
-        # Iterator
-        self._timeout = kwargs.pop("timeout", 0)
-        self._timeout_reached = False
-        self._last_activity_timestamp = time.time()
-
-        super(ReceiveClient, self).__init__(hostname, **kwargs)
-
-    def _client_ready(self):
-        """Determine whether the client is ready to start receiving messages.
-        To be ready, the connection must be open and authentication complete,
-        The Session, Link and MessageReceiver must be open and in non-errored
-        states.
-
-        :return: True if the client is ready to start receiving messages.
-        :rtype: bool
-        """
-        # pylint: disable=protected-access
-        if not self._link:
-            self._link = self._session.create_receiver_link(
-                source_address=self.source,
-                link_credit=0,  # link_credit=0 on flow frame sent before client is ready
-                send_settle_mode=self._send_settle_mode,
-                rcv_settle_mode=self._receive_settle_mode,
-                max_message_size=self._max_message_size,
-                on_transfer=self._message_received,
-                properties=self._link_properties,
-                desired_capabilities=self._desired_capabilities,
-                on_attach=self._on_attach,
-            )
-            self._link.attach()
-            return False
-        if self._link.get_state().value != 3:  # ATTACHED
-            return False
-        return True
-
-    def _client_run(self, **kwargs):
-        """MessageReceiver Link is now open - start receiving messages.
-        Will return True if operation successful and client can remain open for
-        further work.
-
-        :return: Whether the client can remain open for further work.
-        :rtype: bool
-        """
-        try:
-            if self._link.current_link_credit <= 0:
-                self._link.flow(link_credit=self._link_credit)
-            self._connection.listen(wait=self._socket_timeout, **kwargs)
-        except ValueError:
-            _logger.info("Timeout reached, closing receiver.", extra=self._network_trace_params)
-            self._shutdown = True
-            return False
-        return True

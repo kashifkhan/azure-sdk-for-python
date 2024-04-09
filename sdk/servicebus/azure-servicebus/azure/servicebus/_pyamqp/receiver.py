@@ -12,10 +12,10 @@ from typing import Any, Dict, Literal, Optional, Tuple, Union, cast, overload
 
 from ._decode import decode_payload
 from .link import Link
-from .constants import LinkState, ReceiverSettleMode, Role, SenderSettleMode
+from .constants import MAX_FRAME_SIZE_BYTES, LinkState, ReceiverSettleMode, Role, SenderSettleMode
 from .performatives import TransferFrame, DispositionFrame
 from .outcomes import Received, Accepted, Rejected, Released, Modified
-from .error import AMQPError, AMQPException, ErrorCondition
+from .error import AMQPError, AMQPException, ErrorCondition, RetryPolicy
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -45,6 +45,10 @@ class ReceiverLink(Link):
             source_address=source_address,
             send_settle_mode=send_settle_mode,
             receive_settle_mode=receive_settle_mode,
+            # TODO type out these kwargs
+            link_credit = kwargs.pop("link_credit", 300),
+            properties = kwargs.pop("link_properties", None),
+            max_message_size = kwargs.pop("max_message_size", MAX_FRAME_SIZE_BYTES),
             **kwargs
             )
         self._on_transfer = kwargs.pop("on_transfer")
@@ -405,4 +409,15 @@ class ReceiverLink(Link):
             except queue.Empty:
                 break
         return batch
+    
+    def do_work(self, **kwargs) -> bool:
+        try:
+            if self.current_link_credit <= 0:
+                self.flow(link_credit=self._link_credit)
+            self._session.do_work(wait=self._socket_timeout, **kwargs)
+        except ValueError:
+            _LOGGER.info("Timeout reached, closing receiver.", extra=self._network_trace_params)
+            self._shutdown = True
+            return False
+        return True
 

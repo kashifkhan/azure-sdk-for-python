@@ -576,3 +576,21 @@ class Session(object):  # pylint: disable=too-many-instance-attributes
             message, operation=operation, operation_type=operation_type, timeout=timeout
         )
         return status, description, response
+    
+    def connection_run(self, wait: Union[float, bool] = False, **kwargs) -> bool:
+        """
+        Whether the handler has completed all start up processes such as
+        establishing the connection, session, link and authentication, and
+        is not ready to process messages.
+
+        :return: Whether the handler is ready to process messages.
+        :rtype: bool
+        """
+        #if not self.auth_complete():
+        #    return False
+        try:
+            self._connection.listen(wait=self._socket_timeout, **kwargs)
+        except ValueError:
+            return True
+        return False
+        

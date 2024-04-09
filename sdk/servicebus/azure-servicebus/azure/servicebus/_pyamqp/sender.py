@@ -328,3 +328,7 @@ class SenderLink(Link):
                 if absolute_timeout > 0:
                     absolute_timeout -= end_time - start_time
         raise retry_settings["history"][-1]
+    
+    def do_work(self) -> bool:
+        self.update_pending_deliveries()
+        return self._session.do_work()

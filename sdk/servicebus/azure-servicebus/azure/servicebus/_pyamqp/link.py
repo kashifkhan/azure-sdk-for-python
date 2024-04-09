@@ -266,7 +266,12 @@ class Link:  # pylint: disable=too-many-instance-attributes
         self.current_link_credit = link_credit if link_credit is not None else self.link_credit
         self._outgoing_flow(**kwargs)
 
-    def is_ready(self) -> bool:
-        return self.state == LinkState.ATTACHED
+    def ready(self) -> bool:
+        # replacement for client_ready
+        while self.state != LinkState.ATTACHED:
+            self._session.connection_run()
+        return True
+
+
     
             
