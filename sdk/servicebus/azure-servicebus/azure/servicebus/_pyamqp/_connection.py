@@ -217,7 +217,7 @@ class Connection:  # pylint:disable=too-many-instance-attributes
         self._keep_alive_thread: Optional[threading.Thread]= None
 
         self._shutdown = False
-        self._network_trace = kwargs.pop("network_trace", False)
+        self._network_trace = network_trace
         self._network_trace_params = {"amqpConnection": None, "amqpSession": None, "amqpLink": None}
 
     def __enter__(self) -> "Connection":
@@ -924,7 +924,7 @@ class Connection:  # pylint:disable=too-many-instance-attributes
             self._keep_alive_thread.start()
         
         self._shutdown = False
-        self._network_trace_params["amqpConnection"] = self._connection._container_id
+        self._network_trace_params["amqpConnection"] = self._container_id
 
 
     def close(self, error: Optional[AMQPError] = None, wait: bool = False) -> None:

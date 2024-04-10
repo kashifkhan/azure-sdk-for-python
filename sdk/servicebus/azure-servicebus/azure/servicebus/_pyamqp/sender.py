@@ -332,3 +332,8 @@ class SenderLink(Link):
     def do_work(self) -> bool:
         self.update_pending_deliveries()
         return self._session.do_work()
+    
+    def open(self, **kwargs) -> None:
+        self._session.open()
+        if self.state == LinkState.DETACHED:
+            self._outgoing_attach()

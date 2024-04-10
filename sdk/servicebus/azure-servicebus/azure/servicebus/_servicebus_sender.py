@@ -252,7 +252,9 @@ class ServiceBusSender(BaseHandler, SenderMixin):
 
     def _create_handler(self, auth: Union["uamqp_JWTTokenAuth", "pyamqp_JWTTokenAuth"]) -> None:
 
-        self._handler = self._amqp_transport.create_send_client(
+        # TODO: clean this up. The transport method to create a client is no longer static.
+        tranprt = self._amqp_transport()
+        self._handler = tranprt.create_send_client(
             config=self._config,
             target=self._entity_uri,
             auth=auth,
@@ -272,7 +274,7 @@ class ServiceBusSender(BaseHandler, SenderMixin):
         self._create_handler(auth)
         try:
             self._handler.open(connection=self._connection)
-            while not self._handler.client_ready():
+            while not self._handler.ready():
                 time.sleep(0.05)
             self._running = True
             self._max_message_size_on_link = (

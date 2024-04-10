@@ -11,8 +11,7 @@ import logging
 import time
 from typing import Union, Optional
 
-from azure.servicebus._pyamqp.cbs import CBSAuthenticator
-from azure.servicebus._pyamqp.management_operation import ManagementOperation
+from .management_operation import ManagementOperation
 
 from .constants import ConnectionState, SessionState, SessionTransferState, Role, AUTH_TYPE_CBS
 from .sender import SenderLink
@@ -463,14 +462,17 @@ class Session(object):  # pylint: disable=too-many-instance-attributes
             raise ValueError(
                 "Connection has been configured to not allow piplined-open. Please set 'wait' parameter."
             )
-        if self._connection._auth == AUTH_TYPE_CBS:
+        #TODO where should CBS Auth be initialized. It causes a circular import if placed
+        # at the top of the file.
+        from .cbs import CBSAuthenticator
+        if self._connection._auth.auth_type == AUTH_TYPE_CBS:
             self._cbs_authenticator = CBSAuthenticator(
                 session=self,
                 auth=self._connection._auth,
                 auth_timeout=self._connection._auth_timeout,
             )
             self._cbs_authenticator.open()
-        self._connection._network_trace_params["amqpSession"] = self._session.name
+        self._connection._network_trace_params["amqpSession"] = self.name
 
 
     def end(self, error=None, wait=False):
@@ -533,7 +535,7 @@ class Session(object):  # pylint: disable=too-many-instance-attributes
         :rtype: bool
         """
         if self._cbs_authenticator and not self._cbs_authenticator.handle_token():
-            self._connection.listen(wait=self._socket_timeout)
+            self._connection.listen(wait=False)
             return False
         return True
     
@@ -589,8 +591,13 @@ class Session(object):  # pylint: disable=too-many-instance-attributes
         #if not self.auth_complete():
         #    return False
         try:
-            self._connection.listen(wait=self._socket_timeout, **kwargs)
+            self._connection.listen(wait=False, **kwargs)
         except ValueError:
             return True
         return False
+    
+    def open(self) -> None:
+        self._connection.open()
+        if self.state == SessionState.UNMAPPED:
+            self.begin()
         

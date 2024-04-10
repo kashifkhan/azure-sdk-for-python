@@ -11,6 +11,8 @@ import datetime
 from datetime import timezone
 from typing import Optional, Tuple, cast, List, TYPE_CHECKING, Any, Callable, Dict, Union, Iterator, Type
 
+import certifi
+
 from .._pyamqp import (
     utils,
     SendClient,
@@ -456,9 +458,13 @@ class PyamqpTransport(AmqpTransport):   # pylint: disable=too-many-public-method
         """
         connection.close()
 
-    @staticmethod
-    def create_send_client(
-        config: "Configuration", **kwargs: Any
+    def close(self) -> None:
+        self._session.end()
+        self._connection.close()
+
+    #@staticmethod
+    def create_send_client(self, 
+        config: "Configuration", *, auth: "JWTTokenAuth", **kwargs: Any
     ) ->"SendClient":
         """
         Creates and returns the pyamqp SendClient.
@@ -474,18 +480,26 @@ class PyamqpTransport(AmqpTransport):   # pylint: disable=too-many-public-method
         """
 
         target = kwargs.pop("target")
-        return SendClient(
-            config.hostname,
-            target,
-            network_trace=config.logging_enable,
+        # create connection
+
+        self._connection = Connection(
+            f'amqps://{config.hostname}',
+            sasl_credential=auth.sasl,
+            auth=auth,  
             keep_alive_interval=config.keep_alive,
+            ssl_opts={"ca_certs": config.connection_verify or certifi.where()},
             custom_endpoint_address=config.custom_endpoint_address,
-            connection_verify=config.connection_verify,
             transport_type=config.transport_type,
             http_proxy=config.http_proxy,
             socket_timeout=config.socket_timeout,
-            **kwargs,
+            network_trace=config.logging_enable,
+            **kwargs
         )
+        
+        self._session = self._connection.create_session()
+
+        return self._session.create_sender_link(target)
+
 
     @staticmethod
     def send_messages(
