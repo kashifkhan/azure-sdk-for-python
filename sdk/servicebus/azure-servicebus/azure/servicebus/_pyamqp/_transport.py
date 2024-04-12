@@ -36,7 +36,10 @@
 from __future__ import absolute_import, unicode_literals
 
 import errno
+import io
+import queue
 import re
+import selectors
 import socket
 import ssl
 import struct
@@ -44,7 +47,9 @@ from ssl import SSLError
 from contextlib import contextmanager
 from io import BytesIO
 import logging
+import threading
 from threading import Lock
+
 
 import certifi
 
@@ -185,6 +190,11 @@ class _AbstractTransport(object):  # pylint: disable=too-many-instance-attribute
         self.socket_timeout = socket_timeout
         self.socket_settings = socket_settings
         self.socket_lock = Lock()
+        self._outbound_queue = queue.Queue()
+        self._inbound_stream = io.BytesIO()
+        self._outbound_queue_lock = Lock()
+        self.loop = None
+        self.run_loop = False
 
     def connect(self):
         try:
@@ -207,6 +217,47 @@ class _AbstractTransport(object):  # pylint: disable=too-many-instance-attribute
                 self.sock.close()
                 self.sock = None
             raise
+        self.run_loop = True
+        self.loop = threading.Thread(target=self.io_loop, daemon=True)
+        self.loop.start()
+
+    def io_loop(self):
+        if self.sock is None:
+            return
+        print("starting the io loop")
+        while self.run_loop:
+            with self._outbound_queue_lock:
+                print("are there things to write")
+                while not self._outbound_queue.empty():
+                    # while s:
+                    try:
+                        print("sending")
+                        n = self.sock.send(self._outbound_queue.get())
+                    except ValueError:
+                        # AG: sock._sslobj might become null in the meantime if the
+                        # remote connection has hung up.
+                        # In python 3.4, a ValueError is raised is self._sslobj is
+                        # None.
+                        n = 0
+                    if not n:
+                        raise IOError("Socket closed")
+            # According to SSL_read(3), it can at most return 16kb of data.
+            # Thus, we use an internal read buffer like TCPTransport._read
+            # to get the exact number of bytes wanted.
+            length = 0
+            #view = buffer or memoryview(bytearray(n))
+            #nbytes = self._read_buffer.readinto(view)
+            #toread = n - nbytes
+            #length += nbytes
+            try:
+                print("reading")
+                self._inbound_stream.write(self.sock.recv())
+            except:  # noqa
+                pass
+            
+                    
+
+        
 
     @contextmanager
     def block(self):
@@ -259,6 +310,7 @@ class _AbstractTransport(object):  # pylint: disable=too-many-instance-attribute
                 sock.settimeout(prev)
 
     def _connect(self, host, port, timeout):
+        self.sel = selectors.DefaultSelector()
         e = None
 
         # Below we are trying to avoid additional DNS requests for AAAA if A
@@ -385,6 +437,8 @@ class _AbstractTransport(object):  # pylint: disable=too-many-instance-attribute
 
     def close(self):
         with self.socket_lock:
+            self.run_loop = False
+            self.io_loop.join()
             if self.sock is not None:
                 self._shutdown_transport()
                 # Call shutdown first to make sure that pending messages
@@ -410,7 +464,7 @@ class _AbstractTransport(object):  # pylint: disable=too-many-instance-attribute
             read_frame_buffer = BytesIO()
             try:
                 frame_header = memoryview(bytearray(8))
-                read_frame_buffer.write(read(8, buffer=frame_header, initial=True))
+                read_frame_buffer.write(self._inbound_stream.readline(8))
 
                 channel = struct.unpack(">H", frame_header[6:])[0]
                 size = frame_header[0:4]
@@ -435,12 +489,12 @@ class _AbstractTransport(object):  # pylint: disable=too-many-instance-attribute
                 payload_size = size - len(frame_header)
                 payload = memoryview(bytearray(payload_size))
                 if size > SIGNED_INT_MAX:
-                    read_frame_buffer.write(read(SIGNED_INT_MAX, buffer=payload))
+                    read_frame_buffer.write(self._inbound_stream.readline(SIGNED_INT_MAX))
                     read_frame_buffer.write(
-                        read(size - SIGNED_INT_MAX, buffer=payload[SIGNED_INT_MAX:])
+                        self._inbound_stream.readline(size - SIGNED_INT_MAX)
                     )
                 else:
-                    read_frame_buffer.write(read(payload_size, buffer=payload))
+                    read_frame_buffer.write(self._inbound_stream.readline(read(payload_size)))
             except (socket.timeout, TimeoutError):
                 read_frame_buffer.write(self._read_buffer.getvalue())
                 self._read_buffer = read_frame_buffer
@@ -610,61 +664,29 @@ class SSLTransport(_AbstractTransport):
         buffer=None,
         _errnos=(errno.ENOENT, errno.EAGAIN, errno.EINTR),
     ):
-        # According to SSL_read(3), it can at most return 16kb of data.
-        # Thus, we use an internal read buffer like TCPTransport._read
-        # to get the exact number of bytes wanted.
-        length = 0
-        view = buffer or memoryview(bytearray(n))
-        nbytes = self._read_buffer.readinto(view)
-        toread = n - nbytes
-        length += nbytes
-        try:
-            while toread:
-                try:
-                    nbytes = self.sock.recv_into(view[length:])
-                except socket.error as exc:
-                    # ssl.sock.read may cause a SSLerror without errno
-                    # http://bugs.python.org/issue10272
-                    if isinstance(exc, SSLError) and "timed out" in str(exc):
-                        raise socket.timeout()
-                    # ssl.sock.read may cause ENOENT if the
-                    # operation couldn't be performed (Issue celery#1414).
-                    if exc.errno in _errnos:
-                        if initial and self.raise_on_initial_eintr:
-                            raise socket.timeout()
-                        continue
-                    raise
-                if not nbytes:
-                    raise IOError("Server unexpectedly closed connection")
-
-                length += nbytes
-                toread -= nbytes
-        except:  # noqa
-            self._read_buffer = BytesIO(view[:length])
-            raise
-        return view
+        if self._inbound_queue.empty():
+            return None
+        return self._inbound_queue.get()
 
     def _write(self, s):
         """Write a string out to the SSL socket fully.
         :param str s: The string to write.
         """
-        try:
-            write = self.sock.send
-        except AttributeError:
-            raise IOError("Socket has already been closed.") from None
-
-        while s:
-            try:
-                n = write(s)
-            except ValueError:
-                # AG: sock._sslobj might become null in the meantime if the
-                # remote connection has hung up.
-                # In python 3.4, a ValueError is raised is self._sslobj is
-                # None.
-                n = 0
-            if not n:
-                raise IOError("Socket closed.")
-            s = s[n:]
+        write = self.sock.send
+        # while s:
+        #     try:
+        #         n = write(s)
+        #     except ValueError:
+        #         # AG: sock._sslobj might become null in the meantime if the
+        #         # remote connection has hung up.
+        #         # In python 3.4, a ValueError is raised is self._sslobj is
+        #         # None.
+        #         n = 0
+        #     if not n:
+        #         raise IOError("Socket closed")
+        #     s = s[n:]
+        with self._outbound_queue_lock:
+            self._outbound_queue.put(s)
 
     def negotiate(self):
         with self.block():
