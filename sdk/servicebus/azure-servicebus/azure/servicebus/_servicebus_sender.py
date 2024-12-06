@@ -253,28 +253,30 @@ class ServiceBusSender(BaseHandler, SenderMixin):
 
     def _open(self):
         # pylint: disable=protected-access
-        if self._running:
-            return
-        if self._handler:
-            self._handler.close()
-
-        auth = None if self._connection else create_authentication(self)
-        self._create_handler(auth)
-        try:
-            self._handler.open(connection=self._connection)
-            while not self._handler.client_ready():
-                time.sleep(0.05)
-            self._running = True
-            self._max_message_size_on_link = (
-                self._amqp_transport.get_remote_max_message_size(self._handler) or MAX_MESSAGE_LENGTH_BYTES
-            )
-            if self._max_message_size_on_link >= MAX_BATCH_SIZE_PREMIUM:
-                self._max_batch_size_on_link = MAX_BATCH_SIZE_PREMIUM
-            else:
-                self._max_batch_size_on_link = MAX_BATCH_SIZE_STANDARD
-        except:
-            self._close_handler()
-            raise
+        with self._lock:
+            if self._running:
+                return
+            if self._handler:
+                self._handler.close()
+    
+            auth = None if self._connection else create_authentication(self)
+            
+            self._create_handler(auth)
+            try:
+                self._handler.open(connection=self._connection)
+                while not self._handler.client_ready():
+                    time.sleep(0.05)
+                self._running = True
+                self._max_message_size_on_link = (
+                    self._amqp_transport.get_remote_max_message_size(self._handler) or MAX_MESSAGE_LENGTH_BYTES
+                )
+                if self._max_message_size_on_link >= MAX_BATCH_SIZE_PREMIUM:
+                    self._max_batch_size_on_link = MAX_BATCH_SIZE_PREMIUM
+                else:
+                    self._max_batch_size_on_link = MAX_BATCH_SIZE_STANDARD
+            except:
+                self._close_handler()
+                raise
 
     def _send(
         self,

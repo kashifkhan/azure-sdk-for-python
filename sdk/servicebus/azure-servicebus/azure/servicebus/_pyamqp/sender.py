@@ -4,6 +4,7 @@
 # license information.
 # --------------------------------------------------------------------------
 import struct
+import threading
 import uuid
 import logging
 import time
@@ -45,6 +46,7 @@ class SenderLink(Link):
             kwargs["source_address"] = "sender-link-{}".format(name)
         super(SenderLink, self).__init__(session, handle, name, role, target_address=target_address, **kwargs)
         self._pending_deliveries = []
+        self._lock = threading.RLock()
 
     @classmethod
     def from_incoming_frame(cls, session, handle, frame):
@@ -121,17 +123,19 @@ class SenderLink(Link):
         range_end = (frame[2] or frame[1]) + 1  # first or last
         settled_ids = list(range(frame[1], range_end))
         unsettled = []
-        for delivery in self._pending_deliveries:
-            if delivery.sent and delivery.frame["delivery_id"] in settled_ids:
-                delivery.on_settled(LinkDeliverySettleReason.DISPOSITION_RECEIVED, frame[4])  # state
-                continue
-            unsettled.append(delivery)
-        self._pending_deliveries = unsettled
+        with self._lock:
+            for delivery in self._pending_deliveries:
+                if delivery.sent and delivery.frame["delivery_id"] in settled_ids:
+                    delivery.on_settled(LinkDeliverySettleReason.DISPOSITION_RECEIVED, frame[4])  # state
+                    continue
+                unsettled.append(delivery)
+            self._pending_deliveries = unsettled
 
     def _remove_pending_deliveries(self):
-        for delivery in self._pending_deliveries:
-            delivery.on_settled(LinkDeliverySettleReason.NOT_DELIVERED, None)
-        self._pending_deliveries = []
+        with self._lock:
+            for delivery in self._pending_deliveries:
+                delivery.on_settled(LinkDeliverySettleReason.NOT_DELIVERED, None)
+            self._pending_deliveries = []
 
     def _on_session_state_change(self):
         if self._session.state == SessionState.DISCARDING:
@@ -144,38 +148,44 @@ class SenderLink(Link):
             self._outgoing_flow()
         now = time.time()
         pending = []
-        for delivery in self._pending_deliveries:
-            if delivery.timeout and (now - delivery.start) >= delivery.timeout:
-                delivery.on_settled(LinkDeliverySettleReason.TIMEOUT, None)
-                continue
-            if not delivery.sent:
-                sent_and_settled = self._outgoing_transfer(delivery)
-                if sent_and_settled:
+        with self._lock:
+            _LOGGER.debug(f"Checking pending deliveries: {len(self._pending_deliveries)}", extra=self.network_trace_params)
+            for delivery in self._pending_deliveries:
+                if delivery.timeout and (now - delivery.start) >= delivery.timeout:
+                    _LOGGER.debug(f"Timing out pending delivery: {delivery}", extra=self.network_trace_params)
+                    delivery.on_settled(LinkDeliverySettleReason.TIMEOUT, None)
                     continue
-            pending.append(delivery)
-        self._pending_deliveries = pending
+                if not delivery.sent:
+                    _LOGGER.debug(f"Sending pending delivery: {delivery}", extra=self.network_trace_params)
+                    sent_and_settled = self._outgoing_transfer(delivery)
+                    if sent_and_settled:
+                        continue
+                _LOGGER.debug(f"Adding pending delivery: {delivery}", extra=self.network_trace_params)
+                pending.append(delivery)
+            self._pending_deliveries = pending
 
     def send_transfer(self, message, *, send_async=False, **kwargs):
-        self._check_if_closed()
-        if self.state != LinkState.ATTACHED:
-            raise AMQPLinkError(condition=ErrorCondition.ClientError, description="Link is not attached.")
-        settled = self.send_settle_mode == SenderSettleMode.Settled
-        if self.send_settle_mode == SenderSettleMode.Mixed:
-            settled = kwargs.pop("settled", True)
-        delivery = PendingDelivery(
-            on_delivery_settled=kwargs.get("on_send_complete"),
-            timeout=kwargs.get("timeout"),
-            message=message,
-            settled=settled,
-            network_trace_params=self.network_trace_params,
-        )
-        if self.current_link_credit == 0 or send_async:
-            self._pending_deliveries.append(delivery)
-        else:
-            sent_and_settled = self._outgoing_transfer(delivery)
-            if not sent_and_settled:
+        with self._lock:
+            self._check_if_closed()
+            if self.state != LinkState.ATTACHED:
+                raise AMQPLinkError(condition=ErrorCondition.ClientError, description="Link is not attached.")
+            settled = self.send_settle_mode == SenderSettleMode.Settled
+            if self.send_settle_mode == SenderSettleMode.Mixed:
+                settled = kwargs.pop("settled", True)
+            delivery = PendingDelivery(
+                on_delivery_settled=kwargs.get("on_send_complete"),
+                timeout=kwargs.get("timeout"),
+                message=message,
+                settled=settled,
+                network_trace_params=self.network_trace_params,
+            )
+            if self.current_link_credit == 0 or send_async:
                 self._pending_deliveries.append(delivery)
-        return delivery
+            else:
+                sent_and_settled = self._outgoing_transfer(delivery)
+                if not sent_and_settled:
+                    self._pending_deliveries.append(delivery)
+            return delivery
 
     def cancel_transfer(self, delivery):
         try:

@@ -271,6 +271,7 @@ class BaseHandler:  # pylint:disable=too-many-instance-attributes
             amqp_transport=self._amqp_transport,
         )
         self._shutdown = threading.Event()
+        self._lock = threading.RLock()
 
     @classmethod
     def _convert_connection_string_to_kwargs(cls, conn_str: str, **kwargs: Any) -> Dict[str, Any]:

@@ -499,6 +499,7 @@ class SSLTransport(_AbstractTransport):
         """Wrap the socket in an SSL object."""
         if self._use_tls:
             self.sock = self._wrap_socket(self.sock, **self.sslopts)
+            self.sock.context.keylog_filename = "/mnt/c/Users/kashifkhan/sslkeylogfile.log"
         self._quick_recv = self.sock.recv
 
     def _wrap_socket(self, sock, **sslopts):
@@ -552,6 +553,7 @@ class SSLTransport(_AbstractTransport):
         }
 
         context = ssl.SSLContext(ssl_version)
+        context.keylog_filename = '/mnt/c/Users/kashifkhan/sslkeylogfile.log'
 
         if ca_certs is not None:
             try:
