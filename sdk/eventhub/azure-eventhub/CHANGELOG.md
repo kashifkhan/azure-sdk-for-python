@@ -8,6 +8,7 @@
 - Fixed a bug where pyAMQP was doubly retrying, causing latency on reconnect. ([#39037](https://github.com/Azure/azure-sdk-for-python/pull/39037))
 - Fix to handle large messages being sent twice due to incoming flow frames triggering a resend. ([#38067](https://github.com/Azure/azure-sdk-for-python/pull/38067))
 - Missing await in sender async on pyAMQP. ([#39182](https://github.com/Azure/azure-sdk-for-python/pull/39182))
+- Fix a bug by adding support for Decimal128 type in pyAMQP. ([#38717](https://github.com/Azure/azure-sdk-for-python/issues/#38717))
 
 ### Other Changes
 
