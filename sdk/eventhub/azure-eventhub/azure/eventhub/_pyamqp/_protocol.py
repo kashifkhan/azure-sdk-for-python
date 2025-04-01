@@ -39,6 +39,75 @@ class WebSocketMixin:
         if b'sec-websocket-accept' in headers:
             if not match_key(self._key, headers[b'sec-websocket-accept']):
                 raise ConnectionError('Server did not accept the key')
+    
+    def _wrap_socket_sni(
+        self,
+        sock,
+        keyfile=None,
+        certfile=None,
+        cert_reqs=ssl.CERT_REQUIRED,
+        ca_certs=None,
+        do_handshake_on_connect=True,
+        suppress_ragged_eofs=True,
+        server_hostname=None,
+        ciphers=None,
+        ssl_version=None,
+    ):
+        """Socket wrap with SNI headers.
+
+        Default `ssl.wrap_socket` method augmented with support for
+        setting the server_hostname field required for SNI hostname header
+
+        :param socket.socket sock: socket to wrap
+        :param str or None keyfile: key file path
+        :param str or None certfile: cert file path
+        :param int cert_reqs: cert requirements
+        :param str or None ca_certs: ca certs file path
+        :param bool do_handshake_on_connect: do handshake on connect
+        :param bool suppress_ragged_eofs: suppress ragged EOFs
+        :param str or None server_hostname: server hostname
+        :param str or None ciphers: ciphers to use
+        :param int or None ssl_version: ssl version to use
+        :return: wrapped socket
+        :rtype: SSLSocket
+        """
+        # Setup the right SSL version; default to optimal versions across
+        # ssl implementations
+        if ssl_version is None:
+            ssl_version = ssl.PROTOCOL_TLS_CLIENT
+        purpose = ssl.Purpose.SERVER_AUTH
+
+        opts = {
+            "sock": sock,
+            "do_handshake_on_connect": do_handshake_on_connect,
+            "suppress_ragged_eofs": suppress_ragged_eofs,
+            "server_hostname": server_hostname,
+        }
+
+        context = ssl.SSLContext(ssl_version)
+
+        if ca_certs is not None:
+            try:
+                context.load_verify_locations(ca_certs)
+            except FileNotFoundError as exc:
+                exc.filename = {"ca_certs": ca_certs}
+                raise exc from None
+        elif context.verify_mode != ssl.CERT_NONE:
+            # load the default system root CA certs.
+            context.load_default_certs(purpose=purpose)
+
+        if certfile is not None:
+            context.load_cert_chain(certfile, keyfile)
+
+        if ciphers is not None:
+            context.set_ciphers(ciphers)
+
+        if cert_reqs == ssl.CERT_NONE and server_hostname is None:
+            context.check_hostname = False
+            context.verify_mode = cert_reqs
+
+        sock = context.wrap_socket(**opts)
+        return sock
 
 
 class WebSocketProtocol(WebSocketMixin):
@@ -158,74 +227,7 @@ class WebSocketProtocol(WebSocketMixin):
 
         self._conn_status = ConnectionStatus.OPEN
 
-    def _wrap_socket_sni(
-        self,
-        sock,
-        keyfile=None,
-        certfile=None,
-        cert_reqs=ssl.CERT_REQUIRED,
-        ca_certs=None,
-        do_handshake_on_connect=True,
-        suppress_ragged_eofs=True,
-        server_hostname=None,
-        ciphers=None,
-        ssl_version=None,
-    ):
-        """Socket wrap with SNI headers.
-
-        Default `ssl.wrap_socket` method augmented with support for
-        setting the server_hostname field required for SNI hostname header
-
-        :param socket.socket sock: socket to wrap
-        :param str or None keyfile: key file path
-        :param str or None certfile: cert file path
-        :param int cert_reqs: cert requirements
-        :param str or None ca_certs: ca certs file path
-        :param bool do_handshake_on_connect: do handshake on connect
-        :param bool suppress_ragged_eofs: suppress ragged EOFs
-        :param str or None server_hostname: server hostname
-        :param str or None ciphers: ciphers to use
-        :param int or None ssl_version: ssl version to use
-        :return: wrapped socket
-        :rtype: SSLSocket
-        """
-        # Setup the right SSL version; default to optimal versions across
-        # ssl implementations
-        if ssl_version is None:
-            ssl_version = ssl.PROTOCOL_TLS_CLIENT
-        purpose = ssl.Purpose.SERVER_AUTH
-
-        opts = {
-            "sock": sock,
-            "do_handshake_on_connect": do_handshake_on_connect,
-            "suppress_ragged_eofs": suppress_ragged_eofs,
-            "server_hostname": server_hostname,
-        }
-
-        context = ssl.SSLContext(ssl_version)
-
-        if ca_certs is not None:
-            try:
-                context.load_verify_locations(ca_certs)
-            except FileNotFoundError as exc:
-                exc.filename = {"ca_certs": ca_certs}
-                raise exc from None
-        elif context.verify_mode != ssl.CERT_NONE:
-            # load the default system root CA certs.
-            context.load_default_certs(purpose=purpose)
-
-        if certfile is not None:
-            context.load_cert_chain(certfile, keyfile)
-
-        if ciphers is not None:
-            context.set_ciphers(ciphers)
-
-        if cert_reqs == ssl.CERT_NONE and server_hostname is None:
-            context.check_hostname = False
-            context.verify_mode = cert_reqs
-
-        sock = context.wrap_socket(**opts)
-        return sock
+    
 
     def receive_frame(self) -> Frame:
         last_frame = None
@@ -377,6 +379,7 @@ class AsyncWebSocketProtocol(WebSocketMixin):
         self._subprotocols = subprotocols
         self._ws_url: WebSocketURL = parse_url(self._url)
         self._ssl = ssl_ctx
+        self._socket: socket.socket
 
     async def open_connection(self) -> None:
         try:
@@ -389,32 +392,78 @@ class AsyncWebSocketProtocol(WebSocketMixin):
                     ssl_ctx = self._ssl
 
             if self._http_proxy:
-                self._stream_reader, self._stream_writer = await asyncio.open_connection(
-                    self._http_proxy['host'],
-                    self._http_proxy['port'],
-                    ssl = ssl_ctx,
-                    server_hostname = self._ws_url.hostname if ssl_ctx else None
+                # self._stream_reader, self._stream_writer = await asyncio.open_connection(
+                #     self._http_proxy['host'],
+                #     self._http_proxy['port'],
+                #     #ssl = ssl_ctx,
+                #     #server_hostname = self._ws_url.hostname if ssl_ctx else None
+                # )
+                # self._stream_writer.write(
+                #     f'CONNECT {self._ws_url.hostname}:{self._ws_url.port} HTTP/1.1\r\n\r\n'.encode()
+                # )
+                # await self._stream_writer.drain()
+                # proxy_response = parse_proxy_response(await self._stream_reader.readuntil(EOF))
+                # if not proxy_response[0].startswith(b'HTTP/'):
+                #     self._stream_writer.close()
+                #     raise ConnectionError('Received invalid response from the proxy')
+
+                # if int(proxy_response[1]) < 100 or int(proxy_response[1]) > 999:
+                #     self._stream_writer.close()
+                #     raise ConnectionError('Received invalid status code from the proxy')
+
+                # if proxy_response[1] != b'200':
+                #     self._stream_writer.close()
+                #     raise ConnectionError('Could not connect to the proxy')
+
+                # if proxy_response[2] != b'Connection established':
+                #     self._stream_writer.close()
+                #     raise ConnectionError('Could not connect to the proxy')
+                self._socket = socket.create_connection(
+                    (self._http_proxy['host'], self._http_proxy['port']),
+                    #timeout=self._timeout
                 )
-                self._stream_writer.write(
-                    f'CONNECT {self._ws_url.hostname}:{self._ws_url.port} HTTP/1.1\r\n\r\n'.encode()
-                )
-                await self._stream_writer.drain()
-                proxy_response = parse_proxy_response(await self._stream_reader.readuntil(EOF))
+                self._socket.sendall(f'CONNECT {self._ws_url.hostname}:{self._ws_url.port} HTTP/1.1\r\n\r\n'.encode())
+                proxy_response = parse_proxy_response(self._socket.recv(1024))
                 if not proxy_response[0].startswith(b'HTTP/'):
-                    self._stream_writer.close()
+                    self._socket.close()
                     raise ConnectionError('Received invalid response from the proxy')
 
                 if int(proxy_response[1]) < 100 or int(proxy_response[1]) > 999:
-                    self._stream_writer.close()
+                    self._socket.close()
                     raise ConnectionError('Received invalid status code from the proxy')
 
                 if proxy_response[1] != b'200':
-                    self._stream_writer.close()
+                    self._socket.close()
                     raise ConnectionError('Could not connect to the proxy')
 
                 if proxy_response[2] != b'Connection established':
-                    self._stream_writer.close()
                     raise ConnectionError('Could not connect to the proxy')
+            else:
+                self._socket = socket.create_connection(
+                    (self._ws_url.hostname, self._ws_url.port),
+                    #timeout=self._timeout
+                )
+            if self._ws_url.is_secure:
+                # if 'context' not in self._ssl:
+                #     self._socket = self._wrap_socket_sni(
+                #         self._socket,
+                #         self._ssl.get('keyfile', None),
+                #         self._ssl.get('certfile', None),
+                #         self._ssl.get('ca_certs', None),
+                #         self._ssl.get('ciphers', None),
+                #         self._ssl.get('ssl_version', None),
+                #         self._ws_url.hostname
+                #     )
+                # else:
+                try:
+                    self._stream_reader, self._stream_writer = await asyncio.open_connection(
+                        sock = self._socket,
+                        ssl = self._ssl,
+                        server_hostname = self._ws_url.hostname if ssl_ctx else None
+                    )
+                except Exception as exc:
+                    print(exc)
+                
             else:
                 self._stream_reader, self._stream_writer = await asyncio.open_connection(
                     self._ws_url.hostname,
@@ -446,7 +495,10 @@ class AsyncWebSocketProtocol(WebSocketMixin):
             raise ConnectionError('Socket is not connected')
 
         response_headers = b''
-        response_headers = await self._stream_reader.readuntil(EOF)
+        try:
+            response_headers = await self._stream_reader.readuntil(EOF)
+        except Exception as exc:
+            print(exc)
         code, status, headers = parse_response_headers(response_headers)
 
         self.validate_handshake(code, status, headers)
