@@ -733,10 +733,10 @@ class WebSocketTransport(_AbstractTransport):
                 raise IOError("Websocket connection has already been closed.") from None
             except (WebSocketConnectionClosed, SSLError) as e:
                 raise ConnectionError(f"Websocket disconnected: {e!r}") from e
-            except WebSocketConnectionError as wte:
+            except (WebSocketConnectionError, socket.timeout) as wte:
                 raise TimeoutError(f"Websocket receive timed out ({wte})") from wte
 
-        except:
+        except Exception as e:
             self._read_buffer = BytesIO(view[:length])
             raise
 

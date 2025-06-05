@@ -81,8 +81,10 @@ class AsyncTransportMixin:
             socket.timeout,
             asyncio.IncompleteReadError,
             asyncio.TimeoutError,
-        ):
+        ) as e:
             return None, None
+        except Exception as e:
+            print(e)
 
     async def read(self, verify_frame_type=0):
         async with self.socket_lock:
@@ -121,7 +123,7 @@ class AsyncTransportMixin:
                 TimeoutError,
                 socket.timeout,
                 asyncio.IncompleteReadError,
-            ):
+            ) as e:
                 read_frame_buffer.write(self._read_buffer.getvalue())
                 self._read_buffer = read_frame_buffer
                 self._read_buffer.seek(0)
@@ -494,7 +496,7 @@ class WebSocketTransportAsync(AsyncTransportMixin):  # pylint: disable=too-many-
                     self._read_buffer = BytesIO(data[toread:])
                     toread = 0
             return view
-        except:
+        except Exception as e:
             self._read_buffer = BytesIO(view[:length])
             raise
 
@@ -512,7 +514,10 @@ class WebSocketTransportAsync(AsyncTransportMixin):  # pylint: disable=too-many-
 
         :param str s: The string to write.
         """
-        await self.sock.send_bytes(s)
+        try:
+            await self.sock.send_bytes(s)
+        except Exception as e:
+            print(e)
 
 class LegacyWebSocketTransportAsync(AsyncTransportMixin):  # pylint: disable=too-many-instance-attributes
     def __init__(
@@ -556,6 +561,7 @@ class LegacyWebSocketTransportAsync(AsyncTransportMixin):  # pylint: disable=too
             from aiohttp import (  # pylint: disable=networking-import-outside-azure-core-transport
                 ClientSession,
                 ClientConnectorError,
+                ClientWSTimeout,
             )
             from urllib.parse import urlsplit
         except ImportError:
@@ -581,16 +587,17 @@ class LegacyWebSocketTransportAsync(AsyncTransportMixin):  # pylint: disable=too
             # and the heartbeat mechanism helps mitigate these two.
             # https://github.com/aio-libs/aiohttp/pull/5860
             # https://github.com/aio-libs/aiohttp/issues/2309
+            _LOGGER.info("LEGACY WEBSOCKET TRANSPORT")
 
             self.sock = await self.session.ws_connect(
                 url=url,
-                timeout=self.socket_timeout,  # timeout for connect
+                timeout=ClientWSTimeout(ws_close=self.socket_timeout),  # timeout for connect
                 protocols=[AMQP_WS_SUBPROTOCOL],
                 autoclose=False,
                 proxy=http_proxy_host,
                 proxy_auth=http_proxy_auth,
                 ssl=self.sslopts if self._use_tls else None,
-                heartbeat=DEFAULT_WEBSOCKET_HEARTBEAT_SECONDS,
+                #heartbeat=DEFAULT_WEBSOCKET_HEARTBEAT_SECONDS,
             )
         except ClientConnectorError as exc:
             _LOGGER.info("Websocket connect failed: %r", exc, extra=self.network_trace_params)
@@ -634,6 +641,8 @@ class LegacyWebSocketTransportAsync(AsyncTransportMixin):  # pylint: disable=too
                 # aiohttp websocket raises TypeError when a websocket disconnects, as it ends up
                 # reading None over the wire and cant convert to bytes.
                 raise ConnectionError("Websocket disconnected: %r" % te) from None
+            except asyncio.CancelledError as ce:
+                raise
         except:
             self._read_buffer = BytesIO(view[:length])
             raise
@@ -653,4 +662,7 @@ class LegacyWebSocketTransportAsync(AsyncTransportMixin):  # pylint: disable=too
 
         :param str s: The string to write.
         """
-        await self.sock.send_bytes(s)
+        try:
+            await self.sock.send_bytes(s)
+        except Exception as e:
+            print(e)
