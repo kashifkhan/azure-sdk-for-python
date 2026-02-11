@@ -1,0 +1,6 @@
+{
+  "apiVersion": "2025-12-01",
+  "apiVersions": {
+    "Microsoft.MachineLearningServices": "2025-12-01"
+  }
+}
