@@ -5,6 +5,7 @@ import re
 from os import PathLike
 from pathlib import Path
 from typing import Dict, Optional, Union
+from functools import partial
 
 from marshmallow.exceptions import ValidationError as SchemaValidationError
 
@@ -24,7 +25,7 @@ from azure.ai.ml._restclient.v2021_10_01_dataplanepreview import (
     AzureMachineLearningWorkspaces as ServiceClient102021Dataplane,
 )
 from azure.ai.ml._restclient.v2022_10_01_preview import AzureMachineLearningWorkspaces as ServiceClient102022
-from azure.ai.ml._restclient.v2023_04_01 import AzureMachineLearningWorkspaces as ServiceClient042023
+from azure.ai.ml._restclient.mgmtmachinelearningservices import MachineLearningServicesMgmtClient as AzureMachineLearningWorkspaces
 from azure.ai.ml._scope_dependent_operations import OperationConfig, OperationScope, _ScopeDependentOperations
 from azure.ai.ml._telemetry import ActivityType, monitor_with_activity
 from azure.ai.ml._utils._asset_utils import (
@@ -47,6 +48,8 @@ from azure.ai.ml.operations._datastore_operations import DatastoreOperations
 from azure.core.exceptions import HttpResponseError
 
 # pylint: disable=protected-access
+
+ServiceClient042023 = partial(AzureMachineLearningWorkspaces, api_version="2023-04-01")
 
 
 ops_logger = OpsLogger(__name__)
