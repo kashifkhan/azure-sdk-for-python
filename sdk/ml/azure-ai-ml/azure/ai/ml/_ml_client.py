@@ -7,7 +7,7 @@
 import json
 import logging
 import os
-from functools import singledispatch
+from functools import singledispatch, partial
 from itertools import product
 from pathlib import Path
 from typing import Any, Optional, Tuple, TypeVar, Union
@@ -35,7 +35,7 @@ from azure.ai.ml._restclient.v2023_06_01_preview import AzureMachineLearningWork
 from azure.ai.ml._restclient.v2023_08_01_preview import AzureMachineLearningWorkspaces as ServiceClient082023Preview
 
 # Same object, but was renamed starting in v2023_08_01_preview
-from azure.ai.ml._restclient.v2023_10_01 import AzureMachineLearningServices as ServiceClient102023
+from azure.ai.ml._restclient.mgmtmachinelearningservices import MachineLearningServicesMgmtClient as AzureMachineLearningServices
 from azure.ai.ml._restclient.v2024_01_01_preview import AzureMachineLearningWorkspaces as ServiceClient012024Preview
 from azure.ai.ml._restclient.v2024_04_01_preview import AzureMachineLearningWorkspaces as ServiceClient042024Preview
 from azure.ai.ml._restclient.v2024_07_01_preview import AzureMachineLearningWorkspaces as ServiceClient072024Preview
@@ -117,6 +117,8 @@ from azure.ai.ml.operations._schedule_operations import ScheduleOperations
 from azure.ai.ml.operations._workspace_outbound_rule_operations import WorkspaceOutboundRuleOperations
 from azure.core.credentials import TokenCredential
 from azure.core.polling import LROPoller
+
+ServiceClient102023 = partial(AzureMachineLearningServices, api_version="2023-10-01")
 
 module_logger = logging.getLogger(__name__)
 

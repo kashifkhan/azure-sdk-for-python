@@ -10,14 +10,15 @@ from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
+from functools import partial
 
 from marshmallow.exceptions import ValidationError as SchemaValidationError
 
 from azure.ai.ml._artifacts._artifact_utilities import _check_and_upload_path
 from azure.ai.ml._exception_helper import log_and_raise_error
 from azure.ai.ml._restclient.v2023_08_01_preview import AzureMachineLearningWorkspaces as ServiceClient082023Preview
-from azure.ai.ml._restclient.v2023_10_01 import AzureMachineLearningServices as ServiceClient102023
-from azure.ai.ml._restclient.v2023_10_01.models import (
+from azure.ai.ml._restclient.mgmtmachinelearningservices import MachineLearningServicesMgmtClient as AzureMachineLearningServices
+from azure.ai.ml._restclient.mgmtmachinelearningservices.models import (
     FeaturesetVersion,
     FeaturesetVersionBackfillRequest,
     FeatureWindow,
@@ -45,6 +46,8 @@ from azure.ai.ml.operations._datastore_operations import DatastoreOperations
 from azure.core.paging import ItemPaged
 from azure.core.polling import LROPoller
 from azure.core.tracing.decorator import distributed_trace
+
+ServiceClient102023 = partial(AzureMachineLearningServices, api_version="2023-10-01")
 
 ops_logger = OpsLogger(__name__)
 module_logger = ops_logger.module_logger

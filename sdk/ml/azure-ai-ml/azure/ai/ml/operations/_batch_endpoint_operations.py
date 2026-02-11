@@ -10,6 +10,7 @@ import re
 import uuid
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Optional, cast
+from functools import partial
 
 from marshmallow.exceptions import ValidationError as SchemaValidationError
 
@@ -17,7 +18,7 @@ from azure.ai.ml._artifacts._artifact_utilities import _upload_and_generate_remo
 from azure.ai.ml._azure_environments import _get_aml_resource_id_from_metadata, _resource_to_scopes
 from azure.ai.ml._exception_helper import log_and_raise_error
 from azure.ai.ml._restclient.v2020_09_01_dataplanepreview.models import BatchJobResource
-from azure.ai.ml._restclient.v2023_10_01 import AzureMachineLearningServices as ServiceClient102023
+from azure.ai.ml._restclient.mgmtmachinelearningservices import MachineLearningServicesMgmtClient as AzureMachineLearningServices
 from azure.ai.ml._schema._deployment.batch.batch_job import BatchJobSchema
 from azure.ai.ml._scope_dependent_operations import (
     OperationConfig,
@@ -58,6 +59,8 @@ from azure.core.exceptions import HttpResponseError, ServiceRequestError, Servic
 from azure.core.paging import ItemPaged
 from azure.core.polling import LROPoller
 from azure.core.tracing.decorator import distributed_trace
+
+ServiceClient102023 = partial(AzureMachineLearningServices, api_version="2023-10-01")
 
 from ._operation_orchestrator import OperationOrchestrator
 

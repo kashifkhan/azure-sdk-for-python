@@ -34,4 +34,8 @@ class MaterializationSettingsSchema(metaclass=PatchedSchemaMeta):
     def make(self, data, **kwargs):
         from azure.ai.ml.entities._feature_set.materialization_settings import MaterializationSettings
 
+        # Convert spark_configuration values to strings (REST API requires Dict[str, str])
+        if "spark_configuration" in data and data["spark_configuration"]:
+            data["spark_configuration"] = {k: str(v) for k, v in data["spark_configuration"].items()}
+
         return MaterializationSettings(**data)

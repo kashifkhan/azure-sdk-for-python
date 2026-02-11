@@ -5,12 +5,13 @@
 # pylint: disable=protected-access
 
 from typing import Dict, Optional
+from functools import partial
 
 from marshmallow.exceptions import ValidationError as SchemaValidationError
 
 from azure.ai.ml._exception_helper import log_and_raise_error
-from azure.ai.ml._restclient.v2023_10_01 import AzureMachineLearningServices as ServiceClient102023
-from azure.ai.ml._restclient.v2023_10_01.models import FeaturestoreEntityVersion
+from azure.ai.ml._restclient.mgmtmachinelearningservices import MachineLearningServicesMgmtClient as AzureMachineLearningServices
+from azure.ai.ml._restclient.mgmtmachinelearningservices.models import FeaturestoreEntityVersion
 from azure.ai.ml._scope_dependent_operations import OperationConfig, OperationScope, _ScopeDependentOperations
 from azure.ai.ml._telemetry import ActivityType, monitor_with_activity
 from azure.ai.ml._utils._feature_store_utils import _archive_or_restore
@@ -21,6 +22,8 @@ from azure.ai.ml.exceptions import ValidationException
 from azure.core.paging import ItemPaged
 from azure.core.polling import LROPoller
 from azure.core.tracing.decorator import distributed_trace
+
+ServiceClient102023 = partial(AzureMachineLearningServices, api_version="2023-10-01")
 
 ops_logger = OpsLogger(__name__)
 module_logger = ops_logger.module_logger
