@@ -40,9 +40,6 @@ from azure.ai.ml._restclient.v2024_07_01_preview import AzureMachineLearningWork
 from azure.ai.ml._restclient.v2024_10_01_preview import (
     AzureMachineLearningWorkspaces as ServiceClient102024Preview,
 )
-from azure.ai.ml._restclient.v2025_01_01_preview import (
-    AzureMachineLearningWorkspaces as ServiceClient012025Preview,
-)
 from azure.ai.ml._restclient.v2024_04_01_dataplanepreview import (
     AzureMachineLearningWorkspaces as ServiceClient042024DataPlanePreview,
 )
@@ -119,6 +116,7 @@ from azure.core.polling import LROPoller
 ServiceClient102023 = partial(AzureMachineLearningServices, api_version="2023-10-01")
 ServiceClient042023 = partial(AzureMachineLearningServices, api_version="2023-04-01")
 ServiceClient052022 = partial(AzureMachineLearningServices, api_version="2022-05-01")
+ServiceClient012025Preview = partial(AzureMachineLearningServices, api_version="2025-01-01-preview")
 
 module_logger = logging.getLogger(__name__)
 

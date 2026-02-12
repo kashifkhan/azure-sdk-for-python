@@ -391,6 +391,10 @@ def get_rest_dict_for_node_attrs(
         # can't use result.as_dict() as data binding expression may not fit rest object structure
         return get_rest_dict_for_node_attrs(target_obj.__dict__, clear_empty_value=clear_empty_value)
 
+    # Handle TypeSpec models (they have as_dict() but aren't msrest.serialization.Model)
+    if hasattr(target_obj, "as_dict") and hasattr(target_obj, "_data"):
+        return get_rest_dict_for_node_attrs(target_obj.as_dict(), clear_empty_value=clear_empty_value)
+
     if isinstance(target_obj, PipelineInput):
         return get_rest_dict_for_node_attrs(str(target_obj), clear_empty_value=clear_empty_value)
 
@@ -437,6 +441,9 @@ def from_rest_dict_to_dummy_rest_object(rest_dict: Optional[Dict]) -> _DummyRest
     """
     if rest_dict is None or isinstance(rest_dict, dict):
         return _DummyRestModelFromDict(rest_dict)
+    # Handle TypeSpec models - convert to dict
+    if hasattr(rest_dict, "as_dict") and hasattr(rest_dict, "_data"):
+        return _DummyRestModelFromDict(rest_dict.as_dict())
     raise ValueError("Unexpected type {}".format(type(rest_dict)))
 
 

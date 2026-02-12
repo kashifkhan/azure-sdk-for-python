@@ -37,9 +37,16 @@ class SparkResourceConfiguration(RestTranslatableMixin, DictMixin):
         "standard_e64s_v3",
     ]
 
-    def __init__(self, *, instance_type: Optional[str] = None, runtime_version: Optional[str] = None) -> None:
-        self.instance_type = instance_type
-        self.runtime_version = runtime_version
+    def __init__(
+        self,
+        *,
+        instance_type: Optional[str] = None,
+        runtime_version: Optional[str] = None,
+        **kwargs
+    ) -> None:
+        # Handle camelCase keys from TypeSpec models or user input
+        self.instance_type = instance_type if instance_type is not None else kwargs.get("instanceType")
+        self.runtime_version = runtime_version if runtime_version is not None else kwargs.get("runtimeVersion")
 
     def _to_rest_object(self) -> RestSparkResourceConfiguration:
         return RestSparkResourceConfiguration(instance_type=self.instance_type, runtime_version=self.runtime_version)
@@ -51,7 +58,11 @@ class SparkResourceConfiguration(RestTranslatableMixin, DictMixin):
         if obj is None:
             return None
         if isinstance(obj, dict):
-            return SparkResourceConfiguration(**obj)
+            # Handle both snake_case and camelCase keys
+            return SparkResourceConfiguration(
+                instance_type=obj.get("instance_type") or obj.get("instanceType"),
+                runtime_version=obj.get("runtime_version") or obj.get("runtimeVersion"),
+            )
         return SparkResourceConfiguration(instance_type=obj.instance_type, runtime_version=obj.runtime_version)
 
     def _validate(self) -> None:

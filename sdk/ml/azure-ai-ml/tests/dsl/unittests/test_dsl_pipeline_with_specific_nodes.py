@@ -238,7 +238,7 @@ class TestDSLPipelineWithSpecificNodes:
                 }
             },
             "_source": "YAML.COMPONENT",
-            "resources": {"instance_type": "cpularge"},
+            "resources": {"instanceType": "cpularge"},
         }
 
     def test_dsl_pipeline_with_parallel(self) -> None:
@@ -254,7 +254,7 @@ class TestDSLPipelineWithSpecificNodes:
                     mode=InputOutputModes.EVAL_MOUNT,
                 ),
             )
-            node1.resources = {"instance_count": 2}
+            node1.resources = {"instanceCount": 2}
             node1.identity = UserIdentityConfiguration()
 
         dsl_pipeline: PipelineJob = train_with_parallel_in_pipeline()
@@ -410,7 +410,7 @@ class TestDSLPipelineWithSpecificNodes:
 
         # command job with dict distribution
         environment = "AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33"
-        expected_resources = {"instance_count": 2}
+        expected_resources = {"instanceCount": 2}
         expected_environment_variables = {"key": "val"}
         inputs = {
             "component_in_path": Input(type="uri_folder", path="https://my-blob/path/to/data", mode="ro_mount"),
@@ -510,8 +510,8 @@ class TestDSLPipelineWithSpecificNodes:
                     "node2": {
                         "_source": "CLASS",
                         "distribution": {
-                            "distribution_type": "PyTorch",
-                            "process_count_per_instance": 2,
+                            "distributionType": "PyTorch",
+                            "processCountPerInstance": 2,
                         },
                         "inputs": {
                             "component_in_number": {
@@ -530,15 +530,15 @@ class TestDSLPipelineWithSpecificNodes:
                                 "value": "${{parent.outputs.pipeline_output2}}",
                             }
                         },
-                        "resources": {"instance_count": 2},
+                        "resources": {"instanceCount": 2},
                         "type": "command",
                     },
                     "node3": {
                         "_source": "BUILDER",
                         "display_name": "my-evaluate-job",
                         "distribution": {
-                            "distribution_type": "PyTorch",
-                            "process_count_per_instance": 2,
+                            "distributionType": "PyTorch",
+                            "processCountPerInstance": 2,
                         },
                         "environment_variables": {"key": "val"},
                         "inputs": {
@@ -558,7 +558,7 @@ class TestDSLPipelineWithSpecificNodes:
                                 "value": "${{parent.outputs.pipeline_output3}}",
                             }
                         },
-                        "resources": {"instance_count": 2},
+                        "resources": {"instanceCount": 2},
                         "type": "command",
                     },
                 },
@@ -1128,7 +1128,7 @@ class TestDSLPipelineWithSpecificNodes:
             args="--input1 ${{inputs.input1}} --output2 ${{outputs.output1}} --my_sample_rate ${{inputs.sample_rate}}",
             compute=synapse_compute_name,
             # For HOBO spark, provide 'resources'
-            # resources={"instance_type": "Standard_E8S_V3", "runtime_version": "3.2.0"}
+            # resources={"instanceType": "Standard_E8S_V3", "runtime_version": "3.2.0"}
         )
 
         @dsl.pipeline(experiment_name="test_pipeline_with_spark_function")
@@ -1358,7 +1358,7 @@ class TestDSLPipelineWithSpecificNodes:
             args="--input1 ${{inputs.input1}} --output2 ${{outputs.output1}} --my_sample_rate ${{inputs.sample_rate}}",
             compute=synapse_compute_name,
             # For HOBO spark, provide 'resources'
-            # resources={"instance_type": "Standard_E8S_V3", "runtime_version": "3.2.0"}
+            # resources={"instanceType": "Standard_E8S_V3", "runtime_version": "3.2.0"}
         )
 
         @dsl.pipeline(experiment_name="test_pipeline_with_spark_function")
@@ -1815,7 +1815,7 @@ class TestDSLPipelineWithSpecificNodes:
             ),
         }
         outputs = {"job_output_path": Output(type=AssetTypes.URI_FOLDER, mode="rw_mount")}
-        expected_resources = {"instance_count": 2}
+        expected_resources = {"instanceCount": 2}
         expected_environment_variables = {"key": "val"}
 
         task = ParallelTask(
@@ -1913,7 +1913,7 @@ class TestDSLPipelineWithSpecificNodes:
                             }
                         },
                         "identity": {"identity_type": "UserIdentity"},
-                        "resources": {"instance_count": 2},
+                        "resources": {"instanceCount": 2},
                         "task": {
                             "code": parse_local_path(
                                 "./tests/test_configs/dsl_pipeline/parallel_component_with_file_input/src/"
@@ -1936,7 +1936,7 @@ class TestDSLPipelineWithSpecificNodes:
     def test_pipeline_with_parallel_function_inside(self):
         environment = "AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33"
         expected_environment_variables = {"key": "val"}
-        expected_resources = {"instance_count": 2}
+        expected_resources = {"instanceCount": 2}
         inputs = {
             "job_data_path": Input(
                 type=AssetTypes.MLTABLE,
@@ -2035,7 +2035,7 @@ class TestDSLPipelineWithSpecificNodes:
                                 "value": "${{parent.outputs.pipeline_output1}}",
                             }
                         },
-                        "resources": {"instance_count": 2},
+                        "resources": {"instanceCount": 2},
                         "task": {
                             "code": parse_local_path(
                                 "./tests/test_configs/dsl_pipeline/parallel_component_with_file_input/src/"
@@ -2072,7 +2072,7 @@ class TestDSLPipelineWithSpecificNodes:
                                 "value": "${{parent.outputs.pipeline_output2}}",
                             }
                         },
-                        "resources": {"instance_count": 2},
+                        "resources": {"instanceCount": 2},
                         "task": {
                             "code": parse_local_path(
                                 "./tests/test_configs/dsl_pipeline/parallel_component_with_file_input/src/"
@@ -2103,7 +2103,7 @@ class TestDSLPipelineWithSpecificNodes:
 
     def test_pipeline_with_command_function_inside(self):
         environment = "AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33"
-        expected_resources = {"instance_count": 2}
+        expected_resources = {"instanceCount": 2}
         expected_environment_variables = {"key": "val"}
         inputs = {
             "component_in_path": Input(type="uri_folder", path="https://my-blob/path/to/data", mode="ro_mount"),
@@ -2159,8 +2159,8 @@ class TestDSLPipelineWithSpecificNodes:
                         "_source": "BUILDER",
                         "display_name": "my-evaluate-job",
                         "distribution": {
-                            "distribution_type": "PyTorch",
-                            "process_count_per_instance": 2,
+                            "distributionType": "PyTorch",
+                            "processCountPerInstance": 2,
                         },
                         "environment_variables": {"key": "val"},
                         "inputs": {
@@ -2180,15 +2180,15 @@ class TestDSLPipelineWithSpecificNodes:
                                 "value": "${{parent.outputs.pipeline_output1}}",
                             }
                         },
-                        "resources": {"instance_count": 2},
+                        "resources": {"instanceCount": 2},
                         "type": "command",
                     },
                     "node2": {
                         "_source": "BUILDER",
                         "display_name": "my-evaluate-job",
                         "distribution": {
-                            "distribution_type": "PyTorch",
-                            "process_count_per_instance": 2,
+                            "distributionType": "PyTorch",
+                            "processCountPerInstance": 2,
                         },
                         "environment_variables": {"key": "val"},
                         "inputs": {
@@ -2208,7 +2208,7 @@ class TestDSLPipelineWithSpecificNodes:
                                 "value": "${{parent.outputs.pipeline_output2}}",
                             }
                         },
-                        "resources": {"instance_count": 2},
+                        "resources": {"instanceCount": 2},
                         "type": "command",
                     },
                 },
@@ -2288,7 +2288,7 @@ class TestDSLPipelineWithSpecificNodes:
                     "mini_batch_error_threshold": 1,
                     "mini_batch_size": 1,
                     "name": "batch_inference_node1",
-                    "resources": {"instance_count": 2},
+                    "resources": {"instanceCount": 2},
                     "task": {
                         "code": parse_local_path("./src", batch_inference1.base_path),
                         "entry_script": "score.py",
@@ -2318,7 +2318,7 @@ class TestDSLPipelineWithSpecificNodes:
                             "value": "${{parent.outputs.job_out_data}}",
                         }
                     },
-                    "resources": {"instance_count": 2},
+                    "resources": {"instanceCount": 2},
                     "task": {
                         "code": parse_local_path("./src", batch_inference2.base_path),
                         "entry_script": "score.py",

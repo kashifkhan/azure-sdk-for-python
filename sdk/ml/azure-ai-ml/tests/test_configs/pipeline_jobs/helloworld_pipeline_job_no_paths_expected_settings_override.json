@@ -1,15 +1,15 @@
 {
     "expected_rest_overrides": {
         "resources": {
-            "instance_count": 2,
+            "instanceCount": 2,
             "properties": {
                 "prop1": "a_prop",
                 "prop2": "another_prop"
             }
         },
         "distribution": {
-            "distribution_type": "Mpi",
-            "process_count_per_instance": 2
+            "distributionType": "Mpi",
+            "processCountPerInstance": 2
         },
         "environment_variables": {
             "FOO": "bar"

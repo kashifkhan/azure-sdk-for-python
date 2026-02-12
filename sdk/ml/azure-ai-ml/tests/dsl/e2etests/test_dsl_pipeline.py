@@ -295,7 +295,7 @@ class TestDSLPipeline(AzureRecordedTestCase):
                     "uri": "https://dprepdata.blob.core.windows.net/demo/Titanic.csv",
                 },
             },
-            "resources": {"instance_count": 1},
+            "resources": {"instanceCount": 1},
             "type": "command",
         }
 

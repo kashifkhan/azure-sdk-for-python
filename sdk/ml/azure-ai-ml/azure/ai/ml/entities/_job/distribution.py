@@ -6,14 +6,15 @@
 
 from typing import Any, Dict, Optional, Union
 
-from azure.ai.ml._restclient.v2023_04_01_preview.models import (
+from azure.ai.ml._restclient.mgmtmachinelearningservices.models import (
     DistributionConfiguration as RestDistributionConfiguration,
 )
-from azure.ai.ml._restclient.v2023_04_01_preview.models import DistributionType as RestDistributionType
-from azure.ai.ml._restclient.v2023_04_01_preview.models import Mpi as RestMpi
-from azure.ai.ml._restclient.v2023_04_01_preview.models import PyTorch as RestPyTorch
+from azure.ai.ml._restclient.mgmtmachinelearningservices.models import DistributionType as RestDistributionType
+from azure.ai.ml._restclient.mgmtmachinelearningservices.models import Mpi as RestMpi
+from azure.ai.ml._restclient.mgmtmachinelearningservices.models import PyTorch as RestPyTorch
+from azure.ai.ml._restclient.mgmtmachinelearningservices.models import TensorFlow as RestTensorFlow
+# Ray is not supported in the new API version - keep using v2023_04_01_preview for backward compatibility
 from azure.ai.ml._restclient.v2023_04_01_preview.models import Ray as RestRay
-from azure.ai.ml._restclient.v2023_04_01_preview.models import TensorFlow as RestTensorFlow
 from azure.ai.ml._utils._experimental import experimental
 from azure.ai.ml.constants import DistributionType
 from azure.ai.ml.entities._mixins import RestTranslatableMixin
@@ -22,7 +23,7 @@ SDK_TO_REST = {
     DistributionType.MPI: RestDistributionType.MPI,
     DistributionType.TENSORFLOW: RestDistributionType.TENSOR_FLOW,
     DistributionType.PYTORCH: RestDistributionType.PY_TORCH,
-    DistributionType.RAY: RestDistributionType.RAY,
+    # RAY is not supported in the TypeSpec API version
 }
 
 
@@ -65,9 +66,54 @@ class DistributionConfiguration(RestTranslatableMixin):
         else:
             data = obj.as_dict()
 
-        type_str = data.pop("distribution_type", None) or data.pop("type", None)
+        # TypeSpec models use camelCase "distributionType", autorest uses "distribution_type"
+        type_str = (
+            data.pop("distributionType", None)
+            or data.pop("distribution_type", None)
+            or data.pop("type", None)
+        )
+        if type_str is None:
+            return None
         klass = DISTRIBUTION_TYPE_MAP[type_str.lower()]
-        res: DistributionConfiguration = klass(**data)
+        # Filter to only known kwargs for the distribution class
+        # TypeSpec returns camelCase keys, autorest uses snake_case
+        known_kwargs = {}
+        # MPI and PyTorch
+        if "process_count_per_instance" in data:
+            known_kwargs["process_count_per_instance"] = data["process_count_per_instance"]
+        if "processCountPerInstance" in data:
+            known_kwargs["process_count_per_instance"] = data["processCountPerInstance"]
+        # TensorFlow
+        if "parameter_server_count" in data:
+            known_kwargs["parameter_server_count"] = data["parameter_server_count"]
+        if "parameterServerCount" in data:
+            known_kwargs["parameter_server_count"] = data["parameterServerCount"]
+        if "worker_count" in data:
+            known_kwargs["worker_count"] = data["worker_count"]
+        if "workerCount" in data:
+            known_kwargs["worker_count"] = data["workerCount"]
+        # Ray distribution fields
+        if "port" in data:
+            known_kwargs["port"] = data["port"]
+        if "address" in data:
+            known_kwargs["address"] = data["address"]
+        if "include_dashboard" in data:
+            known_kwargs["include_dashboard"] = data["include_dashboard"]
+        if "includeDashboard" in data:
+            known_kwargs["include_dashboard"] = data["includeDashboard"]
+        if "dashboard_port" in data:
+            known_kwargs["dashboard_port"] = data["dashboard_port"]
+        if "dashboardPort" in data:
+            known_kwargs["dashboard_port"] = data["dashboardPort"]
+        if "head_node_additional_args" in data:
+            known_kwargs["head_node_additional_args"] = data["head_node_additional_args"]
+        if "headNodeAdditionalArgs" in data:
+            known_kwargs["head_node_additional_args"] = data["headNodeAdditionalArgs"]
+        if "worker_node_additional_args" in data:
+            known_kwargs["worker_node_additional_args"] = data["worker_node_additional_args"]
+        if "workerNodeAdditionalArgs" in data:
+            known_kwargs["worker_node_additional_args"] = data["workerNodeAdditionalArgs"]
+        res: DistributionConfiguration = klass(**known_kwargs)
         return res
 
     def __eq__(self, other: Any) -> bool:

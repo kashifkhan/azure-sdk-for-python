@@ -424,10 +424,11 @@ class TestPipelineComponentEntity:
             "literal_input": {"job_input_type": "literal", "value": "11"},
             "literal_input2": {"job_input_type": "literal", "value": "12"},
         }
+        # TypeSpec models return camelCase keys
         assert node_dict["resources"] == {
-            "instance_count": "1",
+            "instanceCount": "1",
             "properties": {"target_selector": {"my_resource_only": "false", "allow_spot_vm": "true"}},
-            "shm_size": "2g",
+            "shmSize": "2g",
         }
 
         rest_obj = _deserialize(ComponentVersionData, json.loads(json.dumps(json_in_file)))  # type: ignore[assignment]

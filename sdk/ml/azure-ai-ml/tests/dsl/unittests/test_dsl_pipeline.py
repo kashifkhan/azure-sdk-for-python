@@ -997,7 +997,7 @@ class TestDSLPipeline:
     def test_command_function_reuse(self, mock_machinelearning_client: MLClient):
         path = "./tests/test_configs/components/helloworld_component.yml"
         environment = "AzureML-sklearn-1.0-ubuntu20.04-py38-cpu:33"
-        expected_resources = {"instance_count": 2}
+        expected_resources = {"instanceCount": 2}
         expected_environment_variables = {"key": "val"}
         inputs = {
             "component_in_path": Input(type="uri_folder", path="https://my-blob/path/to/data", mode="ro_mount"),
@@ -1588,7 +1588,7 @@ class TestDSLPipeline:
                 "jobs": {
                     "train_with_sample_data": {
                         "type": "command",
-                        "distribution": {"distribution_type": "PyTorch", "process_count_per_instance": 2},
+                        "distribution": {"distributionType": "PyTorch", "processCountPerInstance": 2},
                         "name": "train_with_sample_data",
                         "inputs": {
                             "training_data": {
@@ -2267,9 +2267,9 @@ class TestDSLPipeline:
         @dsl.pipeline(description="submit a pipeline with spark job")
         def spark_pipeline_from_yaml(iris_data):
             add_greeting_column = add_greeting_column_func(file_input=iris_data)
-            add_greeting_column.resources = {"instance_type": "Standard_E8S_V3", "runtime_version": "3.4.0"}
+            add_greeting_column.resources = {"instanceType": "Standard_E8S_V3", "runtime_version": "3.4.0"}
             count_by_row = count_by_row_func(file_input=iris_data)
-            count_by_row.resources = {"instance_type": "Standard_E8S_V3", "runtime_version": "3.4.0"}
+            count_by_row.resources = {"instanceType": "Standard_E8S_V3", "runtime_version": "3.4.0"}
             count_by_row.identity = {"type": "managed"}
 
             return {"output": count_by_row.outputs.output}
@@ -3465,21 +3465,21 @@ class TestDSLPipeline:
         pipeline_job_dict = pipeline_job._to_rest_object().as_dict()
         # basic job_tier + Low priority
         basic_low_node_dict = pipeline_job_dict["properties"]["jobs"]["basic_low_node"]
-        assert basic_low_node_dict["queue_settings"] == {"job_tier": "Basic", "priority": 1}
-        assert basic_low_node_dict["resources"] == {"instance_count": 2, "instance_type": instance_type}
+        assert basic_low_node_dict["queue_settings"] == {"jobTier": "Basic"}
+        assert basic_low_node_dict["resources"] == {"instanceCount": 2, "instanceType": instance_type}
         # standard job_tier + Medium priority
         standard_medium_node_dict = pipeline_job_dict["properties"]["jobs"]["standard_medium_node"]
-        assert standard_medium_node_dict["queue_settings"] == {"job_tier": "Standard", "priority": 2}
-        assert standard_medium_node_dict["resources"] == {"instance_count": 2, "instance_type": instance_type}
+        assert standard_medium_node_dict["queue_settings"] == {"jobTier": "Standard"}
+        assert standard_medium_node_dict["resources"] == {"instanceCount": 2, "instanceType": instance_type}
         # premium job_tier + High priority
         premium_high_node_dict = pipeline_job_dict["properties"]["jobs"]["premium_high_node"]
-        assert premium_high_node_dict["queue_settings"] == {"job_tier": "Premium", "priority": 3}
-        assert premium_high_node_dict["resources"] == {"instance_count": 2, "instance_type": instance_type}
+        assert premium_high_node_dict["queue_settings"] == {"jobTier": "Premium"}
+        assert premium_high_node_dict["resources"] == {"instanceCount": 2, "instanceType": instance_type}
         # properties
         node_with_properties_dict = pipeline_job_dict["properties"]["jobs"]["node_with_properties"]
         assert node_with_properties_dict["resources"] == {
-            "instance_count": 2,
-            "instance_type": instance_type,
+            "instanceCount": 2,
+            "instanceType": instance_type,
             # the mapping Singularity => AISuperComputer is expected
             "properties": {"AISuperComputer": {"imageVersion": "", "interactive": False}},
         }

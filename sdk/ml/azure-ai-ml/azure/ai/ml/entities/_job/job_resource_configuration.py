@@ -6,9 +6,8 @@ import json
 import logging
 from typing import Any, Dict, List, Optional, Union, cast
 
-from azure.ai.ml._restclient.v2023_04_01_preview.models import JobResourceConfiguration as RestJobResourceConfiguration
-from azure.ai.ml._restclient.v2025_01_01_preview.models import (
-    JobResourceConfiguration as RestJobResourceConfiguration202501,
+from azure.ai.ml._restclient.mgmtmachinelearningservices.models import (
+    JobResourceConfiguration as RestJobResourceConfiguration,
 )
 from azure.ai.ml.constants._job.job import JobComputePropertyFields
 from azure.ai.ml.entities._mixins import DictMixin, RestTranslatableMixin
@@ -132,11 +131,15 @@ class JobResourceConfiguration(RestTranslatableMixin, DictMixin):
         **kwargs: Any
     ) -> None:
         self.locations = locations
-        self.instance_count = instance_count
-        self.instance_type = instance_type
-        self.shm_size = shm_size
-        self.max_instance_count = max_instance_count
-        self.docker_args = docker_args
+        # Handle camelCase keys from TypeSpec models or user input
+        # Use "is None" checks instead of "or" to avoid calling bool() on PipelineInput objects
+        self.instance_count = instance_count if instance_count is not None else kwargs.get("instanceCount")
+        self.instance_type = instance_type if instance_type is not None else kwargs.get("instanceType")
+        self.shm_size = shm_size if shm_size is not None else kwargs.get("shmSize")
+        self.max_instance_count = max_instance_count if max_instance_count is not None else kwargs.get("maxInstanceCount")
+        self.docker_args = docker_args if docker_args is not None else (
+            kwargs.get("dockerArgs") or kwargs.get("dockerArgsList") or kwargs.get("docker_args_list")
+        )
         self._properties: Optional[Properties] = None
         self.properties = properties
 
@@ -163,34 +166,37 @@ class JobResourceConfiguration(RestTranslatableMixin, DictMixin):
         else:
             raise TypeError("properties must be a dict.")
 
-    def _to_rest_object(self) -> Union[RestJobResourceConfiguration, RestJobResourceConfiguration202501]:
-        if self.docker_args and isinstance(self.docker_args, list):
-            return RestJobResourceConfiguration202501(
-                instance_count=self.instance_count,
-                instance_type=self.instance_type,
-                max_instance_count=self.max_instance_count,
-                properties=self.properties.as_dict() if isinstance(self.properties, Properties) else None,
-                docker_args_list=self.docker_args,
-                shm_size=self.shm_size,
-            )
+    def _to_rest_object(self) -> RestJobResourceConfiguration:
+        # Note: TypeSpec API doesn't support 'locations' and 'max_instance_count' fields
+        # These are stored in 'properties' if needed
+        docker_args_str = self.docker_args if isinstance(self.docker_args, str) else None
+        docker_args_list = self.docker_args if isinstance(self.docker_args, list) else None
         return RestJobResourceConfiguration(
-            locations=self.locations,
             instance_count=self.instance_count,
             instance_type=self.instance_type,
-            max_instance_count=self.max_instance_count,
             properties=self.properties.as_dict() if isinstance(self.properties, Properties) else None,
-            docker_args=self.docker_args,
+            docker_args=docker_args_str,
+            docker_args_list=docker_args_list,
             shm_size=self.shm_size,
         )
 
     @classmethod
     def _from_rest_object(
-        cls, obj: Optional[Union[RestJobResourceConfiguration, RestJobResourceConfiguration202501]]
+        cls, obj: Optional[RestJobResourceConfiguration]
     ) -> Optional["JobResourceConfiguration"]:
         if obj is None:
             return None
         if isinstance(obj, dict):
-            return cls(**obj)
+            # Handle camelCase keys from TypeSpec models
+            return cls(
+                locations=obj.get("locations"),
+                instance_count=obj.get("instance_count") or obj.get("instanceCount"),
+                instance_type=obj.get("instance_type") or obj.get("instanceType"),
+                max_instance_count=obj.get("max_instance_count") or obj.get("maxInstanceCount"),
+                properties=obj.get("properties"),
+                docker_args=obj.get("docker_args_list") or obj.get("dockerArgsList") or obj.get("docker_args") or obj.get("dockerArgs"),
+                shm_size=obj.get("shm_size") or obj.get("shmSize"),
+            )
         return JobResourceConfiguration(
             locations=obj.locations if hasattr(obj, "locations") else None,
             instance_count=obj.instance_count,

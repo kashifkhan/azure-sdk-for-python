@@ -114,7 +114,7 @@ class TestCommandFunction:
             "_source": "BUILDER",
             "computeId": "cpu-cluster",
             "display_name": "my-fancy-job",
-            "distribution": {"distribution_type": "Mpi", "process_count_per_instance": 4},
+            "distribution": {"distributionType": "Mpi", "processCountPerInstance": 4},
             "environment_variables": {"foo": "bar"},
             "inputs": {
                 "boolean": {"job_input_type": "literal", "value": "False"},
@@ -245,7 +245,7 @@ class TestCommandFunction:
             "_source": "BUILDER",
             "computeId": "cpu-cluster",
             "display_name": "my-fancy-job",
-            "distribution": {"distribution_type": "Mpi", "process_count_per_instance": 4},
+            "distribution": {"distributionType": "Mpi", "processCountPerInstance": 4},
             "environment_variables": {"foo": "bar"},
             "inputs": {
                 "boolean": {"job_input_type": "literal", "value": "False"},
@@ -273,7 +273,7 @@ class TestCommandFunction:
             "type": "command",
             "computeId": "cpu-cluster",
             "display_name": "my-fancy-job",
-            "distribution": {"distribution_type": "Mpi", "process_count_per_instance": 4},
+            "distribution": {"distributionType": "Mpi", "processCountPerInstance": 4},
             "environment_variables": {"foo": "bar"},
             "inputs": {
                 "boolean": {"job_input_type": "literal", "value": "False"},
@@ -302,7 +302,7 @@ class TestCommandFunction:
             "type": "command",
             "computeId": "new-cluster",
             "display_name": "my-fancy-job",
-            "distribution": {"distribution_type": "Mpi", "process_count_per_instance": 4},
+            "distribution": {"distributionType": "Mpi", "processCountPerInstance": 4},
             "environment_variables": {"foo": "bar"},
             "inputs": {
                 "boolean": {"job_input_type": "literal", "value": "False"},
@@ -352,7 +352,7 @@ class TestCommandFunction:
             "type": "command",
             "computeId": "cpu-cluster",
             "display_name": "my-fancy-job",
-            "distribution": {"distribution_type": "Mpi", "process_count_per_instance": 4},
+            "distribution": {"distributionType": "Mpi", "processCountPerInstance": 4},
             "environment_variables": {"foo": "bar"},
             "inputs": {
                 "uri_file": {"job_input_type": "uri_file", "mode": "Download", "uri": "https://my-blob/path/to/data"},
@@ -440,11 +440,11 @@ class TestCommandFunction:
                 shm_size="3g",
             )
             expected_resources = {
-                "instance_count": 1,
-                "instance_type": "STANDARD_D2_v2",
+                "instanceCount": 1,
+                "instanceType": "STANDARD_D2_v2",
                 "properties": {"key": "new_val"},
-                "docker_args": "testCommand",
-                "shm_size": "3g",
+                "dockerArgs": "testCommand",
+                "shmSize": "3g",
             }
             actual_resources = node1.resources._to_rest_object().as_dict()
             assert actual_resources == expected_resources
@@ -580,7 +580,7 @@ class TestCommandFunction:
             "_source": "BUILDER",
             "computeId": "cpu-cluster",
             "display_name": "my-fancy-job",
-            "distribution": {"distribution_type": "Mpi", "process_count_per_instance": 4},
+            "distribution": {"distributionType": "Mpi", "processCountPerInstance": 4},
             "environment_variables": {"foo": "bar"},
             "name": "my_job",
             "type": "command",
@@ -594,17 +594,17 @@ class TestCommandFunction:
         node1.distribution = {"type": "Pytorch", "process_count_per_instance": 4}
         assert isinstance(node1.distribution, PyTorchDistribution)
         rest_dist = node1._to_rest_object()["distribution"]
-        assert rest_dist == {"distribution_type": "PyTorch", "process_count_per_instance": 4}
+        assert rest_dist == {"distributionType": "PyTorch", "processCountPerInstance": 4}
 
         node1.distribution = {"type": "TensorFlow", "parameter_server_count": 1}
         assert isinstance(node1.distribution, TensorFlowDistribution)
         rest_dist = node1._to_rest_object()["distribution"]
-        assert rest_dist == {"distribution_type": "TensorFlow", "parameter_server_count": 1}
+        assert rest_dist == {"distributionType": "TensorFlow", "parameterServerCount": 1}
 
         node1.distribution = {"type": "mpi", "process_count_per_instance": 1}
         assert isinstance(node1.distribution, MpiDistribution)
         rest_dist = node1._to_rest_object()["distribution"]
-        assert rest_dist == {"distribution_type": "Mpi", "process_count_per_instance": 1}
+        assert rest_dist == {"distributionType": "Mpi", "processCountPerInstance": 1}
 
         node1.distribution = {
             "type": "ray",
@@ -651,12 +651,12 @@ class TestCommandFunction:
         node1.resources.instance_count = 4
         rest_dict = node1._to_rest_object()
 
-        assert rest_dict["distribution"] == {"distribution_type": "Mpi", "process_count_per_instance": 4}
+        assert rest_dict["distribution"] == {"distributionType": "Mpi", "processCountPerInstance": 4}
         assert rest_dict["resources"] == {
-            "instance_count": 4,
-            "instance_type": "STANDARD_D2",
-            "docker_args": "test command",
-            "shm_size": "3g",
+            "instanceCount": 4,
+            "instanceType": "STANDARD_D2",
+            "dockerArgs": "test command",
+            "shmSize": "3g",
         }
 
     def test_distribution_resources_default_val(self, test_command_params):
@@ -674,11 +674,11 @@ class TestCommandFunction:
         node1.resources.instance_count = 4
         rest_dict = node1._to_rest_object()
 
-        assert rest_dict["distribution"] == {"distribution_type": "Mpi", "process_count_per_instance": 4}
-        assert rest_dict["resources"] == {"instance_count": 4, "instance_type": "STANDARD_D2"}
+        assert rest_dict["distribution"] == {"distributionType": "Mpi", "processCountPerInstance": 4}
+        assert rest_dict["resources"] == {"instanceCount": 4, "instanceType": "STANDARD_D2"}
 
     def test_resources_from_dict(self, test_command_params):
-        expected_resources = {"instance_count": 4, "instance_type": "STANDARD_D2"}
+        expected_resources = {"instanceCount": 4, "instanceType": "STANDARD_D2"}
         test_command_params.update(
             {
                 "resources": JobResourceConfiguration(instance_count=4, instance_type="STANDARD_D2"),
@@ -713,10 +713,10 @@ class TestCommandFunction:
         )
         command_node = command(**test_command_params)
         rest_dict = command_node._to_rest_object()
-        assert rest_dict["resources"] == {"instance_type": "STANDARD_D2"}
+        assert rest_dict["resources"] == {"instanceType": "STANDARD_D2"}
 
     def test_queue_settings(self, test_command_params):
-        expected_queue_settings = {"job_tier": "Standard", "priority": 2}
+        expected_queue_settings = {"jobTier": "Standard"}
         test_command_params.update(
             {
                 "queue_settings": QueueSettings(job_tier="standard", priority="medium"),
@@ -1061,7 +1061,7 @@ class TestCommandFunction:
             "my_job": {
                 "computeId": "cpu-cluster",
                 "display_name": "my-fancy-job",
-                "distribution": {"distribution_type": "Mpi", "process_count_per_instance": 4},
+                "distribution": {"distributionType": "Mpi", "processCountPerInstance": 4},
                 "environment_variables": {"foo": "bar"},
                 "identity": {"identity_type": "UserIdentity"},
                 "inputs": {

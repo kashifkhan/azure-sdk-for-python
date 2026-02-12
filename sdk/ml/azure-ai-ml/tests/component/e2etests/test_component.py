@@ -610,7 +610,8 @@ class TestComponent(AzureRecordedTestCase):
             params_override=params_override,
         )
         # additional fields added_property in distribution and resources are removed.
-        torch_resources = {"instance_count": 2, "properties": {}}
+        # TypeSpec models return camelCase keys
+        torch_resources = {"instanceCount": 2, "properties": {}}
         assert component_entity.distribution.__dict__ == torch_distribution()
         assert component_entity.resources._to_rest_object().as_dict() == torch_resources
         torch_component_resource = client.components.create_or_update(component_entity)

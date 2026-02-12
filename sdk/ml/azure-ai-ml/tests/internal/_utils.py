@@ -223,9 +223,17 @@ PARAMETERS_TO_TEST = [
 
 def get_expected_runsettings_items(runsettings_dict, client=None):
     expected_values = copy.deepcopy(runsettings_dict)
-    dot_key_map = {"compute": "computeId"}
+    dot_key_map = {
+        "compute": "computeId",
+        # Map snake_case to camelCase for TypeSpec REST format
+        "resources.instance_type": "resources.instanceType",
+        "resources.instance_count": "resources.instanceCount",
+        "resources.shm_size": "resources.shmSize",
+        "resources.docker_args": "resources.dockerArgs",
+        "distribution.process_count_per_instance": "distribution.processCountPerInstance",
+    }
 
-    for dot_key in dot_key_map:
+    for dot_key in list(dot_key_map.keys()):
         if dot_key in expected_values:
             expected_values[dot_key_map[dot_key]] = expected_values.pop(dot_key)
 

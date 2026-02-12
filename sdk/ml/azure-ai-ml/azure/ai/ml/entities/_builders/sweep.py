@@ -53,6 +53,7 @@ from ..._restclient.v2022_10_01.models import ComponentVersion
 from ..._schema import PathAwareSchema
 from ..._schema._utils.data_binding_expression import support_data_binding_expression_for_fields
 from ..._utils.utils import camel_to_snake
+from .._util import get_rest_dict_for_node_attrs
 from .base_node import BaseNode
 
 module_logger = logging.getLogger(__name__)
@@ -293,6 +294,10 @@ class Sweep(ParameterizedSweep, BaseNode):
                 "trial": self._get_trial_component_rest_obj(),
             }
         )
+        # Only include queue_settings when it has a value to avoid null validation errors
+        queue_settings_dict = get_rest_dict_for_node_attrs(self.queue_settings, clear_empty_value=True)
+        if queue_settings_dict:
+            rest_obj["queue_settings"] = queue_settings_dict
         return rest_obj
 
     @classmethod

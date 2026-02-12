@@ -269,7 +269,7 @@ class TestComponentFunc:
             "_source": "YAML.COMPONENT",
             "componentId": "fake_arm_id",
             "type": "command",
-            "distribution": {"distribution_type": "PyTorch", "process_count_per_instance": 2},
+            "distribution": {"distributionType": "PyTorch", "processCountPerInstance": 2},
             "environment_variables": {"key": "val"},
             "field1": 1,
             "field_group": {"field2": "filed"},
@@ -277,7 +277,7 @@ class TestComponentFunc:
                 "component_in_number": {"job_input_type": "literal", "value": "10"},
                 "component_in_path": {"job_input_type": "literal", "value": "${{parent.inputs.pipeline_input}}"},
             },
-            "resources": {"instance_count": 2},
+            "resources": {"instanceCount": 2},
         }
 
     def test_component_func_dict_distribution(self):
@@ -287,7 +287,7 @@ class TestComponentFunc:
         pipeline_input = PipelineInput(name="pipeline_input", owner="pipeline", meta=None)
         component: Command = component_func(component_in_number=10, component_in_path=pipeline_input)
 
-        expected_distribution = {"distribution_type": "PyTorch", "process_count_per_instance": 2}
+        expected_distribution = {"distributionType": "PyTorch", "processCountPerInstance": 2}
 
         # set dict distribution
         component.distribution = {"type": "Pytorch", "process_count_per_instance": 2}
@@ -304,27 +304,27 @@ class TestComponentFunc:
         mpi_func = load_component(source=str(components_dir / "helloworld_component_mpi.yml"))
         mpi_node = mpi_func(component_in_number=10, component_in_path=pipeline_input)
         assert mpi_node._to_rest_object()["distribution"] == {
-            "distribution_type": "Mpi",
-            "process_count_per_instance": 1,
+            "distributionType": "Mpi",
+            "processCountPerInstance": 1,
         }
-        assert mpi_node._to_rest_object()["resources"] == {"instance_count": 2}
+        assert mpi_node._to_rest_object()["resources"] == {"instanceCount": 2}
 
         pytorch_func = load_component(source=str(components_dir / "helloworld_component_pytorch.yml"))
         pytorch_node = pytorch_func(component_in_number=10, component_in_path=pipeline_input)
         assert pytorch_node._to_rest_object()["distribution"] == {
-            "distribution_type": "PyTorch",
-            "process_count_per_instance": 4,
+            "distributionType": "PyTorch",
+            "processCountPerInstance": 4,
         }
-        assert pytorch_node._to_rest_object()["resources"] == {"instance_count": 2}
+        assert pytorch_node._to_rest_object()["resources"] == {"instanceCount": 2}
 
         tensorflow_func = load_component(source=str(components_dir / "helloworld_component_tensorflow.yml"))
         tensorflow_node = tensorflow_func(component_in_number=10, component_in_path=pipeline_input)
         assert tensorflow_node._to_rest_object()["distribution"] == {
-            "distribution_type": "TensorFlow",
-            "parameter_server_count": 1,
-            "worker_count": 2,
+            "distributionType": "TensorFlow",
+            "parameterServerCount": 1,
+            "workerCount": 2,
         }
-        assert tensorflow_node._to_rest_object()["resources"] == {"instance_count": 2}
+        assert tensorflow_node._to_rest_object()["resources"] == {"instanceCount": 2}
 
     def test_component_invalid_convert(self):
         component = load_component(source="./tests/test_configs/components/helloworld_component.yml")

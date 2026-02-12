@@ -28,6 +28,7 @@ from azure.ai.ml.entities._builders.control_flow_node import ControlFlowNode, Lo
 from azure.ai.ml.entities._component.component import Component
 from azure.ai.ml.entities._inputs_outputs import GroupInput, Input
 from azure.ai.ml.entities._job.automl.automl_job import AutoMLJob
+from azure.ai.ml.constants._job.job import JobTierNames
 from azure.ai.ml.entities._job.pipeline._attr_dict import has_attr_safe, try_get_non_arbitrary_attr
 from azure.ai.ml.entities._job.pipeline._pipeline_expression import PipelineExpression
 from azure.ai.ml.entities._validation import MutableValidationResult
@@ -480,6 +481,20 @@ class PipelineComponent(Component):
                 rest_node_dict = job._to_rest_object()
             elif isinstance(job, AutoMLJob):
                 rest_node_dict = json.loads(json.dumps(job._to_dict(inside_pipeline=True)))
+                # Convert queue_settings keys from snake_case to camelCase for TypeSpec compatibility
+                if "queue_settings" in rest_node_dict and rest_node_dict["queue_settings"]:
+                    queue_settings = rest_node_dict["queue_settings"]
+                    job_tier = queue_settings.get("job_tier")
+                    # Convert job_tier to REST format (e.g., "spot" -> "Spot")
+                    if job_tier:
+                        job_tier = JobTierNames.ENTITY_TO_REST.get(job_tier.lower(), job_tier)
+                    rest_node_dict["queue_settings"] = {
+                        "jobTier": job_tier
+                    }
+                    # Remove None values
+                    rest_node_dict["queue_settings"] = {
+                        k: v for k, v in rest_node_dict["queue_settings"].items() if v is not None
+                    }
             else:
                 msg = f"Non supported job type in Pipeline jobs: {type(job)}"
                 raise ValidationException(
