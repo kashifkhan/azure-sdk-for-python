@@ -9,7 +9,7 @@ import pytest
 import yaml
 
 from azure.ai.ml import MLClient, load_component
-from azure.ai.ml._restclient.v2022_05_01.models import ComponentVersionData
+from azure.ai.ml._restclient.mgmtmachinelearningservices.models import ComponentVersion as  ComponentVersionData
 from azure.ai.ml._utils._arm_id_utils import PROVIDER_RESOURCE_ID_WITH_VERSION
 from azure.ai.ml.constants._common import BASE_PATH_CONTEXT_KEY, PARAMS_OVERRIDE_KEY, AssetTypes, LegacyAssetTypes
 from azure.ai.ml.constants._component import ComponentSource
@@ -17,6 +17,7 @@ from azure.ai.ml.entities import CommandComponent, Component, PipelineComponent
 from azure.ai.ml.entities._assets import Code
 from azure.ai.ml.entities._component.component import COMPONENT_PLACEHOLDER
 from azure.ai.ml.entities._component.component_factory import component_factory
+from azure.ai.ml._restclient.mgmtmachinelearningservices._utils.model_base import _deserialize
 
 from .._util import _COMPONENT_TIMEOUT_SECOND
 
@@ -92,7 +93,8 @@ def load_component_entity_from_rest_json(path) -> Component:
     """Rest component json -> rest component object -> component entity"""
     with open(path, "r") as f:
         target = yaml.safe_load(f)
-    rest_obj = ComponentVersionData.from_dict(json.loads(json.dumps(target)))
+
+    rest_obj = _deserialize(ComponentVersionData, json.loads(json.dumps(target)))
     internal_component = Component._from_rest_object(rest_obj)
     return internal_component
 

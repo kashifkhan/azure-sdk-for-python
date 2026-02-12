@@ -2,13 +2,13 @@
   "id": "mock_id",
   "name": "1",
   "type": "Microsoft.MachineLearningServices/workspaces/components/versions",
-  "system_data": {
-    "created_by": "Brynn Yin",
-    "created_by_type": "User",
-    "created_at": "2022-10-25T03:39:27.465966Z",
-    "last_modified_by": "Brynn Yin",
-    "last_modified_by_type": "User",
-    "last_modified_at": "2022-10-25T03:39:28.104555Z"
+  "systemData": {
+    "createdBy": "Brynn Yin",
+    "createdByType": "User",
+    "createdAt": "2022-10-25T03:39:27.465966Z",
+    "lastModifiedBy": "Brynn Yin",
+    "lastModifiedByType": "User",
+    "lastModifiedAt": "2022-10-25T03:39:28.104555Z"
   },
   "properties": {
     "properties": {},
@@ -16,9 +16,9 @@
       "tag": "tagvalue",
       "owner": "sdkteam"
     },
-    "is_anonymous": false,
-    "is_archived": false,
-    "component_spec": {
+    "isAnonymous": false,
+    "isArchived": false,
+    "componentSpec": {
       "name": "test_392226085584",
       "version": "1",
       "display_name": "Hello World Pipeline Component",

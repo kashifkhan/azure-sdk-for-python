@@ -7,11 +7,12 @@ import pytest
 import yaml
 
 from azure.ai.ml import Input, load_component, load_job
-from azure.ai.ml._restclient.v2022_05_01.models import ComponentVersionData
+from azure.ai.ml._restclient.mgmtmachinelearningservices.models import ComponentVersion as ComponentVersionData
 from azure.ai.ml.entities import Component, PipelineComponent, PipelineJob
 from azure.ai.ml.entities._inputs_outputs import GroupInput
 from azure.ai.ml.entities._job.pipeline._io import PipelineInput, _GroupAttrDict
 from azure.ai.ml.operations import ComponentOperations
+from azure.ai.ml._restclient.mgmtmachinelearningservices._utils.model_base import _deserialize
 
 from .._util import _COMPONENT_TIMEOUT_SECOND
 
@@ -402,7 +403,7 @@ class TestPipelineComponentEntity:
         test_path = "./tests/test_configs/components/pipeline_component_jobs_rest_data.json"
         with open(test_path, "r") as f:
             json_in_file = yaml.safe_load(f)
-        job_dict = copy.deepcopy(json_in_file["properties"]["component_spec"]["jobs"])
+        job_dict = copy.deepcopy(json_in_file["properties"]["componentSpec"]["jobs"])
         jobs = PipelineComponent._resolve_sub_nodes(job_dict)
         node_dict = {key: node._to_rest_object() for key, node in jobs.items()}["component_a_job"]
         assert node_dict["computeId"] == "${{parent.inputs.node_compute}}"
@@ -429,7 +430,7 @@ class TestPipelineComponentEntity:
             "shm_size": "2g",
         }
 
-        rest_obj = ComponentVersionData.from_dict(json.loads(json.dumps(json_in_file)))
+        rest_obj = _deserialize(ComponentVersionData, json.loads(json.dumps(json_in_file)))  # type: ignore[assignment]
         pipeline_component = Component._from_rest_object(rest_obj)
         assert pipeline_component.jobs
         obj_node_dict = {key: node._to_rest_object() for key, node in pipeline_component.jobs.items()}[

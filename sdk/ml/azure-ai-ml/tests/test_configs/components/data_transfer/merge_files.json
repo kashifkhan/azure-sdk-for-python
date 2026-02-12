@@ -5,9 +5,9 @@
     "properties": {
         "properties": {},
         "tags": {},
-        "is_anonymous": false,
-        "is_archived": false,
-        "component_spec": {
+        "isAnonymous": false,
+        "isArchived": false,
+        "componentSpec": {
             "name": "test_519926505659",
             "version": "1",
             "display_name": "Data Transfer Component merge-files",

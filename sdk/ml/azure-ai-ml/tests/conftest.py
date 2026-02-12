@@ -334,7 +334,7 @@ def mock_registry_discovery_client(mock_credential: DefaultAzureCredential) -> S
 
 @pytest.fixture
 def mock_aml_services_2022_05_01(mocker: MockFixture) -> Mock:
-    return mocker.patch("azure.ai.ml._restclient.v2022_05_01")
+    return mocker.patch("azure.ai.ml._restclient.mgmtmachinelearningservices")
 
 
 @pytest.fixture

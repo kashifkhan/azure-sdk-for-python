@@ -49,10 +49,9 @@ from azure.ai.ml._restclient.v2022_02_01_preview.operations import (
     ModelContainersOperations,
     ModelVersionsOperations,
 )
-from azure.ai.ml._restclient.v2022_05_01.models import (
-    DataVersionBaseData,
-    ModelVersionData,
-    ModelVersionResourceArmPaginatedResult,
+from azure.ai.ml._restclient.mgmtmachinelearningservices.models import (
+    DataVersionBase as DataVersionBaseData,
+    ModelVersion as ModelVersionData,
 )
 from azure.ai.ml._restclient.mgmtmachinelearningservices.models import PendingUploadRequestDto
 from azure.ai.ml._utils._pathspec import GitWildMatchPattern, normalize_file
@@ -923,9 +922,9 @@ def _get_latest(
     except StopIteration:
         latest = None
 
-    if latest and isinstance(latest, ModelVersionResourceArmPaginatedResult):
-        # Data list return object doesn't require this since its elements are already DatasetVersionResources
-        latest = cast(ModelVersionData, latest)
+    # if latest and isinstance(latest, ModelVersionResourceArmPaginatedResult):
+    #     # Data list return object doesn't require this since its elements are already DatasetVersionResources
+    #     latest = cast(ModelVersionData, latest)
     if not latest:
         message = (
             f"Asset {asset_name} does not exist in registry {registry_name}."
