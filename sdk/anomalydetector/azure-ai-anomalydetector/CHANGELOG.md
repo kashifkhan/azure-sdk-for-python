@@ -1,14 +1,10 @@
 # Release History
 
-## 3.0.0b7 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 3.0.0b7 (2026-05-22)
 
 ### Other Changes
+
+- This package has been deprecated and will no longer be maintained after 10-01-2026. This package will only receive security fixes until 10-01-2026. Refer to the samples in the [microsoft/anomaly-detector repo](https://github.com/microsoft/anomaly-detector) instead.
 
 ## 3.0.0b6 (2022-12-08)
   **Features**
