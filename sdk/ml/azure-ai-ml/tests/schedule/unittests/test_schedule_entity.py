@@ -122,13 +122,17 @@ class TestScheduleEntity:
         "enable_pipeline_private_preview_features",
     )
     def test_schedule_with_command_job(self):
+        from azure.core.serialization import as_attribute_dict
+
         # Test with local file job
         test_path = "./tests/test_configs/schedule/local_cron_command_job.yml"
         inner_job_path = "./tests/test_configs/command_job/command_job_test.yml"
         inner_job = load_job(inner_job_path)._to_job()
         schedule = load_schedule(test_path)
         rest_schedule_job_dict = schedule._to_rest_object().as_dict()["properties"]["action"]["job_definition"]
-        loaded_job_dict = inner_job._to_rest_object().as_dict()["properties"]
+        # Use as_attribute_dict so a TSP hybrid model's snake_case output matches the
+        # autorest schedule serializer's output (per hybrid model migration guide).
+        loaded_job_dict = as_attribute_dict(inner_job._to_rest_object())["properties"]
         assert rest_schedule_job_dict == loaded_job_dict
         # Test with local file + overwrites
         test_path = "./tests/test_configs/schedule/local_cron_command_job2.yml"

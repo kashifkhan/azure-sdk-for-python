@@ -12,7 +12,7 @@ from importlib import reload
 from os import getenv
 from pathlib import Path
 from typing import Callable, Tuple, Union
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 from _pytest.fixtures import FixtureRequest
@@ -258,7 +258,9 @@ def mock_aml_services_workspace_dataplane(mocker: MockFixture) -> Mock:
 
 @pytest.fixture
 def mock_aml_services_2022_02_01_preview(mocker: MockFixture) -> Mock:
-    return mocker.patch("azure.ai.ml._restclient.v2022_02_01_preview")
+    # Folder slated for deletion (all paths fully covered by arm_ml_service);
+    # fixture just provides a Mock client to operations under test.
+    return MagicMock()
 
 
 @pytest.fixture
@@ -310,17 +312,23 @@ def mock_aml_services_2024_01_01_preview(mocker: MockFixture) -> Mock:
 
 @pytest.fixture
 def mock_aml_services_2024_07_01_preview(mocker: MockFixture) -> Mock:
-    return mocker.patch("azure.ai.ml._restclient.v2024_07_01_preview")
+    # Folder slated for deletion (all paths fully covered by arm_ml_service);
+    # fixture just provides a Mock client to operations under test.
+    return MagicMock()
 
 
 @pytest.fixture
 def mock_aml_services_2024_10_01_preview(mocker: MockFixture) -> Mock:
-    return mocker.patch("azure.ai.ml._restclient.v2024_10_01_preview_tsp")
+    # Folder slated for deletion (all paths fully covered by arm_ml_service);
+    # fixture just provides a Mock client to operations under test.
+    return MagicMock()
 
 
 @pytest.fixture
 def mock_aml_services_2025_01_01_preview(mocker: MockFixture) -> Mock:
-    return mocker.patch("azure.ai.ml._restclient.v2025_01_01_preview")
+    # Folder slated for deletion (all paths fully covered by arm_ml_service);
+    # fixture just provides a Mock client to operations under test.
+    return MagicMock()
 
 
 @pytest.fixture

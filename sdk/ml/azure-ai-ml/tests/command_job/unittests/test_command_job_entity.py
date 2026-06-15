@@ -240,6 +240,9 @@ class TestCommandJobEntity:
         )
         job_prop = command_job._to_job()._to_rest_object().properties
         from_rest_job = Job._from_rest_object(command_job._to_job()._to_rest_object())
-        assert job_prop.resources.locations == ["westus"]
-        assert hasattr(job_prop.resources, "docker_args_list") == False
+        # TSP hybrid JobResourceConfiguration doesn't type `locations`; it lives as an
+        # additional property accessed via dict syntax per the hybrid model migration guide.
+        assert job_prop.resources["locations"] == ["westus"]
+        # When docker_args is a string (not a list), docker_args_list stays None.
+        assert getattr(job_prop.resources, "docker_args_list", None) is None
         assert from_rest_job.resources.docker_args == "--shm-size=1g"
