@@ -34,6 +34,17 @@ class AllocationState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """RESIZING."""
 
 
+class AllowedContentLevel(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Level at which content is filtered."""
+
+    LOW = "Low"
+    """LOW."""
+    MEDIUM = "Medium"
+    """MEDIUM."""
+    HIGH = "High"
+    """HIGH."""
+
+
 class ApplicationSharingPolicy(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Policy for sharing applications on this compute instance among users of parent workspace. If
     Personal, only the creator can access applications on this compute instance. When Shared, any
@@ -61,6 +72,13 @@ class AssetProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """UPDATING."""
     DELETING = "Deleting"
     """DELETING."""
+
+
+class AuthMode(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Enum to determine endpoint authentication mode."""
+
+    AAD = "AAD"
+    """AAD."""
 
 
 class AutoRebuildSetting(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -762,6 +780,15 @@ class ContainerType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """INFERENCE_SERVER."""
 
 
+class ContentSafetyLevel(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Specifies the current safety level for content safety."""
+
+    BLOCKING = "Blocking"
+    """BLOCKING."""
+    DEFERRED = "Deferred"
+    """DEFERRED."""
+
+
 class ContentSafetyStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Specifies the status of content safety."""
 
@@ -821,6 +848,30 @@ class DataCollectionMode(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """DISABLED."""
 
 
+class DataGenerationTaskType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Enum to determine the type of Data Generation Task."""
+
+    CONVERSATION = "Conversation"
+    """Generate conversational data (multi/single turn)."""
+    MATH = "Math"
+    """Generate Math data for numerical responses."""
+    NLI = "Nli"
+    """Generate Natural Language Inference data."""
+    NLU_QA = "NluQa"
+    """Generate Natural Language Understanding data for Question Answering data."""
+    SUMMARIZATION = "Summarization"
+    """Generate Key Summary for an Article."""
+
+
+class DataGenerationType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Enum to determine the type of Data Generation."""
+
+    LABEL_GENERATION = "LabelGeneration"
+    """Label Generation by Teacher Model Inferencing."""
+    DATA_GENERATION = "DataGeneration"
+    """Synthetic Data Generation."""
+
+
 class DataReferenceCredentialType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Enum to determine the DataReference credentials type."""
 
@@ -869,6 +920,42 @@ class DefaultActionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """ALLOW."""
 
 
+class DefaultResourceProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Type of DefaultResourceProvisioningState."""
+
+    NOT_STARTED = "NotStarted"
+    """NOT_STARTED."""
+    FAILED = "Failed"
+    """FAILED."""
+    CREATING = "Creating"
+    """CREATING."""
+    UPDATING = "Updating"
+    """UPDATING."""
+    SUCCEEDED = "Succeeded"
+    """SUCCEEDED."""
+    DELETING = "Deleting"
+    """DELETING."""
+    ACCEPTED = "Accepted"
+    """ACCEPTED."""
+    CANCELED = "Canceled"
+    """CANCELED."""
+    SCALING = "Scaling"
+    """SCALING."""
+    DISABLED = "Disabled"
+    """DISABLED."""
+
+
+class DeploymentModelVersionUpgradeOption(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Deployment model version upgrade option."""
+
+    ONCE_NEW_DEFAULT_VERSION_AVAILABLE = "OnceNewDefaultVersionAvailable"
+    """ONCE_NEW_DEFAULT_VERSION_AVAILABLE."""
+    ONCE_CURRENT_VERSION_EXPIRED = "OnceCurrentVersionExpired"
+    """ONCE_CURRENT_VERSION_EXPIRED."""
+    NO_AUTO_UPGRADE = "NoAutoUpgrade"
+    """NO_AUTO_UPGRADE."""
+
+
 class DeploymentProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """Possible values for DeploymentProvisioningState."""
 
@@ -908,6 +995,8 @@ class DistributionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """TENSOR_FLOW."""
     MPI = "Mpi"
     """MPI."""
+    RAY = "Ray"
+    """Ray distribution type."""
 
 
 class EarlyTerminationPolicyType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -1004,6 +1093,23 @@ class EndpointServiceConnectionStatus(str, Enum, metaclass=CaseInsensitiveEnumMe
     """DISCONNECTED."""
     TIMEOUT = "Timeout"
     """TIMEOUT."""
+
+
+class EndpointType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Type of the endpoint."""
+
+    AZURE_OPEN_AI = "Azure.OpenAI"
+    """AZURE_OPEN_AI."""
+    AZURE_SPEECH = "Azure.Speech"
+    """AZURE_SPEECH."""
+    AZURE_CONTENT_SAFETY = "Azure.ContentSafety"
+    """AZURE_CONTENT_SAFETY."""
+    AZURE_LLAMA = "Azure.Llama"
+    """AZURE_LLAMA."""
+    MANAGED_ONLINE_ENDPOINT = "managedOnlineEndpoint"
+    """MANAGED_ONLINE_ENDPOINT."""
+    SERVERLESS_ENDPOINT = "serverlessEndpoint"
+    """SERVERLESS_ENDPOINT."""
 
 
 class EnvironmentType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -1390,6 +1496,10 @@ class JobType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """PIPELINE."""
     SPARK = "Spark"
     """SPARK."""
+    FINE_TUNING = "FineTuning"
+    """FINE_TUNING."""
+    DISTILLATION = "Distillation"
+    """DISTILLATION."""
 
 
 class KeyType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -1458,6 +1568,23 @@ class ManagedNetworkKind(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """V1."""
     V2 = "V2"
     """V2."""
+
+
+class ManagedNetworkProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Type of ManagedNetworkProvisioningState."""
+
+    DEFERRED = "Deferred"
+    """DEFERRED."""
+    UPDATING = "Updating"
+    """UPDATING."""
+    SUCCEEDED = "Succeeded"
+    """SUCCEEDED."""
+    FAILED = "Failed"
+    """FAILED."""
+    DELETING = "Deleting"
+    """DELETING."""
+    DELETED = "Deleted"
+    """DELETED."""
 
 
 class ManagedNetworkStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -1548,6 +1675,24 @@ class MaterializationStoreType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """OFFLINE."""
     ONLINE_AND_OFFLINE = "OnlineAndOffline"
     """ONLINE_AND_OFFLINE."""
+
+
+class MlflowAutologger(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Indicates whether mlflow autologger is enabled for notebooks."""
+
+    ENABLED = "Enabled"
+    """ENABLED."""
+    DISABLED = "Disabled"
+    """DISABLED."""
+
+
+class ModelLifecycleStatus(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Model lifecycle status."""
+
+    GENERALLY_AVAILABLE = "GenerallyAvailable"
+    """GENERALLY_AVAILABLE."""
+    PREVIEW = "Preview"
+    """PREVIEW."""
 
 
 class ModelProvider(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -1926,6 +2071,23 @@ class PendingUploadType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """TEMPORARY_BLOB_REFERENCE."""
 
 
+class PoolProvisioningState(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """State of pool related resources provisioning."""
+
+    CREATING = "Creating"
+    """CREATING."""
+    DELETING = "Deleting"
+    """DELETING."""
+    SUCCEEDED = "Succeeded"
+    """SUCCEEDED."""
+    FAILED = "Failed"
+    """FAILED."""
+    UPDATING = "Updating"
+    """UPDATING."""
+    CANCELED = "Canceled"
+    """CANCELED."""
+
+
 class PrivateEndpointConnectionProvisioningState(  # pylint: disable=name-too-long
     str, Enum, metaclass=CaseInsensitiveEnumMeta
 ):
@@ -1998,6 +2160,35 @@ class QuotaUnit(str, Enum, metaclass=CaseInsensitiveEnumMeta):
 
     COUNT = "Count"
     """COUNT."""
+
+
+class RaiPolicyContentSource(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Content source to apply the Content Filters."""
+
+    PROMPT = "Prompt"
+    """PROMPT."""
+    COMPLETION = "Completion"
+    """COMPLETION."""
+
+
+class RaiPolicyMode(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Content Filters mode."""
+
+    DEFAULT = "Default"
+    """DEFAULT."""
+    DEFERRED = "Deferred"
+    """DEFERRED."""
+    BLOCKING = "Blocking"
+    """BLOCKING."""
+
+
+class RaiPolicyType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Content Filters policy type."""
+
+    USER_MANAGED = "UserManaged"
+    """USER_MANAGED."""
+    SYSTEM_MANAGED = "SystemManaged"
+    """SYSTEM_MANAGED."""
 
 
 class RandomSamplingAlgorithmRule(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -2302,6 +2493,15 @@ class ServerlessInferenceEndpointAuthMode(str, Enum, metaclass=CaseInsensitiveEn
     """AAD."""
     KEY_AND_AAD = "KeyAndAAD"
     """KEY_AND_AAD."""
+
+
+class ServiceAccountKeyName(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Type of ServiceAccountKeyName."""
+
+    KEY1 = "Key1"
+    """KEY1."""
+    KEY2 = "Key2"
+    """KEY2."""
 
 
 class ServiceDataAccessAuthIdentity(str, Enum, metaclass=CaseInsensitiveEnumMeta):
@@ -2648,6 +2848,21 @@ class VolumeDefinitionType(str, Enum, metaclass=CaseInsensitiveEnumMeta):
     """TMPFS."""
     NPIPE = "npipe"
     """NPIPE."""
+
+
+class VulnerabilityRisk(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """Type of VulnerabilityRisk."""
+
+    UNKNOWN = "UNKNOWN"
+    """UNKNOWN."""
+    CRITICAL = "CRITICAL"
+    """CRITICAL."""
+    HIGH = "HIGH"
+    """HIGH."""
+    MEDIUM = "MEDIUM"
+    """MEDIUM."""
+    LOW = "LOW"
+    """LOW."""
 
 
 class WebhookType(str, Enum, metaclass=CaseInsensitiveEnumMeta):

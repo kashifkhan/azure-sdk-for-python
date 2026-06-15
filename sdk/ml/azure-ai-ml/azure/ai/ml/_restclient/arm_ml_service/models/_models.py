@@ -17,12 +17,14 @@ from ._enums import (
     ComputeType,
     ConnectionAuthType,
     CredentialsType,
+    DataGenerationType,
     DataReferenceCredentialType,
     DataType,
     DatastoreType,
     DistributionType,
     EarlyTerminationPolicyType,
     EndpointComputeType,
+    EndpointType,
     ForecastHorizonMode,
     IdentityConfigurationType,
     JobInputType,
@@ -76,7 +78,7 @@ class WorkspaceConnectionPropertiesV2(_Model):
      "AccessKey", "ApiKey", "CustomKeys", "OAuth2", "AAD", "DelegatedSAS", "ProjectManagedIdentity",
      "AccountManagedIdentity", "UserEntraToken", "AgentUserImpersonation", "AgenticIdentityToken",
      and "AgenticUser".
-    :vartype auth_type: str or ~arm_ml_service.models.ConnectionAuthType
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionAuthType
     :ivar category: Category of the connection. Known values are: "PythonFeed",
      "ContainerRegistry", "Git", "S3", "Snowflake", "AzureKeyVault", "AzureSqlDb",
      "AzureSynapseAnalytics", "AzureMySqlDb", "AzurePostgresDb", "ADLSGen2",
@@ -99,7 +101,7 @@ class WorkspaceConnectionPropertiesV2(_Model):
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -108,15 +110,16 @@ class WorkspaceConnectionPropertiesV2(_Model):
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -241,7 +244,7 @@ class AADAuthTypeWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, 
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -250,15 +253,16 @@ class AADAuthTypeWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, 
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -266,7 +270,7 @@ class AADAuthTypeWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, 
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar auth_type: Authentication type of the connection target. Required. AAD.
-    :vartype auth_type: str or ~arm_ml_service.models.AAD
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AAD
     """
 
     auth_type: Literal[ConnectionAuthType.AAD] = rest_discriminator(name="authType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -327,7 +331,7 @@ class AccessKeyAuthTypeWorkspaceConnectionProperties(
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -336,15 +340,16 @@ class AccessKeyAuthTypeWorkspaceConnectionProperties(
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -352,9 +357,10 @@ class AccessKeyAuthTypeWorkspaceConnectionProperties(
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar credentials:
-    :vartype credentials: ~arm_ml_service.models.WorkspaceConnectionAccessKey
+    :vartype credentials:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceConnectionAccessKey
     :ivar auth_type: Authentication type of the connection target. Required. ACCESS_KEY.
-    :vartype auth_type: str or ~arm_ml_service.models.ACCESS_KEY
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ACCESS_KEY
     """
 
     credentials: Optional["_models.WorkspaceConnectionAccessKey"] = rest_field(
@@ -392,6 +398,37 @@ class AccessKeyAuthTypeWorkspaceConnectionProperties(
         self.auth_type = ConnectionAuthType.ACCESS_KEY  # type: ignore
 
 
+class AccountApiKeys(_Model):
+    """AccountApiKeys.
+
+    :ivar key1:
+    :vartype key1: str
+    :ivar key2:
+    :vartype key2: str
+    """
+
+    key1: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    key2: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+
+    @overload
+    def __init__(
+        self,
+        *,
+        key1: Optional[str] = None,
+        key2: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class AccountKeyAuthTypeWorkspaceConnectionProperties(
     WorkspaceConnectionPropertiesV2, discriminator="AccountKey"
 ):  # pylint: disable=name-too-long
@@ -419,7 +456,7 @@ class AccountKeyAuthTypeWorkspaceConnectionProperties(
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -428,15 +465,16 @@ class AccountKeyAuthTypeWorkspaceConnectionProperties(
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -444,9 +482,10 @@ class AccountKeyAuthTypeWorkspaceConnectionProperties(
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar credentials: Account key object for workspace connection credential.
-    :vartype credentials: ~arm_ml_service.models.WorkspaceConnectionAccountKey
+    :vartype credentials:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceConnectionAccountKey
     :ivar auth_type: Authentication type of the connection target. Required. ACCOUNT_KEY.
-    :vartype auth_type: str or ~arm_ml_service.models.ACCOUNT_KEY
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ACCOUNT_KEY
     """
 
     credentials: Optional["_models.WorkspaceConnectionAccountKey"] = rest_field(
@@ -494,7 +533,8 @@ class DatastoreCredentials(_Model):
 
     :ivar credentials_type: [Required] Credential type used to authentication with storage.
      Required. Known values are: "AccountKey", "Certificate", "None", "Sas", and "ServicePrincipal".
-    :vartype credentials_type: str or ~arm_ml_service.models.CredentialsType
+    :vartype credentials_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.CredentialsType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -526,10 +566,10 @@ class AccountKeyDatastoreCredentials(DatastoreCredentials, discriminator="Accoun
     """Account key datastore credentials configuration.
 
     :ivar secrets: [Required] Storage account secrets. Required.
-    :vartype secrets: ~arm_ml_service.models.AccountKeyDatastoreSecrets
+    :vartype secrets: ~azure.ai.ml._restclient.arm_ml_service.models.AccountKeyDatastoreSecrets
     :ivar credentials_type: [Required] Credential type used to authentication with storage.
      Required. ACCOUNT_KEY.
-    :vartype credentials_type: str or ~arm_ml_service.models.ACCOUNT_KEY
+    :vartype credentials_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ACCOUNT_KEY
     """
 
     secrets: "_models.AccountKeyDatastoreSecrets" = rest_field(visibility=["create", "update"])
@@ -565,7 +605,7 @@ class DatastoreSecrets(_Model):
 
     :ivar secrets_type: [Required] Credential type used to authentication with storage. Required.
      Known values are: "AccountKey", "Certificate", "Sas", and "ServicePrincipal".
-    :vartype secrets_type: str or ~arm_ml_service.models.SecretsType
+    :vartype secrets_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SecretsType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -600,7 +640,7 @@ class AccountKeyDatastoreSecrets(DatastoreSecrets, discriminator="AccountKey"):
     :vartype key: str
     :ivar secrets_type: [Required] Credential type used to authentication with storage. Required.
      ACCOUNT_KEY.
-    :vartype secrets_type: str or ~arm_ml_service.models.ACCOUNT_KEY
+    :vartype secrets_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ACCOUNT_KEY
     """
 
     key: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -632,7 +672,8 @@ class AcrDetails(_Model):
 
     :ivar system_created_acr_account: Details of system created ACR account to be used for the
      Registry.
-    :vartype system_created_acr_account: ~arm_ml_service.models.SystemCreatedAcrAccount
+    :vartype system_created_acr_account:
+     ~azure.ai.ml._restclient.arm_ml_service.models.SystemCreatedAcrAccount
     """
 
     system_created_acr_account: Optional["_models.SystemCreatedAcrAccount"] = rest_field(
@@ -658,6 +699,68 @@ class AcrDetails(_Model):
         super().__init__(*args, **kwargs)
 
 
+class ActualCapacityInfo(_Model):
+    """ActualCapacityInfo.
+
+    :ivar total: Gets or sets the total number of instances (scale units) regardless of
+     provisioning state or whether current group payload version matches the target group payload.
+    :vartype total: int
+    :ivar succeeded: Gets or sets the number of instances (scale units) which have Succeeded
+     provisioning state and target group payload.
+    :vartype succeeded: int
+    :ivar failed: Gets or sets the number of instances (scale units) which have Failed provisioning
+     state and have target group payload.
+    :vartype failed: int
+    :ivar outdated_succeeded: Gets or sets the number of instances (scale units) which have
+     Succeeded provisioning state but do not have target group payload.
+    :vartype outdated_succeeded: int
+    :ivar outdated_failed: Gets or sets the number of instances (scale units) which have Failed
+     provisioning state but do not have target group payload.
+    :vartype outdated_failed: int
+    """
+
+    total: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Gets or sets the total number of instances (scale units) regardless of provisioning state or
+     whether current group payload version matches the target group payload."""
+    succeeded: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Gets or sets the number of instances (scale units) which have Succeeded provisioning state and
+     target group payload."""
+    failed: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Gets or sets the number of instances (scale units) which have Failed provisioning state and
+     have target group payload."""
+    outdated_succeeded: Optional[int] = rest_field(
+        name="outdatedSucceeded", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets the number of instances (scale units) which have Succeeded provisioning state but
+     do not have target group payload."""
+    outdated_failed: Optional[int] = rest_field(
+        name="outdatedFailed", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets the number of instances (scale units) which have Failed provisioning state but do
+     not have target group payload."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        total: Optional[int] = None,
+        succeeded: Optional[int] = None,
+        failed: Optional[int] = None,
+        outdated_succeeded: Optional[int] = None,
+        outdated_failed: Optional[int] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class Compute(_Model):
     """Machine Learning compute object.
 
@@ -668,13 +771,14 @@ class Compute(_Model):
     :ivar compute_type: The type of compute. Required. Known values are: "AKS", "Kubernetes",
      "AmlCompute", "ComputeInstance", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics", and "SynapseSpark".
-    :vartype compute_type: str or ~arm_ml_service.models.ComputeType
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ComputeType
     :ivar compute_location: Location for the underlying compute.
     :vartype compute_location: str
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Known values are: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar description: The description of the Machine Learning compute.
     :vartype description: str
     :ivar created_on: The time at which the compute was created.
@@ -684,7 +788,8 @@ class Compute(_Model):
     :ivar resource_id: ARM resource id of the underlying compute.
     :vartype resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
-    :vartype provisioning_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype provisioning_errors:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -759,7 +864,8 @@ class AKS(Compute, discriminator="AKS"):
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Known values are: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar description: The description of the Machine Learning compute.
     :vartype description: str
     :ivar created_on: The time at which the compute was created.
@@ -769,7 +875,8 @@ class AKS(Compute, discriminator="AKS"):
     :ivar resource_id: ARM resource id of the underlying compute.
     :vartype resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
-    :vartype provisioning_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype provisioning_errors:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -777,9 +884,9 @@ class AKS(Compute, discriminator="AKS"):
      and AAD exclusively for authentication.
     :vartype disable_local_auth: bool
     :ivar properties: AKS properties.
-    :vartype properties: ~arm_ml_service.models.AKSSchemaProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.AKSSchemaProperties
     :ivar compute_type: The type of compute. Required. AKS.
-    :vartype compute_type: str or ~arm_ml_service.models.AKS
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AKS
     """
 
     properties: Optional["_models.AKSSchemaProperties"] = rest_field(
@@ -821,7 +928,7 @@ class ComputeSecrets(_Model):
     :ivar compute_type: The type of compute. Required. Known values are: "AKS", "Kubernetes",
      "AmlCompute", "ComputeInstance", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics", and "SynapseSpark".
-    :vartype compute_type: str or ~arm_ml_service.models.ComputeType
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ComputeType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -862,7 +969,7 @@ class AksComputeSecrets(ComputeSecrets, discriminator="AKS"):
     :ivar image_pull_secret_name: Image registry pull secret.
     :vartype image_pull_secret_name: str
     :ivar compute_type: The type of compute. Required. AKS.
-    :vartype compute_type: str or ~arm_ml_service.models.AKS
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AKS
     """
 
     user_kube_config: Optional[str] = rest_field(
@@ -962,21 +1069,23 @@ class AKSSchemaProperties(_Model):
     :ivar cluster_fqdn: Cluster full qualified domain name.
     :vartype cluster_fqdn: str
     :ivar system_services: System services.
-    :vartype system_services: list[~arm_ml_service.models.SystemService]
+    :vartype system_services: list[~azure.ai.ml._restclient.arm_ml_service.models.SystemService]
     :ivar agent_count: Number of agents.
     :vartype agent_count: int
     :ivar agent_vm_size: Agent virtual machine size.
     :vartype agent_vm_size: str
     :ivar cluster_purpose: Intended usage of the cluster. Known values are: "FastProd",
      "DenseProd", and "DevTest".
-    :vartype cluster_purpose: str or ~arm_ml_service.models.ClusterPurpose
+    :vartype cluster_purpose: str or ~azure.ai.ml._restclient.arm_ml_service.models.ClusterPurpose
     :ivar ssl_configuration: SSL configuration.
-    :vartype ssl_configuration: ~arm_ml_service.models.SslConfiguration
+    :vartype ssl_configuration: ~azure.ai.ml._restclient.arm_ml_service.models.SslConfiguration
     :ivar aks_networking_configuration: AKS networking configuration for vnet.
-    :vartype aks_networking_configuration: ~arm_ml_service.models.AksNetworkingConfiguration
+    :vartype aks_networking_configuration:
+     ~azure.ai.ml._restclient.arm_ml_service.models.AksNetworkingConfiguration
     :ivar load_balancer_type: Load Balancer Type. Known values are: "PublicIp" and
      "InternalLoadBalancer".
-    :vartype load_balancer_type: str or ~arm_ml_service.models.LoadBalancerType
+    :vartype load_balancer_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.LoadBalancerType
     :ivar load_balancer_subnet: Load Balancer Subnet.
     :vartype load_balancer_subnet: str
     """
@@ -1050,7 +1159,8 @@ class MonitoringFeatureFilterBase(_Model):
     :ivar filter_type: [Required] Specifies the feature filter to leverage when selecting features
      to calculate metrics over. Required. Known values are: "AllFeatures", "TopNByAttribution", and
      "FeatureSubset".
-    :vartype filter_type: str or ~arm_ml_service.models.MonitoringFeatureFilterType
+    :vartype filter_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringFeatureFilterType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -1082,7 +1192,7 @@ class AllFeatures(MonitoringFeatureFilterBase, discriminator="AllFeatures"):
 
     :ivar filter_type: [Required] Specifies the feature filter to leverage when selecting features
      to calculate metrics over. Required. Includes all features.
-    :vartype filter_type: str or ~arm_ml_service.models.ALL_FEATURES
+    :vartype filter_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ALL_FEATURES
     """
 
     filter_type: Literal[MonitoringFeatureFilterType.ALL_FEATURES] = rest_discriminator(name="filterType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -1113,7 +1223,7 @@ class Nodes(_Model):
     AllNodes
 
     :ivar nodes_value_type: [Required] Type of the Nodes value. Required. "All"
-    :vartype nodes_value_type: str or ~arm_ml_service.models.NodesValueType
+    :vartype nodes_value_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.NodesValueType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -1142,7 +1252,7 @@ class AllNodes(Nodes, discriminator="All"):
     """All nodes means the service will be running on all of the nodes of the job.
 
     :ivar nodes_value_type: [Required] Type of the Nodes value. Required. ALL.
-    :vartype nodes_value_type: str or ~arm_ml_service.models.ALL
+    :vartype nodes_value_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ALL
     """
 
     nodes_value_type: Literal[NodesValueType.ALL] = rest_discriminator(name="nodesValueType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -1173,7 +1283,8 @@ class AmlCompute(Compute, discriminator="AmlCompute"):
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Known values are: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar description: The description of the Machine Learning compute.
     :vartype description: str
     :ivar created_on: The time at which the compute was created.
@@ -1183,7 +1294,8 @@ class AmlCompute(Compute, discriminator="AmlCompute"):
     :ivar resource_id: ARM resource id of the underlying compute.
     :vartype resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
-    :vartype provisioning_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype provisioning_errors:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -1191,9 +1303,9 @@ class AmlCompute(Compute, discriminator="AmlCompute"):
      and AAD exclusively for authentication.
     :vartype disable_local_auth: bool
     :ivar properties: Properties of AmlCompute.
-    :vartype properties: ~arm_ml_service.models.AmlComputeProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.AmlComputeProperties
     :ivar compute_type: The type of compute. Required. AML_COMPUTE.
-    :vartype compute_type: str or ~arm_ml_service.models.AML_COMPUTE
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AML_COMPUTE
     """
 
     properties: Optional["_models.AmlComputeProperties"] = rest_field(
@@ -1240,7 +1352,7 @@ class AmlComputeNodeInformation(_Model):
     :ivar node_state: State of the compute node. Values are idle, running, preparing, unusable,
      leaving and preempted. Known values are: "idle", "running", "preparing", "unusable", "leaving",
      and "preempted".
-    :vartype node_state: str or ~arm_ml_service.models.NodeState
+    :vartype node_state: str or ~azure.ai.ml._restclient.arm_ml_service.models.NodeState
     :ivar run_id: Run ID.
     :vartype run_id: str
     """
@@ -1265,37 +1377,40 @@ class AmlComputeProperties(_Model):
     """AML Compute properties.
 
     :ivar os_type: Compute OS Type. Known values are: "Linux" and "Windows".
-    :vartype os_type: str or ~arm_ml_service.models.OsType
+    :vartype os_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.OsType
     :ivar vm_size: Virtual Machine Size.
     :vartype vm_size: str
     :ivar vm_priority: Virtual Machine priority. Known values are: "Dedicated" and "LowPriority".
-    :vartype vm_priority: str or ~arm_ml_service.models.VmPriority
+    :vartype vm_priority: str or ~azure.ai.ml._restclient.arm_ml_service.models.VmPriority
     :ivar virtual_machine_image: Virtual Machine image for AML Compute - windows only.
-    :vartype virtual_machine_image: ~arm_ml_service.models.VirtualMachineImage
+    :vartype virtual_machine_image:
+     ~azure.ai.ml._restclient.arm_ml_service.models.VirtualMachineImage
     :ivar isolated_network: Network is isolated or not.
     :vartype isolated_network: bool
     :ivar scale_settings: Scale settings for AML Compute.
-    :vartype scale_settings: ~arm_ml_service.models.ScaleSettings
+    :vartype scale_settings: ~azure.ai.ml._restclient.arm_ml_service.models.ScaleSettings
     :ivar user_account_credentials: User account credentials.
-    :vartype user_account_credentials: ~arm_ml_service.models.UserAccountCredentials
+    :vartype user_account_credentials:
+     ~azure.ai.ml._restclient.arm_ml_service.models.UserAccountCredentials
     :ivar subnet: Subnet.
-    :vartype subnet: ~arm_ml_service.models.ResourceId
+    :vartype subnet: ~azure.ai.ml._restclient.arm_ml_service.models.ResourceId
     :ivar remote_login_port_public_access: Close remote Login Access Port. Known values are:
      "Enabled", "Disabled", and "NotSpecified".
     :vartype remote_login_port_public_access: str or
-     ~arm_ml_service.models.RemoteLoginPortPublicAccess
+     ~azure.ai.ml._restclient.arm_ml_service.models.RemoteLoginPortPublicAccess
     :ivar allocation_state: Allocation state. Known values are: "Steady" and "Resizing".
-    :vartype allocation_state: str or ~arm_ml_service.models.AllocationState
+    :vartype allocation_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AllocationState
     :ivar allocation_state_transition_time: Allocation state transition time.
     :vartype allocation_state_transition_time: ~datetime.datetime
     :ivar errors: Errors.
-    :vartype errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype errors: list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar current_node_count: Current node count.
     :vartype current_node_count: int
     :ivar target_node_count: Target node count.
     :vartype target_node_count: int
     :ivar node_state_counts: Node state counts.
-    :vartype node_state_counts: ~arm_ml_service.models.NodeStateCounts
+    :vartype node_state_counts: ~azure.ai.ml._restclient.arm_ml_service.models.NodeStateCounts
     :ivar enable_node_public_ip: Enable node public IP.
     :vartype enable_node_public_ip: bool
     :ivar property_bag: A property bag containing additional properties.
@@ -1396,7 +1511,8 @@ class IdentityConfiguration(_Model):
 
     :ivar identity_type: [Required] Specifies the type of identity framework. Required. Known
      values are: "Managed", "AMLToken", and "UserIdentity".
-    :vartype identity_type: str or ~arm_ml_service.models.IdentityConfigurationType
+    :vartype identity_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.IdentityConfigurationType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -1426,7 +1542,7 @@ class AmlToken(IdentityConfiguration, discriminator="AMLToken"):
     """AML Token identity configuration.
 
     :ivar identity_type: [Required] Specifies the type of identity framework. Required. AML_TOKEN.
-    :vartype identity_type: str or ~arm_ml_service.models.AML_TOKEN
+    :vartype identity_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AML_TOKEN
     """
 
     identity_type: Literal[IdentityConfigurationType.AML_TOKEN] = rest_discriminator(name="identityType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -1457,7 +1573,8 @@ class MonitorComputeIdentityBase(_Model):
 
     :ivar compute_identity_type: [Required] Specifies the type of identity to use within the
      monitoring jobs. Required. Known values are: "AmlToken" and "ManagedIdentity".
-    :vartype compute_identity_type: str or ~arm_ml_service.models.MonitorComputeIdentityType
+    :vartype compute_identity_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitorComputeIdentityType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -1488,7 +1605,7 @@ class AmlTokenComputeIdentity(MonitorComputeIdentityBase, discriminator="AmlToke
 
     :ivar compute_identity_type: [Required] Specifies the type of identity to use within the
      monitoring jobs. Required. Authenticates through user's AML token.
-    :vartype compute_identity_type: str or ~arm_ml_service.models.AML_TOKEN
+    :vartype compute_identity_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AML_TOKEN
     """
 
     compute_identity_type: Literal[MonitorComputeIdentityType.AML_TOKEN] = rest_discriminator(name="computeIdentityType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -1560,7 +1677,8 @@ class DataReferenceCredential(_Model):
 
     :ivar credential_type: [Required] Credential type used to authentication with storage.
      Required. Known values are: "SAS", "DockerCredentials", "ManagedIdentity", and "NoCredentials".
-    :vartype credential_type: str or ~arm_ml_service.models.DataReferenceCredentialType
+    :vartype credential_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DataReferenceCredentialType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -1593,7 +1711,7 @@ class AnonymousAccessCredential(DataReferenceCredential, discriminator="NoCreden
 
     :ivar credential_type: [Required] Credential type used to authentication with storage.
      Required. NO_CREDENTIALS.
-    :vartype credential_type: str or ~arm_ml_service.models.NO_CREDENTIALS
+    :vartype credential_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.NO_CREDENTIALS
     """
 
     credential_type: Literal[DataReferenceCredentialType.NO_CREDENTIALS] = rest_discriminator(name="credentialType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -1662,7 +1780,7 @@ class ApiKeyAuthWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, d
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -1671,15 +1789,16 @@ class ApiKeyAuthWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, d
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -1687,9 +1806,9 @@ class ApiKeyAuthWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, d
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar credentials:
-    :vartype credentials: ~arm_ml_service.models.WorkspaceConnectionApiKey
+    :vartype credentials: ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceConnectionApiKey
     :ivar auth_type: Authentication type of the connection target. Required. API_KEY.
-    :vartype auth_type: str or ~arm_ml_service.models.API_KEY
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.API_KEY
     """
 
     credentials: Optional["_models.WorkspaceConnectionApiKey"] = rest_field(
@@ -1896,7 +2015,7 @@ class AssetReferenceBase(_Model):
 
     :ivar reference_type: [Required] Specifies the type of asset reference. Required. Known values
      are: "Id", "DataPath", and "OutputPath".
-    :vartype reference_type: str or ~arm_ml_service.models.ReferenceType
+    :vartype reference_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ReferenceType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -1965,7 +2084,7 @@ class ForecastHorizon(_Model):
 
     :ivar mode: [Required] Set forecast horizon value selection mode. Required. Known values are:
      "Auto" and "Custom".
-    :vartype mode: str or ~arm_ml_service.models.ForecastHorizonMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.ForecastHorizonMode
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -1996,7 +2115,7 @@ class AutoForecastHorizon(ForecastHorizon, discriminator="Auto"):
 
     :ivar mode: [Required] Set forecast horizon value selection mode. Required. Forecast horizon to
      be determined automatically.
-    :vartype mode: str or ~arm_ml_service.models.AUTO
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.AUTO
     """
 
     mode: Literal[ForecastHorizonMode.AUTO] = rest_discriminator(name="mode", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -2024,7 +2143,7 @@ class JobBaseProperties(ResourceBase):
     """Base definition for a job.
 
     You probably want to use the sub-classes and not this class directly. Known sub-classes are:
-    AutoMLJob, CommandJob, FineTuningJob, PipelineJob, SparkJob, SweepJob
+    AutoMLJob, CommandJob, DistillationJob, FineTuningJob, PipelineJob, SparkJob, SweepJob
 
     :ivar description: The asset description text.
     :vartype description: str
@@ -2043,21 +2162,24 @@ class JobBaseProperties(ResourceBase):
     :vartype experiment_name: str
     :ivar identity: Identity configuration. If set, this should be one of AmlToken,
      ManagedIdentity, UserIdentity or null. Defaults to AmlToken if null.
-    :vartype identity: ~arm_ml_service.models.IdentityConfiguration
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.IdentityConfiguration
     :ivar is_archived: Is the asset archived?.
     :vartype is_archived: bool
     :ivar job_type: [Required] Specifies the type of job. Required. Known values are: "AutoML",
-     "Command", "Sweep", "Pipeline", and "Spark".
-    :vartype job_type: str or ~arm_ml_service.models.JobType
+     "Command", "Sweep", "Pipeline", "Spark", "FineTuning", and "Distillation".
+    :vartype job_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobType
     :ivar notification_setting: Notification setting for the job.
-    :vartype notification_setting: ~arm_ml_service.models.NotificationSetting
+    :vartype notification_setting:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NotificationSetting
+    :ivar parent_job_name: Parent job name.
+    :vartype parent_job_name: str
     :ivar services: List of JobEndpoints. For local jobs, a job endpoint will have an endpoint
      value of FileStreamObject.
-    :vartype services: dict[str, ~arm_ml_service.models.JobService]
+    :vartype services: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobService]
     :ivar status: Status of the job. Known values are: "NotStarted", "Starting", "Provisioning",
      "Preparing", "Queued", "Running", "Finalizing", "CancelRequested", "Completed", "Failed",
      "Canceled", "NotResponding", "Paused", and "Unknown".
-    :vartype status: str or ~arm_ml_service.models.JobStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobStatus
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -2077,11 +2199,15 @@ class JobBaseProperties(ResourceBase):
     """Is the asset archived?."""
     job_type: str = rest_discriminator(name="jobType", visibility=["read", "create"])
     """[Required] Specifies the type of job. Required. Known values are: \"AutoML\", \"Command\",
-     \"Sweep\", \"Pipeline\", and \"Spark\"."""
+     \"Sweep\", \"Pipeline\", \"Spark\", \"FineTuning\", and \"Distillation\"."""
     notification_setting: Optional["_models.NotificationSetting"] = rest_field(
         name="notificationSetting", visibility=["read", "create", "update"]
     )
     """Notification setting for the job."""
+    parent_job_name: Optional[str] = rest_field(
+        name="parentJobName", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Parent job name."""
     services: Optional[dict[str, "_models.JobService"]] = rest_field(
         visibility=["read", "create", "update", "delete", "query"]
     )
@@ -2107,6 +2233,7 @@ class JobBaseProperties(ResourceBase):
         identity: Optional["_models.IdentityConfiguration"] = None,
         is_archived: Optional[bool] = None,
         notification_setting: Optional["_models.NotificationSetting"] = None,
+        parent_job_name: Optional[str] = None,
         services: Optional[dict[str, "_models.JobService"]] = None,
     ) -> None: ...
 
@@ -2142,18 +2269,21 @@ class AutoMLJob(JobBaseProperties, discriminator="AutoML"):
     :vartype experiment_name: str
     :ivar identity: Identity configuration. If set, this should be one of AmlToken,
      ManagedIdentity, UserIdentity or null. Defaults to AmlToken if null.
-    :vartype identity: ~arm_ml_service.models.IdentityConfiguration
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.IdentityConfiguration
     :ivar is_archived: Is the asset archived?.
     :vartype is_archived: bool
     :ivar notification_setting: Notification setting for the job.
-    :vartype notification_setting: ~arm_ml_service.models.NotificationSetting
+    :vartype notification_setting:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NotificationSetting
+    :ivar parent_job_name: Parent job name.
+    :vartype parent_job_name: str
     :ivar services: List of JobEndpoints. For local jobs, a job endpoint will have an endpoint
      value of FileStreamObject.
-    :vartype services: dict[str, ~arm_ml_service.models.JobService]
+    :vartype services: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobService]
     :ivar status: Status of the job. Known values are: "NotStarted", "Starting", "Provisioning",
      "Preparing", "Queued", "Running", "Finalizing", "CancelRequested", "Completed", "Failed",
      "Canceled", "NotResponding", "Paused", and "Unknown".
-    :vartype status: str or ~arm_ml_service.models.JobStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobStatus
     :ivar environment_id: The ARM resource ID of the Environment specification for the job. This is
      optional value to provide, if not provided, AutoML will default this to Production AutoML
      curated environment version when running the job.
@@ -2161,16 +2291,16 @@ class AutoMLJob(JobBaseProperties, discriminator="AutoML"):
     :ivar environment_variables: Environment variables included in the job.
     :vartype environment_variables: dict[str, str]
     :ivar outputs: Mapping of output data bindings used in the job.
-    :vartype outputs: dict[str, ~arm_ml_service.models.JobOutput]
+    :vartype outputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobOutput]
     :ivar queue_settings: Queue settings for the job.
-    :vartype queue_settings: ~arm_ml_service.models.QueueSettings
+    :vartype queue_settings: ~azure.ai.ml._restclient.arm_ml_service.models.QueueSettings
     :ivar resources: Compute Resource configuration for the job.
-    :vartype resources: ~arm_ml_service.models.JobResourceConfiguration
+    :vartype resources: ~azure.ai.ml._restclient.arm_ml_service.models.JobResourceConfiguration
     :ivar task_details: [Required] This represents scenario which can be one of Tables/NLP/Image.
      Required.
-    :vartype task_details: ~arm_ml_service.models.AutoMLVertical
+    :vartype task_details: ~azure.ai.ml._restclient.arm_ml_service.models.AutoMLVertical
     :ivar job_type: [Required] Specifies the type of job. Required. AUTO_ML.
-    :vartype job_type: str or ~arm_ml_service.models.AUTO_ML
+    :vartype job_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AUTO_ML
     """
 
     environment_id: Optional[str] = rest_field(name="environmentId", visibility=["read", "create"])
@@ -2209,6 +2339,7 @@ class AutoMLJob(JobBaseProperties, discriminator="AutoML"):
         identity: Optional["_models.IdentityConfiguration"] = None,
         is_archived: Optional[bool] = None,
         notification_setting: Optional["_models.NotificationSetting"] = None,
+        parent_job_name: Optional[str] = None,
         services: Optional[dict[str, "_models.JobService"]] = None,
         environment_id: Optional[str] = None,
         environment_variables: Optional[dict[str, str]] = None,
@@ -2240,7 +2371,7 @@ class AutoMLVertical(_Model):
 
     :ivar log_verbosity: Enum for setting log verbosity. Known values are: "NotSet", "Debug",
      "Info", "Warning", "Error", and "Critical".
-    :vartype log_verbosity: str or ~arm_ml_service.models.LogVerbosity
+    :vartype log_verbosity: str or ~azure.ai.ml._restclient.arm_ml_service.models.LogVerbosity
     :ivar target_column_name: Target column name: This is prediction values column. Also known as
      label column name in context of classification tasks.
     :vartype target_column_name: str
@@ -2248,9 +2379,9 @@ class AutoMLVertical(_Model):
      "Classification", "Regression", "Forecasting", "ImageClassification",
      "ImageClassificationMultilabel", "ImageObjectDetection", "ImageInstanceSegmentation",
      "TextClassification", "TextClassificationMultilabel", and "TextNER".
-    :vartype task_type: str or ~arm_ml_service.models.TaskType
+    :vartype task_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.TaskType
     :ivar training_data: [Required] Training data input. Required.
-    :vartype training_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -2303,7 +2434,7 @@ class NCrossValidations(_Model):
 
     :ivar mode: [Required] Mode for determining N-Cross validations. Required. Known values are:
      "Auto" and "Custom".
-    :vartype mode: str or ~arm_ml_service.models.NCrossValidationsMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.NCrossValidationsMode
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -2334,7 +2465,7 @@ class AutoNCrossValidations(NCrossValidations, discriminator="Auto"):
 
     :ivar mode: [Required] Mode for determining N-Cross validations. Required. Determine N-Cross
      validations value automatically. Supported only for 'Forecasting' AutoML task.
-    :vartype mode: str or ~arm_ml_service.models.AUTO
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.AUTO
     """
 
     mode: Literal[NCrossValidationsMode.AUTO] = rest_discriminator(name="mode", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -2437,7 +2568,7 @@ class Seasonality(_Model):
     AutoSeasonality, CustomSeasonality
 
     :ivar mode: [Required] Seasonality mode. Required. Known values are: "Auto" and "Custom".
-    :vartype mode: str or ~arm_ml_service.models.SeasonalityMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.SeasonalityMode
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -2466,7 +2597,7 @@ class AutoSeasonality(Seasonality, discriminator="Auto"):
     """AutoSeasonality.
 
     :ivar mode: [Required] Seasonality mode. Required. Seasonality to be determined automatically.
-    :vartype mode: str or ~arm_ml_service.models.AUTO
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.AUTO
     """
 
     mode: Literal[SeasonalityMode.AUTO] = rest_discriminator(name="mode", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -2497,7 +2628,7 @@ class TargetLags(_Model):
 
     :ivar mode: [Required] Set target lags mode - Auto/Custom. Required. Known values are: "Auto"
      and "Custom".
-    :vartype mode: str or ~arm_ml_service.models.TargetLagsMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.TargetLagsMode
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -2528,7 +2659,7 @@ class AutoTargetLags(TargetLags, discriminator="Auto"):
 
     :ivar mode: [Required] Set target lags mode - Auto/Custom. Required. Target lags to be
      determined automatically.
-    :vartype mode: str or ~arm_ml_service.models.AUTO
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.AUTO
     """
 
     mode: Literal[TargetLagsMode.AUTO] = rest_discriminator(name="mode", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -2560,7 +2691,8 @@ class TargetRollingWindowSize(_Model):
 
     :ivar mode: [Required] TargetRollingWindowSiz detection mode. Required. Known values are:
      "Auto" and "Custom".
-    :vartype mode: str or ~arm_ml_service.models.TargetRollingWindowSizeMode
+    :vartype mode: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.TargetRollingWindowSizeMode
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -2591,7 +2723,7 @@ class AutoTargetRollingWindowSize(TargetRollingWindowSize, discriminator="Auto")
 
     :ivar mode: [Required] TargetRollingWindowSiz detection mode. Required. Determine rolling
      windows size automatically.
-    :vartype mode: str or ~arm_ml_service.models.AUTO
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.AUTO
     """
 
     mode: Literal[TargetRollingWindowSizeMode.AUTO] = rest_discriminator(name="mode", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -2615,6 +2747,64 @@ class AutoTargetRollingWindowSize(TargetRollingWindowSize, discriminator="Auto")
         self.mode = TargetRollingWindowSizeMode.AUTO  # type: ignore
 
 
+class AvailableQuota(_Model):
+    """AvailableQuota.
+
+    :ivar properties: Available quota properties.
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.AvailableQuotaProperties
+    """
+
+    properties: Optional["_models.AvailableQuotaProperties"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Available quota properties."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        properties: Optional["_models.AvailableQuotaProperties"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class AvailableQuotaProperties(_Model):
+    """AvailableQuotaProperties.
+
+    :ivar total: The number of available quota.
+    :vartype total: int
+    """
+
+    total: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """The number of available quota."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        total: Optional[int] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class DatastoreProperties(ResourceBase):
     """Base definition for datastore contents configuration.
 
@@ -2629,10 +2819,10 @@ class DatastoreProperties(ResourceBase):
     :ivar tags: Tag dictionary. Tags can be added, removed, and updated.
     :vartype tags: dict[str, str]
     :ivar credentials: [Required] Account credentials. Required.
-    :vartype credentials: ~arm_ml_service.models.DatastoreCredentials
+    :vartype credentials: ~azure.ai.ml._restclient.arm_ml_service.models.DatastoreCredentials
     :ivar datastore_type: Enum to determine the datastore contents type. Required. Known values
      are: "AzureBlob", "AzureDataLakeGen1", "AzureDataLakeGen2", "AzureFile", and "OneLake".
-    :vartype datastore_type: str or ~arm_ml_service.models.DatastoreType
+    :vartype datastore_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.DatastoreType
     :ivar is_default: Readonly property to indicate if datastore is the workspace default
      datastore.
     :vartype is_default: bool
@@ -2681,7 +2871,7 @@ class AzureBlobDatastore(DatastoreProperties, discriminator="AzureBlob"):
     :ivar tags: Tag dictionary. Tags can be added, removed, and updated.
     :vartype tags: dict[str, str]
     :ivar credentials: [Required] Account credentials. Required.
-    :vartype credentials: ~arm_ml_service.models.DatastoreCredentials
+    :vartype credentials: ~azure.ai.ml._restclient.arm_ml_service.models.DatastoreCredentials
     :ivar is_default: Readonly property to indicate if datastore is the workspace default
      datastore.
     :vartype is_default: bool
@@ -2701,9 +2891,9 @@ class AzureBlobDatastore(DatastoreProperties, discriminator="AzureBlob"):
      service data access to customer's storage. Known values are: "None",
      "WorkspaceSystemAssignedIdentity", and "WorkspaceUserAssignedIdentity".
     :vartype service_data_access_auth_identity: str or
-     ~arm_ml_service.models.ServiceDataAccessAuthIdentity
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServiceDataAccessAuthIdentity
     :ivar datastore_type: [Required] Storage type backing the datastore. Required. AZURE_BLOB.
-    :vartype datastore_type: str or ~arm_ml_service.models.AZURE_BLOB
+    :vartype datastore_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AZURE_BLOB
     """
 
     resource_group: Optional[str] = rest_field(
@@ -2770,7 +2960,7 @@ class AzureDataLakeGen1Datastore(DatastoreProperties, discriminator="AzureDataLa
     :ivar tags: Tag dictionary. Tags can be added, removed, and updated.
     :vartype tags: dict[str, str]
     :ivar credentials: [Required] Account credentials. Required.
-    :vartype credentials: ~arm_ml_service.models.DatastoreCredentials
+    :vartype credentials: ~azure.ai.ml._restclient.arm_ml_service.models.DatastoreCredentials
     :ivar is_default: Readonly property to indicate if datastore is the workspace default
      datastore.
     :vartype is_default: bool
@@ -2782,12 +2972,13 @@ class AzureDataLakeGen1Datastore(DatastoreProperties, discriminator="AzureDataLa
      service data access to customer's storage. Known values are: "None",
      "WorkspaceSystemAssignedIdentity", and "WorkspaceUserAssignedIdentity".
     :vartype service_data_access_auth_identity: str or
-     ~arm_ml_service.models.ServiceDataAccessAuthIdentity
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServiceDataAccessAuthIdentity
     :ivar store_name: [Required] Azure Data Lake store name. Required.
     :vartype store_name: str
     :ivar datastore_type: [Required] Storage type backing the datastore. Required.
      AZURE_DATA_LAKE_GEN1.
-    :vartype datastore_type: str or ~arm_ml_service.models.AZURE_DATA_LAKE_GEN1
+    :vartype datastore_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AZURE_DATA_LAKE_GEN1
     """
 
     resource_group: Optional[str] = rest_field(
@@ -2845,7 +3036,7 @@ class AzureDataLakeGen2Datastore(DatastoreProperties, discriminator="AzureDataLa
     :ivar tags: Tag dictionary. Tags can be added, removed, and updated.
     :vartype tags: dict[str, str]
     :ivar credentials: [Required] Account credentials. Required.
-    :vartype credentials: ~arm_ml_service.models.DatastoreCredentials
+    :vartype credentials: ~azure.ai.ml._restclient.arm_ml_service.models.DatastoreCredentials
     :ivar is_default: Readonly property to indicate if datastore is the workspace default
      datastore.
     :vartype is_default: bool
@@ -2865,10 +3056,11 @@ class AzureDataLakeGen2Datastore(DatastoreProperties, discriminator="AzureDataLa
      service data access to customer's storage. Known values are: "None",
      "WorkspaceSystemAssignedIdentity", and "WorkspaceUserAssignedIdentity".
     :vartype service_data_access_auth_identity: str or
-     ~arm_ml_service.models.ServiceDataAccessAuthIdentity
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServiceDataAccessAuthIdentity
     :ivar datastore_type: [Required] Storage type backing the datastore. Required.
      AZURE_DATA_LAKE_GEN2.
-    :vartype datastore_type: str or ~arm_ml_service.models.AZURE_DATA_LAKE_GEN2
+    :vartype datastore_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AZURE_DATA_LAKE_GEN2
     """
 
     resource_group: Optional[str] = rest_field(
@@ -2935,7 +3127,7 @@ class Webhook(_Model):
     :vartype event_type: str
     :ivar webhook_type: [Required] Specifies the type of service to send a callback. Required.
      "AzureDevOps"
-    :vartype webhook_type: str or ~arm_ml_service.models.WebhookType
+    :vartype webhook_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.WebhookType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -2970,7 +3162,7 @@ class AzureDevOpsWebhook(Webhook, discriminator="AzureDevOps"):
     :vartype event_type: str
     :ivar webhook_type: [Required] Specifies the type of service to send a callback. Required.
      AZURE_DEV_OPS.
-    :vartype webhook_type: str or ~arm_ml_service.models.AZURE_DEV_OPS
+    :vartype webhook_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AZURE_DEV_OPS
     """
 
     webhook_type: Literal[WebhookType.AZURE_DEV_OPS] = rest_discriminator(name="webhookType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -3005,7 +3197,7 @@ class AzureFileDatastore(DatastoreProperties, discriminator="AzureFile"):
     :ivar tags: Tag dictionary. Tags can be added, removed, and updated.
     :vartype tags: dict[str, str]
     :ivar credentials: [Required] Account credentials. Required.
-    :vartype credentials: ~arm_ml_service.models.DatastoreCredentials
+    :vartype credentials: ~azure.ai.ml._restclient.arm_ml_service.models.DatastoreCredentials
     :ivar is_default: Readonly property to indicate if datastore is the workspace default
      datastore.
     :vartype is_default: bool
@@ -3026,9 +3218,9 @@ class AzureFileDatastore(DatastoreProperties, discriminator="AzureFile"):
      service data access to customer's storage. Known values are: "None",
      "WorkspaceSystemAssignedIdentity", and "WorkspaceUserAssignedIdentity".
     :vartype service_data_access_auth_identity: str or
-     ~arm_ml_service.models.ServiceDataAccessAuthIdentity
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServiceDataAccessAuthIdentity
     :ivar datastore_type: [Required] Storage type backing the datastore. Required. AZURE_FILE.
-    :vartype datastore_type: str or ~arm_ml_service.models.AZURE_FILE
+    :vartype datastore_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AZURE_FILE
     """
 
     resource_group: Optional[str] = rest_field(
@@ -3092,19 +3284,19 @@ class FineTuningVertical(_Model):
     AzureOpenAiFineTuning, CustomModelFineTuning
 
     :ivar model: [Required] Input model for fine tuning. Required.
-    :vartype model: ~arm_ml_service.models.JobInput
+    :vartype model: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
     :ivar model_provider: [Required] Enum to determine the type of fine tuning. Required. Known
      values are: "AzureOpenAI" and "Custom".
-    :vartype model_provider: str or ~arm_ml_service.models.ModelProvider
+    :vartype model_provider: str or ~azure.ai.ml._restclient.arm_ml_service.models.ModelProvider
     :ivar task_type: [Required] Fine tuning task type. Required. Known values are:
      "ChatCompletion", "TextCompletion", "TextClassification", "QuestionAnswering",
      "TextSummarization", "TokenClassification", "TextTranslation", "ImageClassification",
      "ImageInstanceSegmentation", "ImageObjectDetection", and "VideoMultiObjectTracking".
-    :vartype task_type: str or ~arm_ml_service.models.FineTuningTaskType
+    :vartype task_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.FineTuningTaskType
     :ivar training_data: [Required] Training data for fine tuning. Required.
-    :vartype training_data: ~arm_ml_service.models.JobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
     :ivar validation_data: Validation data for fine tuning.
-    :vartype validation_data: ~arm_ml_service.models.JobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -3153,21 +3345,22 @@ class AzureOpenAiFineTuning(FineTuningVertical, discriminator="AzureOpenAI"):
     """AzureOpenAiFineTuning.
 
     :ivar model: [Required] Input model for fine tuning. Required.
-    :vartype model: ~arm_ml_service.models.JobInput
+    :vartype model: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
     :ivar task_type: [Required] Fine tuning task type. Required. Known values are:
      "ChatCompletion", "TextCompletion", "TextClassification", "QuestionAnswering",
      "TextSummarization", "TokenClassification", "TextTranslation", "ImageClassification",
      "ImageInstanceSegmentation", "ImageObjectDetection", and "VideoMultiObjectTracking".
-    :vartype task_type: str or ~arm_ml_service.models.FineTuningTaskType
+    :vartype task_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.FineTuningTaskType
     :ivar training_data: [Required] Training data for fine tuning. Required.
-    :vartype training_data: ~arm_ml_service.models.JobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
     :ivar validation_data: Validation data for fine tuning.
-    :vartype validation_data: ~arm_ml_service.models.JobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
     :ivar hyper_parameters: HyperParameters for fine tuning Azure Open AI model.
-    :vartype hyper_parameters: ~arm_ml_service.models.AzureOpenAiHyperParameters
+    :vartype hyper_parameters:
+     ~azure.ai.ml._restclient.arm_ml_service.models.AzureOpenAiHyperParameters
     :ivar model_provider: [Required] Enum to determine the type of fine tuning. Required. Fine
      tuning using Azure Open AI model.
-    :vartype model_provider: str or ~arm_ml_service.models.AZURE_OPEN_AI
+    :vartype model_provider: str or ~azure.ai.ml._restclient.arm_ml_service.models.AZURE_OPEN_AI
     """
 
     hyper_parameters: Optional["_models.AzureOpenAiHyperParameters"] = rest_field(
@@ -3259,7 +3452,8 @@ class EarlyTerminationPolicy(_Model):
     :vartype evaluation_interval: int
     :ivar policy_type: [Required] Name of policy configuration. Required. Known values are:
      "Bandit", "MedianStopping", and "TruncationSelection".
-    :vartype policy_type: str or ~arm_ml_service.models.EarlyTerminationPolicyType
+    :vartype policy_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.EarlyTerminationPolicyType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -3308,7 +3502,7 @@ class BanditPolicy(EarlyTerminationPolicy, discriminator="Bandit"):
     :ivar slack_factor: Ratio of the allowed distance from the best performing run.
     :vartype slack_factor: float
     :ivar policy_type: [Required] Name of policy configuration. Required. BANDIT.
-    :vartype policy_type: str or ~arm_ml_service.models.BANDIT
+    :vartype policy_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.BANDIT
     """
 
     slack_amount: Optional[float] = rest_field(
@@ -3357,7 +3551,7 @@ class Resource(_Model):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     """
 
     id: Optional[str] = rest_field(visibility=["read"])
@@ -3385,7 +3579,7 @@ class TrackedResource(Resource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     :ivar location: The geo-location where the resource lives. Required.
@@ -3430,20 +3624,20 @@ class BatchDeployment(TrackedResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     :ivar location: The geo-location where the resource lives. Required.
     :vartype location: str
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.BatchDeploymentProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.BatchDeploymentProperties
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     :ivar kind: Metadata used by portal/tooling/etc to render different UX experiences for
      resources of the same type.
     :vartype kind: str
     :ivar sku: Sku details required for ARM contract for Autoscaling.
-    :vartype sku: ~arm_ml_service.models.Sku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
     """
 
     properties: "_models.BatchDeploymentProperties" = rest_field(
@@ -3492,7 +3686,7 @@ class BatchDeploymentConfiguration(_Model):
     :ivar deployment_configuration_type: [Required] The type of the deployment. Required. Known
      values are: "Model" and "PipelineComponent".
     :vartype deployment_configuration_type: str or
-     ~arm_ml_service.models.BatchDeploymentConfigurationType
+     ~azure.ai.ml._restclient.arm_ml_service.models.BatchDeploymentConfigurationType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -3524,7 +3718,7 @@ class EndpointDeploymentPropertiesBase(_Model):
     """Base definition for endpoint deployment.
 
     :ivar code_configuration: Code configuration for the endpoint deployment.
-    :vartype code_configuration: ~arm_ml_service.models.CodeConfiguration
+    :vartype code_configuration: ~azure.ai.ml._restclient.arm_ml_service.models.CodeConfiguration
     :ivar description: Description of the endpoint deployment.
     :vartype description: str
     :ivar environment_id: ARM resource ID or AssetId of the environment specification for the
@@ -3579,7 +3773,7 @@ class BatchDeploymentProperties(EndpointDeploymentPropertiesBase):
     """Batch inference settings per deployment.
 
     :ivar code_configuration: Code configuration for the endpoint deployment.
-    :vartype code_configuration: ~arm_ml_service.models.CodeConfiguration
+    :vartype code_configuration: ~azure.ai.ml._restclient.arm_ml_service.models.CodeConfiguration
     :ivar description: Description of the endpoint deployment.
     :vartype description: str
     :ivar environment_id: ARM resource ID or AssetId of the environment specification for the
@@ -3592,7 +3786,8 @@ class BatchDeploymentProperties(EndpointDeploymentPropertiesBase):
     :ivar compute: Compute target for batch inference operation.
     :vartype compute: str
     :ivar deployment_configuration: Properties relevant to different deployment types.
-    :vartype deployment_configuration: ~arm_ml_service.models.BatchDeploymentConfiguration
+    :vartype deployment_configuration:
+     ~azure.ai.ml._restclient.arm_ml_service.models.BatchDeploymentConfiguration
     :ivar error_threshold: Error threshold, if the error count for the entire input goes above this
      value, the batch inference will be aborted. Range is [-1, int.MaxValue]. For FileDataset, this
      value is the count of file failures. For TabularDataset, this value is the count of record
@@ -3601,7 +3796,7 @@ class BatchDeploymentProperties(EndpointDeploymentPropertiesBase):
     :ivar logging_level: Log verbosity for batch inferencing. Increasing verbosity order for
      logging is : Warning, Info and Debug. The default value is Info. Known values are: "Info",
      "Warning", and "Debug".
-    :vartype logging_level: str or ~arm_ml_service.models.BatchLoggingLevel
+    :vartype logging_level: str or ~azure.ai.ml._restclient.arm_ml_service.models.BatchLoggingLevel
     :ivar max_concurrency_per_instance: Indicates maximum number of parallelism per instance.
     :vartype max_concurrency_per_instance: int
     :ivar mini_batch_size: Size of the mini-batch passed to each batch invocation. For FileDataset,
@@ -3609,21 +3804,23 @@ class BatchDeploymentProperties(EndpointDeploymentPropertiesBase):
      in bytes, per mini-batch.
     :vartype mini_batch_size: int
     :ivar model: Reference to the model asset for the endpoint deployment.
-    :vartype model: ~arm_ml_service.models.AssetReferenceBase
+    :vartype model: ~azure.ai.ml._restclient.arm_ml_service.models.AssetReferenceBase
     :ivar output_action: Enum to determine how batch inferencing will handle output. Known values
      are: "SummaryOnly" and "AppendRow".
-    :vartype output_action: str or ~arm_ml_service.models.BatchOutputAction
+    :vartype output_action: str or ~azure.ai.ml._restclient.arm_ml_service.models.BatchOutputAction
     :ivar output_file_name: Customized output file name for append_row output action.
     :vartype output_file_name: str
     :ivar provisioning_state: Provisioning state for the endpoint deployment. Known values are:
      "Creating", "Deleting", "Scaling", "Updating", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.DeploymentProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DeploymentProvisioningState
     :ivar resources: Indicates compute configuration for the job. If not provided, will default to
      the defaults defined in ResourceConfiguration.
-    :vartype resources: ~arm_ml_service.models.DeploymentResourceConfiguration
+    :vartype resources:
+     ~azure.ai.ml._restclient.arm_ml_service.models.DeploymentResourceConfiguration
     :ivar retry_settings: Retry Settings for the batch inference operation. If not provided, will
      default to the defaults defined in BatchRetrySettings.
-    :vartype retry_settings: ~arm_ml_service.models.BatchRetrySettings
+    :vartype retry_settings: ~azure.ai.ml._restclient.arm_ml_service.models.BatchRetrySettings
     """
 
     compute: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -3730,20 +3927,20 @@ class BatchEndpoint(TrackedResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     :ivar location: The geo-location where the resource lives. Required.
     :vartype location: str
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.BatchEndpointProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.BatchEndpointProperties
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     :ivar kind: Metadata used by portal/tooling/etc to render different UX experiences for
      resources of the same type.
     :vartype kind: str
     :ivar sku: Sku details required for ARM contract for Autoscaling.
-    :vartype sku: ~arm_ml_service.models.Sku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
     """
 
     properties: "_models.BatchEndpointProperties" = rest_field(
@@ -3822,12 +4019,12 @@ class EndpointPropertiesBase(_Model):
      operation). Use 'Key' for key-based authentication. Use 'AMLToken' for Azure Machine Learning
      token-based authentication. Use 'AADToken' for Microsoft Entra token-based authentication.
      Required. Known values are: "AMLToken", "Key", and "AADToken".
-    :vartype auth_mode: str or ~arm_ml_service.models.EndpointAuthMode
+    :vartype auth_mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.EndpointAuthMode
     :ivar description: Description of the inference endpoint.
     :vartype description: str
     :ivar keys_property: EndpointAuthKeys to set initially on an Endpoint. This property will
      always be returned as null. AuthKey values must be retrieved using the ListKeys API.
-    :vartype keys_property: ~arm_ml_service.models.EndpointAuthKeys
+    :vartype keys_property: ~azure.ai.ml._restclient.arm_ml_service.models.EndpointAuthKeys
     :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
     :vartype properties: dict[str, str]
     :ivar scoring_uri: Endpoint URI.
@@ -3885,12 +4082,12 @@ class BatchEndpointProperties(EndpointPropertiesBase):
      operation). Use 'Key' for key-based authentication. Use 'AMLToken' for Azure Machine Learning
      token-based authentication. Use 'AADToken' for Microsoft Entra token-based authentication.
      Required. Known values are: "AMLToken", "Key", and "AADToken".
-    :vartype auth_mode: str or ~arm_ml_service.models.EndpointAuthMode
+    :vartype auth_mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.EndpointAuthMode
     :ivar description: Description of the inference endpoint.
     :vartype description: str
     :ivar keys_property: EndpointAuthKeys to set initially on an Endpoint. This property will
      always be returned as null. AuthKey values must be retrieved using the ListKeys API.
-    :vartype keys_property: ~arm_ml_service.models.EndpointAuthKeys
+    :vartype keys_property: ~azure.ai.ml._restclient.arm_ml_service.models.EndpointAuthKeys
     :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
     :vartype properties: dict[str, str]
     :ivar scoring_uri: Endpoint URI.
@@ -3898,10 +4095,11 @@ class BatchEndpointProperties(EndpointPropertiesBase):
     :ivar swagger_uri: Endpoint Swagger URI.
     :vartype swagger_uri: str
     :ivar defaults: Default values for Batch Endpoint.
-    :vartype defaults: ~arm_ml_service.models.BatchEndpointDefaults
+    :vartype defaults: ~azure.ai.ml._restclient.arm_ml_service.models.BatchEndpointDefaults
     :ivar provisioning_state: Provisioning state for the endpoint. Known values are: "Creating",
      "Deleting", "Succeeded", "Failed", "Updating", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.EndpointProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.EndpointProvisioningState
     """
 
     defaults: Optional["_models.BatchEndpointDefaults"] = rest_field(
@@ -3942,7 +4140,7 @@ class BatchPipelineComponentDeploymentConfiguration(
     """Properties for a Batch Pipeline Component Deployment.
 
     :ivar component_id: The ARM id of the component to be run.
-    :vartype component_id: ~arm_ml_service.models.IdAssetReference
+    :vartype component_id: ~azure.ai.ml._restclient.arm_ml_service.models.IdAssetReference
     :ivar description: The description which will be applied to the job.
     :vartype description: str
     :ivar settings: Run-time settings for the pipeline job.
@@ -3951,7 +4149,8 @@ class BatchPipelineComponentDeploymentConfiguration(
     :vartype tags: dict[str, str]
     :ivar deployment_configuration_type: [Required] The type of the deployment. Required.
      PIPELINE_COMPONENT.
-    :vartype deployment_configuration_type: str or ~arm_ml_service.models.PIPELINE_COMPONENT
+    :vartype deployment_configuration_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.PIPELINE_COMPONENT
     """
 
     component_id: Optional["_models.IdAssetReference"] = rest_field(
@@ -4034,7 +4233,8 @@ class SamplingAlgorithm(_Model):
     :ivar sampling_algorithm_type: [Required] The algorithm used for generating hyperparameter
      values, along with configuration properties. Required. Known values are: "Grid", "Random", and
      "Bayesian".
-    :vartype sampling_algorithm_type: str or ~arm_ml_service.models.SamplingAlgorithmType
+    :vartype sampling_algorithm_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.SamplingAlgorithmType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -4067,7 +4267,8 @@ class BayesianSamplingAlgorithm(SamplingAlgorithm, discriminator="Bayesian"):
 
     :ivar sampling_algorithm_type: [Required] The algorithm used for generating hyperparameter
      values, along with configuration properties. Required. BAYESIAN.
-    :vartype sampling_algorithm_type: str or ~arm_ml_service.models.BAYESIAN
+    :vartype sampling_algorithm_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.BAYESIAN
     """
 
     sampling_algorithm_type: Literal[SamplingAlgorithmType.BAYESIAN] = rest_discriminator(name="samplingAlgorithmType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -4138,7 +4339,7 @@ class BlobReferenceForConsumptionDto(_Model):
      `https://blob.windows.core.net/Container/Path <https://blob.windows.core.net/Container/Path>`_.
     :vartype blob_uri: str
     :ivar credential: Credential info to access storage account.
-    :vartype credential: ~arm_ml_service.models.PendingUploadCredentialDto
+    :vartype credential: ~azure.ai.ml._restclient.arm_ml_service.models.PendingUploadCredentialDto
     :ivar storage_account_arm_id: Arm ID of the storage account to use.
     :vartype storage_account_arm_id: str
     """
@@ -4229,7 +4430,7 @@ class ProxyResource(Resource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     """
 
 
@@ -4246,9 +4447,9 @@ class CapabilityHost(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.CapabilityHostProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.CapabilityHostProperties
     """
 
     properties: "_models.CapabilityHostProperties" = rest_field(
@@ -4288,12 +4489,14 @@ class CapabilityHostProperties(ResourceBase):
     :ivar ai_services_connections: List of AI services connections.
     :vartype ai_services_connections: list[str]
     :ivar capability_host_kind: Kind of this capability host. "Agents"
-    :vartype capability_host_kind: str or ~arm_ml_service.models.CapabilityHostKind
+    :vartype capability_host_kind: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.CapabilityHostKind
     :ivar customer_subnet: Customer subnet info to help set up this capability host.
     :vartype customer_subnet: str
     :ivar provisioning_state: Provisioning state for the CapabilityHost. Known values are:
      "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.CapabilityHostProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.CapabilityHostProvisioningState
     :ivar storage_connections: List of Storage connections.
     :vartype storage_connections: list[str]
     :ivar thread_storage_connections: List of Thread storage connections.
@@ -4375,10 +4578,11 @@ class DataDriftMetricThresholdBase(_Model):
 
     :ivar data_type: [Required] Specifies the data type of the metric threshold. Required. Known
      values are: "Numerical" and "Categorical".
-    :vartype data_type: str or ~arm_ml_service.models.MonitoringFeatureDataType
+    :vartype data_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringFeatureDataType
     :ivar threshold: The threshold value. If null, a default value will be set depending on the
      selected metric.
-    :vartype threshold: ~arm_ml_service.models.MonitoringThreshold
+    :vartype threshold: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringThreshold
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -4412,13 +4616,14 @@ class CategoricalDataDriftMetricThreshold(DataDriftMetricThresholdBase, discrimi
 
     :ivar threshold: The threshold value. If null, a default value will be set depending on the
      selected metric.
-    :vartype threshold: ~arm_ml_service.models.MonitoringThreshold
+    :vartype threshold: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringThreshold
     :ivar metric: [Required] The categorical data drift metric to calculate. Required. Known values
      are: "JensenShannonDistance", "PopulationStabilityIndex", and "PearsonsChiSquaredTest".
-    :vartype metric: str or ~arm_ml_service.models.CategoricalDataDriftMetric
+    :vartype metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.CategoricalDataDriftMetric
     :ivar data_type: [Required] Specifies the data type of the metric threshold. Required. Used for
      features of categorical data type.
-    :vartype data_type: str or ~arm_ml_service.models.CATEGORICAL
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CATEGORICAL
     """
 
     metric: Union[str, "_models.CategoricalDataDriftMetric"] = rest_field(visibility=["read", "create"])
@@ -4456,10 +4661,11 @@ class DataQualityMetricThresholdBase(_Model):
 
     :ivar data_type: [Required] Specifies the data type of the metric threshold. Required. Known
      values are: "Numerical" and "Categorical".
-    :vartype data_type: str or ~arm_ml_service.models.MonitoringFeatureDataType
+    :vartype data_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringFeatureDataType
     :ivar threshold: The threshold value. If null, a default value will be set depending on the
      selected metric.
-    :vartype threshold: ~arm_ml_service.models.MonitoringThreshold
+    :vartype threshold: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringThreshold
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -4493,13 +4699,14 @@ class CategoricalDataQualityMetricThreshold(DataQualityMetricThresholdBase, disc
 
     :ivar threshold: The threshold value. If null, a default value will be set depending on the
      selected metric.
-    :vartype threshold: ~arm_ml_service.models.MonitoringThreshold
+    :vartype threshold: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringThreshold
     :ivar metric: [Required] The categorical data quality metric to calculate. Required. Known
      values are: "NullValueRate", "DataTypeErrorRate", and "OutOfBoundsRate".
-    :vartype metric: str or ~arm_ml_service.models.CategoricalDataQualityMetric
+    :vartype metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.CategoricalDataQualityMetric
     :ivar data_type: [Required] Specifies the data type of the metric threshold. Required. Used for
      features of categorical data type.
-    :vartype data_type: str or ~arm_ml_service.models.CATEGORICAL
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CATEGORICAL
     """
 
     metric: Union[str, "_models.CategoricalDataQualityMetric"] = rest_field(visibility=["read", "create"])
@@ -4537,10 +4744,11 @@ class PredictionDriftMetricThresholdBase(_Model):
 
     :ivar data_type: [Required] Specifies the data type of the metric threshold. Required. Known
      values are: "Numerical" and "Categorical".
-    :vartype data_type: str or ~arm_ml_service.models.MonitoringFeatureDataType
+    :vartype data_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringFeatureDataType
     :ivar threshold: The threshold value. If null, a default value will be set depending on the
      selected metric.
-    :vartype threshold: ~arm_ml_service.models.MonitoringThreshold
+    :vartype threshold: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringThreshold
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -4576,13 +4784,14 @@ class CategoricalPredictionDriftMetricThreshold(
 
     :ivar threshold: The threshold value. If null, a default value will be set depending on the
      selected metric.
-    :vartype threshold: ~arm_ml_service.models.MonitoringThreshold
+    :vartype threshold: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringThreshold
     :ivar metric: [Required] The categorical prediction drift metric to calculate. Required. Known
      values are: "JensenShannonDistance", "PopulationStabilityIndex", and "PearsonsChiSquaredTest".
-    :vartype metric: str or ~arm_ml_service.models.CategoricalPredictionDriftMetric
+    :vartype metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.CategoricalPredictionDriftMetric
     :ivar data_type: [Required] Specifies the data type of the metric threshold. Required. Used for
      features of categorical data type.
-    :vartype data_type: str or ~arm_ml_service.models.CATEGORICAL
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CATEGORICAL
     """
 
     metric: Union[str, "_models.CategoricalPredictionDriftMetric"] = rest_field(visibility=["read", "create"])
@@ -4622,14 +4831,14 @@ class CertificateDatastoreCredentials(DatastoreCredentials, discriminator="Certi
     :ivar resource_url: Resource the service principal has access to.
     :vartype resource_url: str
     :ivar secrets: [Required] Service principal secrets. Required.
-    :vartype secrets: ~arm_ml_service.models.CertificateDatastoreSecrets
+    :vartype secrets: ~azure.ai.ml._restclient.arm_ml_service.models.CertificateDatastoreSecrets
     :ivar tenant_id: [Required] ID of the tenant to which the service principal belongs. Required.
     :vartype tenant_id: str
     :ivar thumbprint: [Required] Thumbprint of the certificate used for authentication. Required.
     :vartype thumbprint: str
     :ivar credentials_type: [Required] Credential type used to authentication with storage.
      Required. CERTIFICATE.
-    :vartype credentials_type: str or ~arm_ml_service.models.CERTIFICATE
+    :vartype credentials_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CERTIFICATE
     """
 
     authority_url: Optional[str] = rest_field(
@@ -4682,7 +4891,7 @@ class CertificateDatastoreSecrets(DatastoreSecrets, discriminator="Certificate")
     :vartype certificate: str
     :ivar secrets_type: [Required] Credential type used to authentication with storage. Required.
      CERTIFICATE.
-    :vartype secrets_type: str or ~arm_ml_service.models.CERTIFICATE
+    :vartype secrets_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CERTIFICATE
     """
 
     certificate: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -4714,28 +4923,30 @@ class Classification(AutoMLVertical, discriminator="Classification"):
 
     :ivar log_verbosity: Enum for setting log verbosity. Known values are: "NotSet", "Debug",
      "Info", "Warning", "Error", and "Critical".
-    :vartype log_verbosity: str or ~arm_ml_service.models.LogVerbosity
+    :vartype log_verbosity: str or ~azure.ai.ml._restclient.arm_ml_service.models.LogVerbosity
     :ivar target_column_name: Target column name: This is prediction values column. Also known as
      label column name in context of classification tasks.
     :vartype target_column_name: str
     :ivar training_data: [Required] Training data input. Required.
-    :vartype training_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar cv_split_column_names: Columns to use for CVSplit data.
     :vartype cv_split_column_names: list[str]
     :ivar featurization_settings: Featurization inputs needed for AutoML job.
-    :vartype featurization_settings: ~arm_ml_service.models.TableVerticalFeaturizationSettings
+    :vartype featurization_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TableVerticalFeaturizationSettings
     :ivar limit_settings: Execution constraints for AutoMLJob.
-    :vartype limit_settings: ~arm_ml_service.models.TableVerticalLimitSettings
+    :vartype limit_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TableVerticalLimitSettings
     :ivar n_cross_validations: Number of cross validation folds to be applied on training dataset
      when validation dataset is not provided.
-    :vartype n_cross_validations: ~arm_ml_service.models.NCrossValidations
+    :vartype n_cross_validations: ~azure.ai.ml._restclient.arm_ml_service.models.NCrossValidations
     :ivar test_data: Test data input.
-    :vartype test_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype test_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar test_data_size: The fraction of test dataset that needs to be set aside for validation
      purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
     :vartype test_data_size: float
     :ivar validation_data: Validation data inputs.
-    :vartype validation_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar validation_data_size: The fraction of training dataset that needs to be set aside for
      validation purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
     :vartype validation_data_size: float
@@ -4747,13 +4958,15 @@ class Classification(AutoMLVertical, discriminator="Classification"):
     :ivar primary_metric: Primary metrics for classification tasks. Known values are:
      "AUCWeighted", "Accuracy", "NormMacroRecall", "AveragePrecisionScoreWeighted", and
      "PrecisionScoreWeighted".
-    :vartype primary_metric: str or ~arm_ml_service.models.ClassificationPrimaryMetrics
+    :vartype primary_metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ClassificationPrimaryMetrics
     :ivar training_settings: Inputs for training phase for an AutoML Job.
-    :vartype training_settings: ~arm_ml_service.models.ClassificationTrainingSettings
+    :vartype training_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ClassificationTrainingSettings
     :ivar task_type: [Required] Task type for AutoMLJob. Required. Classification in machine
      learning and statistics is a supervised learning approach in which the computer program learns
      from the data given to it and make new observations or classifications.
-    :vartype task_type: str or ~arm_ml_service.models.CLASSIFICATION
+    :vartype task_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CLASSIFICATION
     """
 
     cv_split_column_names: Optional[list[str]] = rest_field(
@@ -4865,7 +5078,8 @@ class TrainingSettings(_Model):
      parameter with a higher value than 300 secs, if more time is needed.
     :vartype ensemble_model_download_timeout: ~datetime.timedelta
     :ivar stack_ensemble_settings: Stack ensemble settings for stack ensemble run.
-    :vartype stack_ensemble_settings: ~arm_ml_service.models.StackEnsembleSettings
+    :vartype stack_ensemble_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.StackEnsembleSettings
     """
 
     enable_dnn_training: Optional[bool] = rest_field(
@@ -4941,11 +5155,14 @@ class ClassificationTrainingSettings(TrainingSettings):
      parameter with a higher value than 300 secs, if more time is needed.
     :vartype ensemble_model_download_timeout: ~datetime.timedelta
     :ivar stack_ensemble_settings: Stack ensemble settings for stack ensemble run.
-    :vartype stack_ensemble_settings: ~arm_ml_service.models.StackEnsembleSettings
+    :vartype stack_ensemble_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.StackEnsembleSettings
     :ivar allowed_training_algorithms: Allowed models for classification task.
-    :vartype allowed_training_algorithms: list[str or ~arm_ml_service.models.ClassificationModels]
+    :vartype allowed_training_algorithms: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ClassificationModels]
     :ivar blocked_training_algorithms: Blocked models for classification task.
-    :vartype blocked_training_algorithms: list[str or ~arm_ml_service.models.ClassificationModels]
+    :vartype blocked_training_algorithms: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ClassificationModels]
     """
 
     allowed_training_algorithms: Optional[list[Union[str, "_models.ClassificationModels"]]] = rest_field(
@@ -4987,7 +5204,7 @@ class ClusterUpdateParameters(_Model):
     """AmlCompute update parameters.
 
     :ivar properties: The properties of the amlCompute.
-    :vartype properties: ~arm_ml_service.models.ClusterUpdateProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.ClusterUpdateProperties
     """
 
     properties: Optional["_models.ClusterUpdateProperties"] = rest_field(
@@ -5037,7 +5254,7 @@ class ClusterUpdateProperties(_Model):
     """The properties of a amlCompute that need to be updated.
 
     :ivar properties: Properties of ClusterUpdate.
-    :vartype properties: ~arm_ml_service.models.ScaleSettingsInformation
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.ScaleSettingsInformation
     """
 
     properties: Optional["_models.ScaleSettingsInformation"] = rest_field(
@@ -5109,9 +5326,9 @@ class CodeContainer(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.CodeContainerProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.CodeContainerProperties
     """
 
     properties: "_models.CodeContainerProperties" = rest_field(
@@ -5154,7 +5371,8 @@ class CodeContainerProperties(AssetContainer):
     :vartype next_version: str
     :ivar provisioning_state: Provisioning state for the code container. Known values are:
      "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     """
 
     provisioning_state: Optional[Union[str, "_models.AssetProvisioningState"]] = rest_field(
@@ -5197,9 +5415,9 @@ class CodeVersion(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.CodeVersionProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.CodeVersionProperties
     """
 
     properties: "_models.CodeVersionProperties" = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -5240,7 +5458,8 @@ class CodeVersionProperties(AssetBase):
     :vartype code_uri: str
     :ivar provisioning_state: Provisioning state for the code version. Known values are:
      "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     """
 
     code_uri: Optional[str] = rest_field(name="codeUri", visibility=["read", "create", "update", "delete", "query"])
@@ -5274,6 +5493,49 @@ class CodeVersionProperties(AssetBase):
         super().__init__(*args, **kwargs)
 
 
+class CognitiveServicesSku(_Model):
+    """CognitiveServicesSku.
+
+    :ivar capacity:
+    :vartype capacity: int
+    :ivar family:
+    :vartype family: str
+    :ivar name:
+    :vartype name: str
+    :ivar size:
+    :vartype size: str
+    :ivar tier:
+    :vartype tier: str
+    """
+
+    capacity: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    family: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    name: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    size: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    tier: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+
+    @overload
+    def __init__(
+        self,
+        *,
+        capacity: Optional[int] = None,
+        family: Optional[str] = None,
+        name: Optional[str] = None,
+        size: Optional[str] = None,
+        tier: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class Collection(_Model):
     """Collection.
 
@@ -5282,7 +5544,8 @@ class Collection(_Model):
     :vartype client_id: str
     :ivar data_collection_mode: Enable or disable data collection. Known values are: "Enabled" and
      "Disabled".
-    :vartype data_collection_mode: str or ~arm_ml_service.models.DataCollectionMode
+    :vartype data_collection_mode: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DataCollectionMode
     :ivar data_id: The data asset arm resource id. Client side will ensure data asset is pointing
      to the blob storage, and backend will collect data to the blob storage.
     :vartype data_id: str
@@ -5382,18 +5645,21 @@ class CommandJob(JobBaseProperties, discriminator="Command"):
     :vartype experiment_name: str
     :ivar identity: Identity configuration. If set, this should be one of AmlToken,
      ManagedIdentity, UserIdentity or null. Defaults to AmlToken if null.
-    :vartype identity: ~arm_ml_service.models.IdentityConfiguration
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.IdentityConfiguration
     :ivar is_archived: Is the asset archived?.
     :vartype is_archived: bool
     :ivar notification_setting: Notification setting for the job.
-    :vartype notification_setting: ~arm_ml_service.models.NotificationSetting
+    :vartype notification_setting:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NotificationSetting
+    :ivar parent_job_name: Parent job name.
+    :vartype parent_job_name: str
     :ivar services: List of JobEndpoints. For local jobs, a job endpoint will have an endpoint
      value of FileStreamObject.
-    :vartype services: dict[str, ~arm_ml_service.models.JobService]
+    :vartype services: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobService]
     :ivar status: Status of the job. Known values are: "NotStarted", "Starting", "Provisioning",
      "Preparing", "Queued", "Running", "Finalizing", "CancelRequested", "Completed", "Failed",
      "Canceled", "NotResponding", "Paused", and "Unknown".
-    :vartype status: str or ~arm_ml_service.models.JobStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobStatus
     :ivar code_id: ARM resource ID of the code asset.
     :vartype code_id: str
     :ivar command: [Required] The command to execute on startup of the job. eg. "python train.py".
@@ -5401,26 +5667,26 @@ class CommandJob(JobBaseProperties, discriminator="Command"):
     :vartype command: str
     :ivar distribution: Distribution configuration of the job. If set, this should be one of Mpi,
      Tensorflow, PyTorch, or null.
-    :vartype distribution: ~arm_ml_service.models.DistributionConfiguration
+    :vartype distribution: ~azure.ai.ml._restclient.arm_ml_service.models.DistributionConfiguration
     :ivar environment_id: [Required] The ARM resource ID of the Environment specification for the
      job. Required.
     :vartype environment_id: str
     :ivar environment_variables: Environment variables included in the job.
     :vartype environment_variables: dict[str, str]
     :ivar inputs: Mapping of input data bindings used in the job.
-    :vartype inputs: dict[str, ~arm_ml_service.models.JobInput]
+    :vartype inputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobInput]
     :ivar limits: Command Job limit.
-    :vartype limits: ~arm_ml_service.models.CommandJobLimits
+    :vartype limits: ~azure.ai.ml._restclient.arm_ml_service.models.CommandJobLimits
     :ivar outputs: Mapping of output data bindings used in the job.
-    :vartype outputs: dict[str, ~arm_ml_service.models.JobOutput]
+    :vartype outputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobOutput]
     :ivar parameters: Input parameters.
     :vartype parameters: any
     :ivar queue_settings: Queue settings for the job.
-    :vartype queue_settings: ~arm_ml_service.models.QueueSettings
+    :vartype queue_settings: ~azure.ai.ml._restclient.arm_ml_service.models.QueueSettings
     :ivar resources: Compute Resource configuration for the job.
-    :vartype resources: ~arm_ml_service.models.JobResourceConfiguration
+    :vartype resources: ~azure.ai.ml._restclient.arm_ml_service.models.JobResourceConfiguration
     :ivar job_type: [Required] Specifies the type of job. Required. COMMAND.
-    :vartype job_type: str or ~arm_ml_service.models.COMMAND
+    :vartype job_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.COMMAND
     """
 
     code_id: Optional[str] = rest_field(name="codeId", visibility=["read", "create"])
@@ -5467,6 +5733,7 @@ class CommandJob(JobBaseProperties, discriminator="Command"):
         identity: Optional["_models.IdentityConfiguration"] = None,
         is_archived: Optional[bool] = None,
         notification_setting: Optional["_models.NotificationSetting"] = None,
+        parent_job_name: Optional[str] = None,
         services: Optional[dict[str, "_models.JobService"]] = None,
         code_id: Optional[str] = None,
         distribution: Optional["_models.DistributionConfiguration"] = None,
@@ -5498,7 +5765,7 @@ class JobLimits(_Model):
 
     :ivar job_limits_type: [Required] JobLimit type. Required. Known values are: "Command" and
      "Sweep".
-    :vartype job_limits_type: str or ~arm_ml_service.models.JobLimitsType
+    :vartype job_limits_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobLimitsType
     :ivar timeout: The max run duration in ISO 8601 format, after which the job will be cancelled.
      Only supports duration with precision as low as Seconds.
     :vartype timeout: ~datetime.timedelta
@@ -5539,7 +5806,7 @@ class CommandJobLimits(JobLimits, discriminator="Command"):
      Only supports duration with precision as low as Seconds.
     :vartype timeout: ~datetime.timedelta
     :ivar job_limits_type: [Required] JobLimit type. Required. COMMAND.
-    :vartype job_limits_type: str or ~arm_ml_service.models.COMMAND
+    :vartype job_limits_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.COMMAND
     """
 
     job_limits_type: Literal[JobLimitsType.COMMAND] = rest_discriminator(name="jobLimitsType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -5577,9 +5844,10 @@ class ComponentContainer(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.ComponentContainerProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ComponentContainerProperties
     """
 
     properties: "_models.ComponentContainerProperties" = rest_field(
@@ -5624,7 +5892,8 @@ class ComponentContainerProperties(AssetContainer):
     :vartype next_version: str
     :ivar provisioning_state: Provisioning state for the component container. Known values are:
      "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     """
 
     provisioning_state: Optional[Union[str, "_models.AssetProvisioningState"]] = rest_field(
@@ -5667,9 +5936,9 @@ class ComponentVersion(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.ComponentVersionProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.ComponentVersionProperties
     """
 
     properties: "_models.ComponentVersionProperties" = rest_field(
@@ -5714,7 +5983,8 @@ class ComponentVersionProperties(AssetBase):
     :vartype component_spec: any
     :ivar provisioning_state: Provisioning state for the component version. Known values are:
      "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     """
 
     component_spec: Optional[Any] = rest_field(name="componentSpec", visibility=["read", "create"])
@@ -5758,7 +6028,8 @@ class ComputeInstance(Compute, discriminator="ComputeInstance"):
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Known values are: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar description: The description of the Machine Learning compute.
     :vartype description: str
     :ivar created_on: The time at which the compute was created.
@@ -5768,7 +6039,8 @@ class ComputeInstance(Compute, discriminator="ComputeInstance"):
     :ivar resource_id: ARM resource id of the underlying compute.
     :vartype resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
-    :vartype provisioning_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype provisioning_errors:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -5776,9 +6048,9 @@ class ComputeInstance(Compute, discriminator="ComputeInstance"):
      and AAD exclusively for authentication.
     :vartype disable_local_auth: bool
     :ivar properties: Properties of ComputeInstance.
-    :vartype properties: ~arm_ml_service.models.ComputeInstanceProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceProperties
     :ivar compute_type: The type of compute. Required. COMPUTE_INSTANCE.
-    :vartype compute_type: str or ~arm_ml_service.models.COMPUTE_INSTANCE
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.COMPUTE_INSTANCE
     """
 
     properties: Optional["_models.ComputeInstanceProperties"] = rest_field(
@@ -5848,6 +6120,39 @@ class ComputeInstanceApplication(_Model):
         super().__init__(*args, **kwargs)
 
 
+class ComputeInstanceAutologgerSettings(_Model):
+    """Specifies settings for autologger.
+
+    :ivar mlflow_autologger: Indicates whether mlflow autologger is enabled for notebooks. Known
+     values are: "Enabled" and "Disabled".
+    :vartype mlflow_autologger: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MlflowAutologger
+    """
+
+    mlflow_autologger: Optional[Union[str, "_models.MlflowAutologger"]] = rest_field(
+        name="mlflowAutologger", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Indicates whether mlflow autologger is enabled for notebooks. Known values are: \"Enabled\" and
+     \"Disabled\"."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        mlflow_autologger: Optional[Union[str, "_models.MlflowAutologger"]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class ComputeInstanceConnectivityEndpoints(_Model):
     """Defines all connectivity endpoints and properties for an ComputeInstance.
 
@@ -5871,13 +6176,14 @@ class ComputeInstanceContainer(_Model):
     :ivar name: Name of the ComputeInstance container.
     :vartype name: str
     :ivar autosave: Auto save settings. Known values are: "None", "Local", and "Remote".
-    :vartype autosave: str or ~arm_ml_service.models.Autosave
+    :vartype autosave: str or ~azure.ai.ml._restclient.arm_ml_service.models.Autosave
     :ivar gpu: Information of GPU.
     :vartype gpu: str
     :ivar network: network of this container. Known values are: "Bridge" and "Host".
-    :vartype network: str or ~arm_ml_service.models.Network
+    :vartype network: str or ~azure.ai.ml._restclient.arm_ml_service.models.Network
     :ivar environment: Environment information of this container.
-    :vartype environment: ~arm_ml_service.models.ComputeInstanceEnvironmentInfo
+    :vartype environment:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceEnvironmentInfo
     :ivar services: services of this containers.
     :vartype services: list[any]
     """
@@ -5947,14 +6253,15 @@ class ComputeInstanceDataDisk(_Model):
 
     :ivar caching: Caching type of Data Disk. Known values are: "None", "ReadOnly", and
      "ReadWrite".
-    :vartype caching: str or ~arm_ml_service.models.Caching
+    :vartype caching: str or ~azure.ai.ml._restclient.arm_ml_service.models.Caching
     :ivar disk_size_gb: The initial disk size in gigabytes.
     :vartype disk_size_gb: int
     :ivar lun: The logical unit number.
     :vartype lun: int
     :ivar storage_account_type: type of this storage account. Known values are: "Standard_LRS" and
      "Premium_LRS".
-    :vartype storage_account_type: str or ~arm_ml_service.models.StorageAccountType
+    :vartype storage_account_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.StorageAccountType
     """
 
     caching: Optional[Union[str, "_models.Caching"]] = rest_field(
@@ -5999,20 +6306,20 @@ class ComputeInstanceDataMount(_Model):
     :ivar source: Source of the ComputeInstance data mount.
     :vartype source: str
     :ivar source_type: Data source type. Known values are: "Dataset", "Datastore", and "URI".
-    :vartype source_type: str or ~arm_ml_service.models.SourceType
+    :vartype source_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SourceType
     :ivar mount_name: name of the ComputeInstance data mount.
     :vartype mount_name: str
     :ivar mount_action: Mount Action. Known values are: "Mount" and "Unmount".
-    :vartype mount_action: str or ~arm_ml_service.models.MountAction
+    :vartype mount_action: str or ~azure.ai.ml._restclient.arm_ml_service.models.MountAction
     :ivar mount_mode: Mount Mode. Known values are: "ReadOnly" and "ReadWrite".
-    :vartype mount_mode: str or ~arm_ml_service.models.MountMode
+    :vartype mount_mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.MountMode
     :ivar created_by: who this data mount created by.
     :vartype created_by: str
     :ivar mount_path: Path of this data mount.
     :vartype mount_path: str
     :ivar mount_state: Mount state. Known values are: "MountRequested", "Mounted", "MountFailed",
      "UnmountRequested", "UnmountFailed", and "Unmounted".
-    :vartype mount_state: str or ~arm_ml_service.models.MountState
+    :vartype mount_state: str or ~azure.ai.ml._restclient.arm_ml_service.models.MountState
     :ivar mounted_on: Mounted time.
     :vartype mounted_on: ~datetime.datetime
     :ivar error: Error of this data mount.
@@ -6116,16 +6423,18 @@ class ComputeInstanceLastOperation(_Model):
 
     :ivar operation_name: Name of the last operation. Known values are: "Create", "Start", "Stop",
      "Restart", "Resize", "Reimage", and "Delete".
-    :vartype operation_name: str or ~arm_ml_service.models.OperationName
+    :vartype operation_name: str or ~azure.ai.ml._restclient.arm_ml_service.models.OperationName
     :ivar operation_time: Time of the last operation.
     :vartype operation_time: ~datetime.datetime
     :ivar operation_status: Operation status. Known values are: "InProgress", "Succeeded",
      "CreateFailed", "StartFailed", "StopFailed", "RestartFailed", "ResizeFailed", "ReimageFailed",
      and "DeleteFailed".
-    :vartype operation_status: str or ~arm_ml_service.models.OperationStatus
+    :vartype operation_status: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.OperationStatus
     :ivar operation_trigger: Trigger of operation. Known values are: "User", "Schedule", and
      "IdleShutdown".
-    :vartype operation_trigger: str or ~arm_ml_service.models.OperationTrigger
+    :vartype operation_trigger: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.OperationTrigger
     """
 
     operation_name: Optional[Union[str, "_models.OperationName"]] = rest_field(
@@ -6175,59 +6484,76 @@ class ComputeInstanceProperties(_Model):
     :ivar vm_size: Virtual Machine Size.
     :vartype vm_size: str
     :ivar subnet: Subnet.
-    :vartype subnet: ~arm_ml_service.models.ResourceId
+    :vartype subnet: ~azure.ai.ml._restclient.arm_ml_service.models.ResourceId
     :ivar application_sharing_policy: Sharing policy for applications on this compute instance.
      Known values are: "Personal" and "Shared".
-    :vartype application_sharing_policy: str or ~arm_ml_service.models.ApplicationSharingPolicy
+    :vartype application_sharing_policy: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ApplicationSharingPolicy
+    :ivar autologger_settings: Specifies settings for autologger.
+    :vartype autologger_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceAutologgerSettings
     :ivar ssh_settings: Specifies policy and settings for SSH access.
-    :vartype ssh_settings: ~arm_ml_service.models.ComputeInstanceSshSettings
+    :vartype ssh_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceSshSettings
     :ivar custom_services: List of Custom Services added to the compute.
-    :vartype custom_services: list[~arm_ml_service.models.CustomService]
+    :vartype custom_services: list[~azure.ai.ml._restclient.arm_ml_service.models.CustomService]
     :ivar os_image_metadata: Returns metadata about the operating system image for this compute
      instance.
-    :vartype os_image_metadata: ~arm_ml_service.models.ImageMetadata
+    :vartype os_image_metadata: ~azure.ai.ml._restclient.arm_ml_service.models.ImageMetadata
     :ivar connectivity_endpoints: Describes all connectivity endpoints available for this
      ComputeInstance.
-    :vartype connectivity_endpoints: ~arm_ml_service.models.ComputeInstanceConnectivityEndpoints
+    :vartype connectivity_endpoints:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceConnectivityEndpoints
     :ivar applications: Describes available applications and their endpoints on this
      ComputeInstance.
-    :vartype applications: list[~arm_ml_service.models.ComputeInstanceApplication]
+    :vartype applications:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceApplication]
     :ivar created_by: Describes information on user who created this ComputeInstance.
-    :vartype created_by: ~arm_ml_service.models.ComputeInstanceCreatedBy
+    :vartype created_by: ~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceCreatedBy
     :ivar errors: Errors.
-    :vartype errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype errors: list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar state: The current state of this ComputeInstance. Known values are: "Creating",
      "CreateFailed", "Deleting", "Running", "Restarting", "Resizing", "JobRunning", "SettingUp",
      "SetupFailed", "Starting", "Stopped", "Stopping", "UserSettingUp", "UserSetupFailed",
      "Unknown", and "Unusable".
-    :vartype state: str or ~arm_ml_service.models.ComputeInstanceState
+    :vartype state: str or ~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceState
     :ivar compute_instance_authorization_type: Compute Instance Authorization type. "personal"
     :vartype compute_instance_authorization_type: str or
-     ~arm_ml_service.models.ComputeInstancePropertiesComputeInstanceAuthorizationType
+     ~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstancePropertiesComputeInstanceAuthorizationType
+    :ivar enable_os_patching: Enable Auto OS Patching.
+    :vartype enable_os_patching: bool
+    :ivar enable_root_access: Enable root access.
+    :vartype enable_root_access: bool
     :ivar enable_sso: Enable SSO (single sign on).
     :vartype enable_sso: bool
+    :ivar release_quota_on_stop: Release quota if compute instance stopped.
+    :vartype release_quota_on_stop: bool
     :ivar personal_compute_instance_settings: Personal Compute Instance settings.
     :vartype personal_compute_instance_settings:
-     ~arm_ml_service.models.PersonalComputeInstanceSettings
+     ~azure.ai.ml._restclient.arm_ml_service.models.PersonalComputeInstanceSettings
     :ivar setup_scripts: Details of customized scripts to execute for setting up the cluster.
-    :vartype setup_scripts: ~arm_ml_service.models.SetupScripts
+    :vartype setup_scripts: ~azure.ai.ml._restclient.arm_ml_service.models.SetupScripts
     :ivar last_operation: The last operation on ComputeInstance.
-    :vartype last_operation: ~arm_ml_service.models.ComputeInstanceLastOperation
+    :vartype last_operation:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceLastOperation
     :ivar schedules: The list of schedules to be applied on the computes.
-    :vartype schedules: ~arm_ml_service.models.ComputeSchedules
+    :vartype schedules: ~azure.ai.ml._restclient.arm_ml_service.models.ComputeSchedules
     :ivar idle_time_before_shutdown: Stops compute instance after user defined period of
      inactivity. Time is defined in ISO8601 format. Minimum is 15 min, maximum is 3 days.
     :vartype idle_time_before_shutdown: str
     :ivar enable_node_public_ip: Enable node public IP.
     :vartype enable_node_public_ip: bool
     :ivar containers: Describes informations of containers on this ComputeInstance.
-    :vartype containers: list[~arm_ml_service.models.ComputeInstanceContainer]
+    :vartype containers:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceContainer]
     :ivar data_disks: Describes informations of dataDisks on this ComputeInstance.
-    :vartype data_disks: list[~arm_ml_service.models.ComputeInstanceDataDisk]
+    :vartype data_disks:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceDataDisk]
     :ivar data_mounts: Describes informations of dataMounts on this ComputeInstance.
-    :vartype data_mounts: list[~arm_ml_service.models.ComputeInstanceDataMount]
+    :vartype data_mounts:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceDataMount]
     :ivar versions: ComputeInstance version.
-    :vartype versions: ~arm_ml_service.models.ComputeInstanceVersion
+    :vartype versions: ~azure.ai.ml._restclient.arm_ml_service.models.ComputeInstanceVersion
     """
 
     vm_size: Optional[str] = rest_field(name="vmSize", visibility=["read", "create", "update", "delete", "query"])
@@ -6239,6 +6565,10 @@ class ComputeInstanceProperties(_Model):
     )
     """Sharing policy for applications on this compute instance. Known values are: \"Personal\" and
      \"Shared\"."""
+    autologger_settings: Optional["_models.ComputeInstanceAutologgerSettings"] = rest_field(
+        name="autologgerSettings", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Specifies settings for autologger."""
     ssh_settings: Optional["_models.ComputeInstanceSshSettings"] = rest_field(
         name="sshSettings", visibility=["read", "create", "update", "delete", "query"]
     )
@@ -6268,10 +6598,22 @@ class ComputeInstanceProperties(_Model):
         Union[str, "_models.ComputeInstancePropertiesComputeInstanceAuthorizationType"]
     ] = rest_field(name="computeInstanceAuthorizationType", visibility=["read", "create", "update", "delete", "query"])
     """Compute Instance Authorization type. \"personal\""""
+    enable_os_patching: Optional[bool] = rest_field(
+        name="enableOSPatching", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Enable Auto OS Patching."""
+    enable_root_access: Optional[bool] = rest_field(
+        name="enableRootAccess", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Enable root access."""
     enable_sso: Optional[bool] = rest_field(
         name="enableSSO", visibility=["read", "create", "update", "delete", "query"]
     )
     """Enable SSO (single sign on)."""
+    release_quota_on_stop: Optional[bool] = rest_field(
+        name="releaseQuotaOnStop", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Release quota if compute instance stopped."""
     personal_compute_instance_settings: Optional["_models.PersonalComputeInstanceSettings"] = rest_field(
         name="personalComputeInstanceSettings", visibility=["read", "create", "update", "delete", "query"]
     )
@@ -6307,18 +6649,22 @@ class ComputeInstanceProperties(_Model):
     """ComputeInstance version."""
 
     @overload
-    def __init__(
+    def __init__(  # pylint: disable=too-many-locals
         self,
         *,
         vm_size: Optional[str] = None,
         subnet: Optional["_models.ResourceId"] = None,
         application_sharing_policy: Optional[Union[str, "_models.ApplicationSharingPolicy"]] = None,
+        autologger_settings: Optional["_models.ComputeInstanceAutologgerSettings"] = None,
         ssh_settings: Optional["_models.ComputeInstanceSshSettings"] = None,
         custom_services: Optional[list["_models.CustomService"]] = None,
         compute_instance_authorization_type: Optional[
             Union[str, "_models.ComputeInstancePropertiesComputeInstanceAuthorizationType"]
         ] = None,
+        enable_os_patching: Optional[bool] = None,
+        enable_root_access: Optional[bool] = None,
         enable_sso: Optional[bool] = None,
+        release_quota_on_stop: Optional[bool] = None,
         personal_compute_instance_settings: Optional["_models.PersonalComputeInstanceSettings"] = None,
         setup_scripts: Optional["_models.SetupScripts"] = None,
         schedules: Optional["_models.ComputeSchedules"] = None,
@@ -6341,7 +6687,8 @@ class ComputeInstanceSshSettings(_Model):
     """Specifies policy and settings for SSH access.
 
     :ivar ssh_public_access: Access policy for SSH. Known values are: "Enabled" and "Disabled".
-    :vartype ssh_public_access: str or ~arm_ml_service.models.SshPublicAccess
+    :vartype ssh_public_access: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.SshPublicAccess
     :ivar admin_user_name: Describes the admin user name.
     :vartype admin_user_name: str
     :ivar ssh_port: Describes the port for connecting through SSH.
@@ -6422,7 +6769,7 @@ class ComputeRecurrenceSchedule(_Model):
     :ivar month_days: List of month days for the schedule.
     :vartype month_days: list[int]
     :ivar week_days: List of days for the schedule.
-    :vartype week_days: list[str or ~arm_ml_service.models.ComputeWeekDay]
+    :vartype week_days: list[str or ~azure.ai.ml._restclient.arm_ml_service.models.ComputeWeekDay]
     """
 
     hours: list[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -6472,17 +6819,17 @@ class ComputeResource(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: The resource-specific properties for this resource.
-    :vartype properties: ~arm_ml_service.models.Compute
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.Compute
     :ivar location: Specifies the location of the resource.
     :vartype location: str
     :ivar tags: Contains resource tags defined as key/value pairs.
     :vartype tags: dict[str, str]
     :ivar sku: The sku of the workspace.
-    :vartype sku: ~arm_ml_service.models.Sku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
     :ivar identity: The identity of the resource.
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     """
 
     properties: Optional["_models.Compute"] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -6553,7 +6900,8 @@ class ComputeSchedules(_Model):
     """The list of schedules to be applied on the computes.
 
     :ivar compute_start_stop: The list of compute start stop schedules to be applied.
-    :vartype compute_start_stop: list[~arm_ml_service.models.ComputeStartStopSchedule]
+    :vartype compute_start_stop:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ComputeStartStopSchedule]
     """
 
     compute_start_stop: Optional[list["_models.ComputeStartStopSchedule"]] = rest_field(
@@ -6586,20 +6934,21 @@ class ComputeStartStopSchedule(_Model):
     :vartype id: str
     :ivar provisioning_status: The current deployment state of schedule. Known values are:
      "Completed", "Provisioning", and "Failed".
-    :vartype provisioning_status: str or ~arm_ml_service.models.ProvisioningStatus
+    :vartype provisioning_status: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningStatus
     :ivar status: Is the schedule enabled or disabled?. Known values are: "Enabled" and "Disabled".
-    :vartype status: str or ~arm_ml_service.models.ScheduleStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ScheduleStatus
     :ivar action: [Required] The compute power action. Known values are: "Start" and "Stop".
-    :vartype action: str or ~arm_ml_service.models.ComputePowerAction
+    :vartype action: str or ~azure.ai.ml._restclient.arm_ml_service.models.ComputePowerAction
     :ivar trigger_type: [Required] The schedule trigger type. Known values are: "Recurrence" and
      "Cron".
-    :vartype trigger_type: str or ~arm_ml_service.models.ComputeTriggerType
+    :vartype trigger_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ComputeTriggerType
     :ivar recurrence: Required if triggerType is Recurrence.
-    :vartype recurrence: ~arm_ml_service.models.Recurrence
+    :vartype recurrence: ~azure.ai.ml._restclient.arm_ml_service.models.Recurrence
     :ivar cron: Required if triggerType is Cron.
-    :vartype cron: ~arm_ml_service.models.Cron
+    :vartype cron: ~azure.ai.ml._restclient.arm_ml_service.models.Cron
     :ivar schedule: [Deprecated] Not used any more.
-    :vartype schedule: ~arm_ml_service.models.ScheduleBase
+    :vartype schedule: ~azure.ai.ml._restclient.arm_ml_service.models.ScheduleBase
     """
 
     id: Optional[str] = rest_field(visibility=["read"])
@@ -6655,9 +7004,11 @@ class ContainerResourceRequirements(_Model):
     """Resource requirements for each container instance within an online deployment.
 
     :ivar container_resource_limits: Container resource limit info:.
-    :vartype container_resource_limits: ~arm_ml_service.models.ContainerResourceSettings
+    :vartype container_resource_limits:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ContainerResourceSettings
     :ivar container_resource_requests: Container resource request info:.
-    :vartype container_resource_requests: ~arm_ml_service.models.ContainerResourceSettings
+    :vartype container_resource_requests:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ContainerResourceSettings
     """
 
     container_resource_limits: Optional["_models.ContainerResourceSettings"] = rest_field(
@@ -6741,11 +7092,21 @@ class ContainerResourceSettings(_Model):
 class ContentSafety(_Model):
     """ContentSafety.
 
+    :ivar content_safety_level: Specifies the current safety level for content safety. Known values
+     are: "Blocking" and "Deferred".
+    :vartype content_safety_level: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ContentSafetyLevel
     :ivar content_safety_status: [Required] Specifies the status of content safety. Required. Known
      values are: "Enabled" and "Disabled".
-    :vartype content_safety_status: str or ~arm_ml_service.models.ContentSafetyStatus
+    :vartype content_safety_status: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ContentSafetyStatus
     """
 
+    content_safety_level: Optional[Union[str, "_models.ContentSafetyLevel"]] = rest_field(
+        name="contentSafetyLevel", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Specifies the current safety level for content safety. Known values are: \"Blocking\" and
+     \"Deferred\"."""
     content_safety_status: Union[str, "_models.ContentSafetyStatus"] = rest_field(
         name="contentSafetyStatus", visibility=["read", "create", "update", "delete", "query"]
     )
@@ -6757,6 +7118,7 @@ class ContentSafety(_Model):
         self,
         *,
         content_safety_status: Union[str, "_models.ContentSafetyStatus"],
+        content_safety_level: Optional[Union[str, "_models.ContentSafetyLevel"]] = None,
     ) -> None: ...
 
     @overload
@@ -6768,6 +7130,289 @@ class ContentSafety(_Model):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
+
+
+class EndpointDeploymentResourceProperties(_Model):
+    """EndpointDeploymentResourceProperties.
+
+    You probably want to use the sub-classes and not this class directly. Known sub-classes are:
+    ContentSafetyEndpointDeploymentResourceProperties, OpenAIEndpointDeploymentResourceProperties,
+    SpeechEndpointDeploymentResourceProperties, ManagedOnlineEndpointDeploymentResourceProperties
+
+    :ivar failure_reason: The failure reason if the creation failed.
+    :vartype failure_reason: str
+    :ivar provisioning_state: Read-only provision state status property. Known values are:
+     "NotStarted", "Failed", "Creating", "Updating", "Succeeded", "Deleting", "Accepted",
+     "Canceled", "Scaling", and "Disabled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultResourceProvisioningState
+    :ivar type: Kind of the deployment. Required. Default value is None.
+    :vartype type: str
+    """
+
+    __mapping__: dict[str, _Model] = {}
+    failure_reason: Optional[str] = rest_field(
+        name="failureReason", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The failure reason if the creation failed."""
+    provisioning_state: Optional[Union[str, "_models.DefaultResourceProvisioningState"]] = rest_field(
+        name="provisioningState", visibility=["read"]
+    )
+    """Read-only provision state status property. Known values are: \"NotStarted\", \"Failed\",
+     \"Creating\", \"Updating\", \"Succeeded\", \"Deleting\", \"Accepted\", \"Canceled\",
+     \"Scaling\", and \"Disabled\"."""
+    type: str = rest_discriminator(name="type", visibility=["read", "create", "update", "delete", "query"])
+    """Kind of the deployment. Required. Default value is None."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        type: str,
+        failure_reason: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class ContentSafetyEndpointDeploymentResourceProperties(
+    EndpointDeploymentResourceProperties, discriminator="Azure.ContentSafety"
+):  # pylint: disable=name-too-long
+    """ContentSafetyEndpointDeploymentResourceProperties.
+
+    :ivar failure_reason: The failure reason if the creation failed.
+    :vartype failure_reason: str
+    :ivar provisioning_state: Read-only provision state status property. Known values are:
+     "NotStarted", "Failed", "Creating", "Updating", "Succeeded", "Deleting", "Accepted",
+     "Canceled", "Scaling", and "Disabled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultResourceProvisioningState
+    :ivar model: Model used for the endpoint deployment. Required.
+    :vartype model: ~azure.ai.ml._restclient.arm_ml_service.models.EndpointDeploymentModel
+    :ivar rai_policy_name: The name of RAI policy.
+    :vartype rai_policy_name: str
+    :ivar sku:
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.CognitiveServicesSku
+    :ivar version_upgrade_option: Deployment model version upgrade option. Known values are:
+     "OnceNewDefaultVersionAvailable", "OnceCurrentVersionExpired", and "NoAutoUpgrade".
+    :vartype version_upgrade_option: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DeploymentModelVersionUpgradeOption
+    :ivar type: Kind of the deployment. Required. Default value is "Azure.ContentSafety".
+    :vartype type: str
+    """
+
+    model: "_models.EndpointDeploymentModel" = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Model used for the endpoint deployment. Required."""
+    rai_policy_name: Optional[str] = rest_field(
+        name="raiPolicyName", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The name of RAI policy."""
+    sku: Optional["_models.CognitiveServicesSku"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    version_upgrade_option: Optional[Union[str, "_models.DeploymentModelVersionUpgradeOption"]] = rest_field(
+        name="versionUpgradeOption", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Deployment model version upgrade option. Known values are: \"OnceNewDefaultVersionAvailable\",
+     \"OnceCurrentVersionExpired\", and \"NoAutoUpgrade\"."""
+    type: Literal["Azure.ContentSafety"] = rest_discriminator(name="type", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """Kind of the deployment. Required. Default value is \"Azure.ContentSafety\"."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        model: "_models.EndpointDeploymentModel",
+        failure_reason: Optional[str] = None,
+        rai_policy_name: Optional[str] = None,
+        sku: Optional["_models.CognitiveServicesSku"] = None,
+        version_upgrade_option: Optional[Union[str, "_models.DeploymentModelVersionUpgradeOption"]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.type = "Azure.ContentSafety"  # type: ignore
+
+
+class EndpointResourceProperties(_Model):
+    """EndpointResourceProperties.
+
+    You probably want to use the sub-classes and not this class directly. Known sub-classes are:
+    ContentSafetyEndpointResourceProperties, OpenAIEndpointResourceProperties,
+    SpeechEndpointResourceProperties, ManagedOnlineEndpointResourceProperties,
+    ServerlessEndpointResourceProperties
+
+    :ivar associated_resource_id: Byo resource id for creating the built-in model service
+     endpoints.
+    :vartype associated_resource_id: str
+    :ivar deployments: Deployments info.
+    :vartype deployments:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.EndpointDeploymentResourcePropertiesBasicResource]
+    :ivar endpoint_type: Type of the endpoint. Required. Known values are: "Azure.OpenAI",
+     "Azure.Speech", "Azure.ContentSafety", "Azure.Llama", "managedOnlineEndpoint", and
+     "serverlessEndpoint".
+    :vartype endpoint_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.EndpointType
+    :ivar endpoint_uri: Uri of the endpoint.
+    :vartype endpoint_uri: str
+    :ivar failure_reason: The failure reason if the creation failed.
+    :vartype failure_reason: str
+    :ivar location: Location of the endpoint. Since input dto and when parse endpoint resource
+     share the same contract this Location field is just for parse the endpoint resource info we
+     won't let customer specify the endpoint resource location since we will create it the same
+     location as workspace.
+    :vartype location: str
+    :ivar name: Name of the endpoint.
+    :vartype name: str
+    :ivar provisioning_state: Read-only provision state status property. Known values are:
+     "NotStarted", "Failed", "Creating", "Updating", "Succeeded", "Deleting", "Accepted",
+     "Canceled", "Scaling", and "Disabled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultResourceProvisioningState
+    :ivar should_create_ai_services_endpoint: Whether the proxy (non-byo) endpoint is a regular
+     endpoint or a OneKeyV2 AI services account endpoint.
+    :vartype should_create_ai_services_endpoint: bool
+    """
+
+    __mapping__: dict[str, _Model] = {}
+    associated_resource_id: Optional[str] = rest_field(
+        name="associatedResourceId", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Byo resource id for creating the built-in model service endpoints."""
+    deployments: Optional[list["_models.EndpointDeploymentResourcePropertiesBasicResource"]] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Deployments info."""
+    endpoint_type: str = rest_discriminator(
+        name="endpointType", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Type of the endpoint. Required. Known values are: \"Azure.OpenAI\", \"Azure.Speech\",
+     \"Azure.ContentSafety\", \"Azure.Llama\", \"managedOnlineEndpoint\", and
+     \"serverlessEndpoint\"."""
+    endpoint_uri: Optional[str] = rest_field(
+        name="endpointUri", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Uri of the endpoint."""
+    failure_reason: Optional[str] = rest_field(
+        name="failureReason", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The failure reason if the creation failed."""
+    location: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Location of the endpoint. Since input dto and when parse endpoint resource share the same
+     contract this Location field is just for parse the endpoint resource info we won't let customer
+     specify the endpoint resource location since we will create it the same location as workspace."""
+    name: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Name of the endpoint."""
+    provisioning_state: Optional[Union[str, "_models.DefaultResourceProvisioningState"]] = rest_field(
+        name="provisioningState", visibility=["read"]
+    )
+    """Read-only provision state status property. Known values are: \"NotStarted\", \"Failed\",
+     \"Creating\", \"Updating\", \"Succeeded\", \"Deleting\", \"Accepted\", \"Canceled\",
+     \"Scaling\", and \"Disabled\"."""
+    should_create_ai_services_endpoint: Optional[bool] = rest_field(
+        name="shouldCreateAiServicesEndpoint", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Whether the proxy (non-byo) endpoint is a regular endpoint or a OneKeyV2 AI services account
+     endpoint."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        endpoint_type: str,
+        associated_resource_id: Optional[str] = None,
+        deployments: Optional[list["_models.EndpointDeploymentResourcePropertiesBasicResource"]] = None,
+        endpoint_uri: Optional[str] = None,
+        failure_reason: Optional[str] = None,
+        location: Optional[str] = None,
+        name: Optional[str] = None,
+        should_create_ai_services_endpoint: Optional[bool] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class ContentSafetyEndpointResourceProperties(EndpointResourceProperties, discriminator="Azure.ContentSafety"):
+    """ContentSafetyEndpointResourceProperties.
+
+    :ivar associated_resource_id: Byo resource id for creating the built-in model service
+     endpoints.
+    :vartype associated_resource_id: str
+    :ivar deployments: Deployments info.
+    :vartype deployments:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.EndpointDeploymentResourcePropertiesBasicResource]
+    :ivar endpoint_uri: Uri of the endpoint.
+    :vartype endpoint_uri: str
+    :ivar failure_reason: The failure reason if the creation failed.
+    :vartype failure_reason: str
+    :ivar location: Location of the endpoint. Since input dto and when parse endpoint resource
+     share the same contract this Location field is just for parse the endpoint resource info we
+     won't let customer specify the endpoint resource location since we will create it the same
+     location as workspace.
+    :vartype location: str
+    :ivar name: Name of the endpoint.
+    :vartype name: str
+    :ivar provisioning_state: Read-only provision state status property. Known values are:
+     "NotStarted", "Failed", "Creating", "Updating", "Succeeded", "Deleting", "Accepted",
+     "Canceled", "Scaling", and "Disabled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultResourceProvisioningState
+    :ivar should_create_ai_services_endpoint: Whether the proxy (non-byo) endpoint is a regular
+     endpoint or a OneKeyV2 AI services account endpoint.
+    :vartype should_create_ai_services_endpoint: bool
+    :ivar endpoint_type: Type of the endpoint. Required. AZURE_CONTENT_SAFETY.
+    :vartype endpoint_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AZURE_CONTENT_SAFETY
+    """
+
+    endpoint_type: Literal[EndpointType.AZURE_CONTENT_SAFETY] = rest_discriminator(name="endpointType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """Type of the endpoint. Required. AZURE_CONTENT_SAFETY."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        associated_resource_id: Optional[str] = None,
+        deployments: Optional[list["_models.EndpointDeploymentResourcePropertiesBasicResource"]] = None,
+        endpoint_uri: Optional[str] = None,
+        failure_reason: Optional[str] = None,
+        location: Optional[str] = None,
+        name: Optional[str] = None,
+        should_create_ai_services_endpoint: Optional[bool] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.endpoint_type = EndpointType.AZURE_CONTENT_SAFETY  # type: ignore
 
 
 class CosmosDbSettings(_Model):
@@ -6807,7 +7452,7 @@ class ScheduleActionBase(_Model):
 
     :ivar action_type: [Required] Specifies the action type of the schedule. Required. Known values
      are: "CreateJob", "InvokeBatchEndpoint", and "CreateMonitor".
-    :vartype action_type: str or ~arm_ml_service.models.ScheduleActionType
+    :vartype action_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ScheduleActionType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -6837,10 +7482,10 @@ class CreateMonitorAction(ScheduleActionBase, discriminator="CreateMonitor"):
     """CreateMonitorAction.
 
     :ivar monitor_definition: [Required] Defines the monitor. Required.
-    :vartype monitor_definition: ~arm_ml_service.models.MonitorDefinition
+    :vartype monitor_definition: ~azure.ai.ml._restclient.arm_ml_service.models.MonitorDefinition
     :ivar action_type: [Required] Specifies the action type of the schedule. Required.
      CREATE_MONITOR.
-    :vartype action_type: str or ~arm_ml_service.models.CREATE_MONITOR
+    :vartype action_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CREATE_MONITOR
     """
 
     monitor_definition: "_models.MonitorDefinition" = rest_field(
@@ -6933,7 +7578,7 @@ class TriggerBase(_Model):
      <https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-time-zones?view=windows-11>`_.
     :vartype time_zone: str
     :ivar trigger_type: [Required]. Required. Known values are: "Recurrence" and "Cron".
-    :vartype trigger_type: str or ~arm_ml_service.models.TriggerType
+    :vartype trigger_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.TriggerType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -6991,7 +7636,7 @@ class CronTrigger(TriggerBase, discriminator="Cron"):
      follow NCronTab format. Required.
     :vartype expression: str
     :ivar trigger_type: [Required]. Required. CRON.
-    :vartype trigger_type: str or ~arm_ml_service.models.CRON
+    :vartype trigger_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CRON
     """
 
     expression: str = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -7029,7 +7674,7 @@ class CustomForecastHorizon(ForecastHorizon, discriminator="Custom"):
     :vartype value: int
     :ivar mode: [Required] Set forecast horizon value selection mode. Required. Use the custom
      forecast horizon.
-    :vartype mode: str or ~arm_ml_service.models.CUSTOM
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.CUSTOM
     """
 
     value: int = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -7113,7 +7758,7 @@ class CustomKeysWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, d
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -7122,15 +7767,16 @@ class CustomKeysWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, d
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -7138,9 +7784,9 @@ class CustomKeysWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, d
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar credentials: Custom Keys credential object.
-    :vartype credentials: ~arm_ml_service.models.CustomKeys
+    :vartype credentials: ~azure.ai.ml._restclient.arm_ml_service.models.CustomKeys
     :ivar auth_type: Authentication type of the connection target. Required. CUSTOM_KEYS.
-    :vartype auth_type: str or ~arm_ml_service.models.CUSTOM_KEYS
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CUSTOM_KEYS
     """
 
     credentials: Optional["_models.CustomKeys"] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -7184,7 +7830,7 @@ class CustomMetricThreshold(_Model):
     :vartype metric: str
     :ivar threshold: The threshold value. If null, a default value will be set depending on the
      selected metric.
-    :vartype threshold: ~arm_ml_service.models.MonitoringThreshold
+    :vartype threshold: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringThreshold
     """
 
     metric: str = rest_field(visibility=["read", "create"])
@@ -7215,21 +7861,21 @@ class CustomModelFineTuning(FineTuningVertical, discriminator="Custom"):
     """CustomModelFineTuning.
 
     :ivar model: [Required] Input model for fine tuning. Required.
-    :vartype model: ~arm_ml_service.models.JobInput
+    :vartype model: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
     :ivar task_type: [Required] Fine tuning task type. Required. Known values are:
      "ChatCompletion", "TextCompletion", "TextClassification", "QuestionAnswering",
      "TextSummarization", "TokenClassification", "TextTranslation", "ImageClassification",
      "ImageInstanceSegmentation", "ImageObjectDetection", and "VideoMultiObjectTracking".
-    :vartype task_type: str or ~arm_ml_service.models.FineTuningTaskType
+    :vartype task_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.FineTuningTaskType
     :ivar training_data: [Required] Training data for fine tuning. Required.
-    :vartype training_data: ~arm_ml_service.models.JobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
     :ivar validation_data: Validation data for fine tuning.
-    :vartype validation_data: ~arm_ml_service.models.JobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
     :ivar hyper_parameters: HyperParameters for fine tuning custom model.
     :vartype hyper_parameters: dict[str, str]
     :ivar model_provider: [Required] Enum to determine the type of fine tuning. Required. Fine
      tuning using custom model.
-    :vartype model_provider: str or ~arm_ml_service.models.CUSTOM
+    :vartype model_provider: str or ~azure.ai.ml._restclient.arm_ml_service.models.CUSTOM
     """
 
     hyper_parameters: Optional[dict[str, str]] = rest_field(
@@ -7274,7 +7920,7 @@ class JobInput(_Model):
     :ivar job_input_type: [Required] Specifies the type of job. Required. Known values are:
      "literal", "uri_file", "uri_folder", "mltable", "custom_model", "mlflow_model", and
      "triton_model".
-    :vartype job_input_type: str or ~arm_ml_service.models.JobInputType
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobInputType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -7310,11 +7956,11 @@ class CustomModelJobInput(JobInput, discriminator="custom_model"):
     :vartype description: str
     :ivar mode: Enum to determine the input data delivery mode. Known values are: "ReadOnlyMount",
      "ReadWriteMount", "Download", "Direct", "EvalMount", and "EvalDownload".
-    :vartype mode: str or ~arm_ml_service.models.InputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.InputDeliveryMode
     :ivar uri: [Required] Input Asset URI. Required.
     :vartype uri: str
     :ivar job_input_type: [Required] Specifies the type of job. Required. CUSTOM_MODEL.
-    :vartype job_input_type: str or ~arm_ml_service.models.CUSTOM_MODEL
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CUSTOM_MODEL
     """
 
     mode: Optional[Union[str, "_models.InputDeliveryMode"]] = rest_field(visibility=["read", "create"])
@@ -7357,7 +8003,7 @@ class JobOutput(_Model):
     :vartype description: str
     :ivar job_output_type: [Required] Specifies the type of job. Required. Known values are:
      "uri_file", "uri_folder", "mltable", "custom_model", "mlflow_model", and "triton_model".
-    :vartype job_output_type: str or ~arm_ml_service.models.JobOutputType
+    :vartype job_output_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobOutputType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -7395,11 +8041,11 @@ class CustomModelJobOutput(JobOutput, discriminator="custom_model"):
     :vartype asset_name: str
     :ivar mode: Output data delivery mode enums. Known values are: "ReadWriteMount", "Upload", and
      "Direct".
-    :vartype mode: str or ~arm_ml_service.models.OutputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.OutputDeliveryMode
     :ivar uri: Output Asset URI.
     :vartype uri: str
     :ivar job_output_type: [Required] Specifies the type of job. Required. CUSTOM_MODEL.
-    :vartype job_output_type: str or ~arm_ml_service.models.CUSTOM_MODEL
+    :vartype job_output_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CUSTOM_MODEL
     """
 
     asset_name: Optional[str] = rest_field(name="assetName", visibility=["read", "create", "update", "delete", "query"])
@@ -7442,12 +8088,14 @@ class MonitoringSignalBase(_Model):
     FeatureAttributionDriftMonitoringSignal, PredictionDriftMonitoringSignal
 
     :ivar notification_types: The current notification mode for this signal.
-    :vartype notification_types: list[str or ~arm_ml_service.models.MonitoringNotificationType]
+    :vartype notification_types: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringNotificationType]
     :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
     :vartype properties: dict[str, str]
     :ivar signal_type: [Required] Specifies the type of signal to monitor. Required. Known values
      are: "DataDrift", "PredictionDrift", "DataQuality", "FeatureAttributionDrift", and "Custom".
-    :vartype signal_type: str or ~arm_ml_service.models.MonitoringSignalType
+    :vartype signal_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringSignalType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -7485,7 +8133,8 @@ class CustomMonitoringSignal(MonitoringSignalBase, discriminator="Custom"):
     """CustomMonitoringSignal.
 
     :ivar notification_types: The current notification mode for this signal.
-    :vartype notification_types: list[str or ~arm_ml_service.models.MonitoringNotificationType]
+    :vartype notification_types: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringNotificationType]
     :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
     :vartype properties: dict[str, str]
     :ivar component_id: [Required] Reference to the component asset used to calculate the custom
@@ -7493,16 +8142,18 @@ class CustomMonitoringSignal(MonitoringSignalBase, discriminator="Custom"):
     :vartype component_id: str
     :ivar input_assets: Monitoring assets to take as input. Key is the component input port name,
      value is the data asset.
-    :vartype input_assets: dict[str, ~arm_ml_service.models.MonitoringInputDataBase]
+    :vartype input_assets: dict[str,
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringInputDataBase]
     :ivar inputs: Extra component parameters to take as input. Key is the component literal input
      port name, value is the parameter value.
-    :vartype inputs: dict[str, ~arm_ml_service.models.JobInput]
+    :vartype inputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobInput]
     :ivar metric_thresholds: [Required] A list of metrics to calculate and their associated
      thresholds. Required.
-    :vartype metric_thresholds: list[~arm_ml_service.models.CustomMetricThreshold]
+    :vartype metric_thresholds:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.CustomMetricThreshold]
     :ivar signal_type: [Required] Specifies the type of signal to monitor. Required. Tracks a
      custom signal provided by users.
-    :vartype signal_type: str or ~arm_ml_service.models.CUSTOM
+    :vartype signal_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CUSTOM
     """
 
     component_id: str = rest_field(name="componentId", visibility=["read", "create"])
@@ -7554,7 +8205,7 @@ class CustomNCrossValidations(NCrossValidations, discriminator="Custom"):
     :vartype value: int
     :ivar mode: [Required] Mode for determining N-Cross validations. Required. Use custom N-Cross
      validations value.
-    :vartype mode: str or ~arm_ml_service.models.CUSTOM
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.CUSTOM
     """
 
     value: int = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -7588,7 +8239,7 @@ class CustomSeasonality(Seasonality, discriminator="Custom"):
     :ivar value: [Required] Seasonality value. Required.
     :vartype value: int
     :ivar mode: [Required] Seasonality mode. Required. Use the custom seasonality value.
-    :vartype mode: str or ~arm_ml_service.models.CUSTOM
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.CUSTOM
     """
 
     value: int = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -7621,17 +8272,18 @@ class CustomService(_Model):
     :ivar name: Name of the Custom Service.
     :vartype name: str
     :ivar image: Describes the Image Specifications.
-    :vartype image: ~arm_ml_service.models.Image
+    :vartype image: ~azure.ai.ml._restclient.arm_ml_service.models.Image
     :ivar environment_variables: Environment Variable for the container.
-    :vartype environment_variables: dict[str, ~arm_ml_service.models.EnvironmentVariable]
+    :vartype environment_variables: dict[str,
+     ~azure.ai.ml._restclient.arm_ml_service.models.EnvironmentVariable]
     :ivar docker: Describes the docker settings for the image.
-    :vartype docker: ~arm_ml_service.models.Docker
+    :vartype docker: ~azure.ai.ml._restclient.arm_ml_service.models.Docker
     :ivar endpoints: Configuring the endpoints for the container.
-    :vartype endpoints: list[~arm_ml_service.models.Endpoint]
+    :vartype endpoints: list[~azure.ai.ml._restclient.arm_ml_service.models.Endpoint]
     :ivar volumes: Configuring the volumes for the container.
-    :vartype volumes: list[~arm_ml_service.models.VolumeDefinition]
+    :vartype volumes: list[~azure.ai.ml._restclient.arm_ml_service.models.VolumeDefinition]
     :ivar kernel: Describes the jupyter kernel settings for the image if its a custom environment.
-    :vartype kernel: ~arm_ml_service.models.JupyterKernelConfig
+    :vartype kernel: ~azure.ai.ml._restclient.arm_ml_service.models.JupyterKernelConfig
     """
 
     name: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -7688,7 +8340,7 @@ class CustomTargetLags(TargetLags, discriminator="Custom"):
     :vartype values_property: list[int]
     :ivar mode: [Required] Set target lags mode - Auto/Custom. Required. Use the custom target
      lags.
-    :vartype mode: str or ~arm_ml_service.models.CUSTOM
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.CUSTOM
     """
 
     values_property: list[int] = rest_field(
@@ -7724,7 +8376,7 @@ class CustomTargetRollingWindowSize(TargetRollingWindowSize, discriminator="Cust
     :vartype value: int
     :ivar mode: [Required] TargetRollingWindowSiz detection mode. Required. Use the specified
      rolling window size.
-    :vartype mode: str or ~arm_ml_service.models.CUSTOM
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.CUSTOM
     """
 
     value: int = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -7760,7 +8412,8 @@ class Databricks(Compute, discriminator="Databricks"):
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Known values are: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar description: The description of the Machine Learning compute.
     :vartype description: str
     :ivar created_on: The time at which the compute was created.
@@ -7770,7 +8423,8 @@ class Databricks(Compute, discriminator="Databricks"):
     :ivar resource_id: ARM resource id of the underlying compute.
     :vartype resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
-    :vartype provisioning_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype provisioning_errors:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -7778,9 +8432,9 @@ class Databricks(Compute, discriminator="Databricks"):
      and AAD exclusively for authentication.
     :vartype disable_local_auth: bool
     :ivar properties:
-    :vartype properties: ~arm_ml_service.models.DatabricksProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.DatabricksProperties
     :ivar compute_type: The type of compute. Required. DATABRICKS.
-    :vartype compute_type: str or ~arm_ml_service.models.DATABRICKS
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.DATABRICKS
     """
 
     properties: Optional["_models.DatabricksProperties"] = rest_field(
@@ -7818,7 +8472,7 @@ class DatabricksComputeSecrets(ComputeSecrets, discriminator="Databricks"):
     :ivar databricks_access_token: access token for databricks account.
     :vartype databricks_access_token: str
     :ivar compute_type: The type of compute. Required. DATABRICKS.
-    :vartype compute_type: str or ~arm_ml_service.models.DATABRICKS
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.DATABRICKS
     """
 
     databricks_access_token: Optional[str] = rest_field(
@@ -7892,17 +8546,17 @@ class DataCollector(_Model):
      data collector can be used for either payload logging or custom logging or both of them.
      Collection request and response are reserved for payload logging, others are for custom
      logging. Required.
-    :vartype collections: dict[str, ~arm_ml_service.models.Collection]
+    :vartype collections: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.Collection]
     :ivar request_logging: The request logging configuration for mdc, it includes advanced logging
      settings for all collections. It's optional.
-    :vartype request_logging: ~arm_ml_service.models.RequestLogging
+    :vartype request_logging: ~azure.ai.ml._restclient.arm_ml_service.models.RequestLogging
     :ivar rolling_rate: When model data is collected to blob storage, we need to roll the data to
      different path to avoid logging all of them in a single blob file. If the rolling rate is hour,
      all data will be collected in the blob path /yyyy/MM/dd/HH/. If it's day, all data will be
      collected in blob path /yyyy/MM/dd/. The other benefit of rolling path is that model monitoring
      ui is able to select a time range of data very quickly. Known values are: "Year", "Month",
      "Day", "Hour", and "Minute".
-    :vartype rolling_rate: str or ~arm_ml_service.models.RollingRateType
+    :vartype rolling_rate: str or ~azure.ai.ml._restclient.arm_ml_service.models.RollingRateType
     """
 
     collections: dict[str, "_models.Collection"] = rest_field(
@@ -7960,9 +8614,9 @@ class DataContainer(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.DataContainerProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.DataContainerProperties
     """
 
     properties: "_models.DataContainerProperties" = rest_field(
@@ -8005,7 +8659,7 @@ class DataContainerProperties(AssetContainer):
     :vartype next_version: str
     :ivar data_type: [Required] Specifies the type of data. Required. Known values are: "uri_file",
      "uri_folder", and "mltable".
-    :vartype data_type: str or ~arm_ml_service.models.DataType
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.DataType
     """
 
     data_type: Union[str, "_models.DataType"] = rest_field(name="dataType", visibility=["read", "create"])
@@ -8038,27 +8692,31 @@ class DataDriftMonitoringSignal(MonitoringSignalBase, discriminator="DataDrift")
     """DataDriftMonitoringSignal.
 
     :ivar notification_types: The current notification mode for this signal.
-    :vartype notification_types: list[str or ~arm_ml_service.models.MonitoringNotificationType]
+    :vartype notification_types: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringNotificationType]
     :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
     :vartype properties: dict[str, str]
     :ivar feature_data_type_override: A dictionary that maps feature names to their respective data
      types.
     :vartype feature_data_type_override: dict[str, str or
-     ~arm_ml_service.models.MonitoringFeatureDataType]
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringFeatureDataType]
     :ivar feature_importance_settings: The settings for computing feature importance.
-    :vartype feature_importance_settings: ~arm_ml_service.models.FeatureImportanceSettings
+    :vartype feature_importance_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.FeatureImportanceSettings
     :ivar features: The feature filter which identifies which feature to calculate drift over.
-    :vartype features: ~arm_ml_service.models.MonitoringFeatureFilterBase
+    :vartype features: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringFeatureFilterBase
     :ivar metric_thresholds: [Required] A list of metrics to calculate and their associated
      thresholds. Required.
-    :vartype metric_thresholds: list[~arm_ml_service.models.DataDriftMetricThresholdBase]
+    :vartype metric_thresholds:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.DataDriftMetricThresholdBase]
     :ivar production_data: [Required] The data which drift will be calculated for. Required.
-    :vartype production_data: ~arm_ml_service.models.MonitoringInputDataBase
+    :vartype production_data:
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringInputDataBase
     :ivar reference_data: [Required] The data to calculate drift against. Required.
-    :vartype reference_data: ~arm_ml_service.models.MonitoringInputDataBase
+    :vartype reference_data: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringInputDataBase
     :ivar signal_type: [Required] Specifies the type of signal to monitor. Required. Tracks model
      input data distribution change, comparing against training data or past production data.
-    :vartype signal_type: str or ~arm_ml_service.models.DATA_DRIFT
+    :vartype signal_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.DATA_DRIFT
     """
 
     feature_data_type_override: Optional[dict[str, Union[str, "_models.MonitoringFeatureDataType"]]] = rest_field(
@@ -8119,7 +8777,8 @@ class DataFactory(Compute, discriminator="DataFactory"):
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Known values are: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar description: The description of the Machine Learning compute.
     :vartype description: str
     :ivar created_on: The time at which the compute was created.
@@ -8129,7 +8788,8 @@ class DataFactory(Compute, discriminator="DataFactory"):
     :ivar resource_id: ARM resource id of the underlying compute.
     :vartype resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
-    :vartype provisioning_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype provisioning_errors:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -8137,7 +8797,7 @@ class DataFactory(Compute, discriminator="DataFactory"):
      and AAD exclusively for authentication.
     :vartype disable_local_auth: bool
     :ivar compute_type: The type of compute. Required. DATA_FACTORY.
-    :vartype compute_type: str or ~arm_ml_service.models.DATA_FACTORY
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.DATA_FACTORY
     """
 
     compute_type: Literal[ComputeType.DATA_FACTORY] = rest_discriminator(name="computeType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -8165,6 +8825,73 @@ class DataFactory(Compute, discriminator="DataFactory"):
         self.compute_type = ComputeType.DATA_FACTORY  # type: ignore
 
 
+class DataGenerationVertical(_Model):
+    """DataGenerationVertical.
+
+    You probably want to use the sub-classes and not this class directly. Known sub-classes are:
+    LabelGeneration
+
+    :ivar data_generation_task_type: [Required] DataGeneration Task type. Required. Known values
+     are: "Conversation", "Math", "Nli", "NluQa", and "Summarization".
+    :vartype data_generation_task_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DataGenerationTaskType
+    :ivar data_generation_type: [Required] Enum to determine the type of Data Generation. Required.
+     Known values are: "LabelGeneration" and "DataGeneration".
+    :vartype data_generation_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DataGenerationType
+    :ivar prompt_settings: Prompt Settings.
+    :vartype prompt_settings: ~azure.ai.ml._restclient.arm_ml_service.models.PromptSettings
+    :ivar teacher_model_endpoint: [Required] Teacher Model Endpoint Details. Required.
+    :vartype teacher_model_endpoint:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TeacherModelEndpoint
+    :ivar teacher_model_settings:
+    :vartype teacher_model_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TeacherModelSettings
+    """
+
+    __mapping__: dict[str, _Model] = {}
+    data_generation_task_type: Union[str, "_models.DataGenerationTaskType"] = rest_field(
+        name="dataGenerationTaskType", visibility=["read", "create"]
+    )
+    """[Required] DataGeneration Task type. Required. Known values are: \"Conversation\", \"Math\",
+     \"Nli\", \"NluQa\", and \"Summarization\"."""
+    data_generation_type: str = rest_discriminator(name="dataGenerationType", visibility=["read", "create"])
+    """[Required] Enum to determine the type of Data Generation. Required. Known values are:
+     \"LabelGeneration\" and \"DataGeneration\"."""
+    prompt_settings: Optional["_models.PromptSettings"] = rest_field(
+        name="promptSettings", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Prompt Settings."""
+    teacher_model_endpoint: "_models.TeacherModelEndpoint" = rest_field(
+        name="teacherModelEndpoint", visibility=["read", "create"]
+    )
+    """[Required] Teacher Model Endpoint Details. Required."""
+    teacher_model_settings: Optional["_models.TeacherModelSettings"] = rest_field(
+        name="teacherModelSettings", visibility=["read", "create", "update", "delete", "query"]
+    )
+
+    @overload
+    def __init__(
+        self,
+        *,
+        data_generation_task_type: Union[str, "_models.DataGenerationTaskType"],
+        data_generation_type: str,
+        teacher_model_endpoint: "_models.TeacherModelEndpoint",
+        prompt_settings: Optional["_models.PromptSettings"] = None,
+        teacher_model_settings: Optional["_models.TeacherModelSettings"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class DataLakeAnalytics(Compute, discriminator="DataLakeAnalytics"):
     """A DataLakeAnalytics compute.
 
@@ -8173,7 +8900,8 @@ class DataLakeAnalytics(Compute, discriminator="DataLakeAnalytics"):
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Known values are: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar description: The description of the Machine Learning compute.
     :vartype description: str
     :ivar created_on: The time at which the compute was created.
@@ -8183,7 +8911,8 @@ class DataLakeAnalytics(Compute, discriminator="DataLakeAnalytics"):
     :ivar resource_id: ARM resource id of the underlying compute.
     :vartype resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
-    :vartype provisioning_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype provisioning_errors:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -8191,9 +8920,11 @@ class DataLakeAnalytics(Compute, discriminator="DataLakeAnalytics"):
      and AAD exclusively for authentication.
     :vartype disable_local_auth: bool
     :ivar properties:
-    :vartype properties: ~arm_ml_service.models.DataLakeAnalyticsSchemaProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.DataLakeAnalyticsSchemaProperties
     :ivar compute_type: The type of compute. Required. DATA_LAKE_ANALYTICS.
-    :vartype compute_type: str or ~arm_ml_service.models.DATA_LAKE_ANALYTICS
+    :vartype compute_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DATA_LAKE_ANALYTICS
     """
 
     properties: Optional["_models.DataLakeAnalyticsSchemaProperties"] = rest_field(
@@ -8263,7 +8994,7 @@ class DataPathAssetReference(AssetReferenceBase, discriminator="DataPath"):
     :ivar path: The path of the file/directory in the datastore.
     :vartype path: str
     :ivar reference_type: [Required] Specifies the type of asset reference. Required. DATA_PATH.
-    :vartype reference_type: str or ~arm_ml_service.models.DATA_PATH
+    :vartype reference_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.DATA_PATH
     """
 
     datastore_id: Optional[str] = rest_field(
@@ -8299,28 +9030,32 @@ class DataQualityMonitoringSignal(MonitoringSignalBase, discriminator="DataQuali
     """DataQualityMonitoringSignal.
 
     :ivar notification_types: The current notification mode for this signal.
-    :vartype notification_types: list[str or ~arm_ml_service.models.MonitoringNotificationType]
+    :vartype notification_types: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringNotificationType]
     :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
     :vartype properties: dict[str, str]
     :ivar feature_data_type_override: A dictionary that maps feature names to their respective data
      types.
     :vartype feature_data_type_override: dict[str, str or
-     ~arm_ml_service.models.MonitoringFeatureDataType]
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringFeatureDataType]
     :ivar feature_importance_settings: The settings for computing feature importance.
-    :vartype feature_importance_settings: ~arm_ml_service.models.FeatureImportanceSettings
+    :vartype feature_importance_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.FeatureImportanceSettings
     :ivar features: The features to calculate drift over.
-    :vartype features: ~arm_ml_service.models.MonitoringFeatureFilterBase
+    :vartype features: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringFeatureFilterBase
     :ivar metric_thresholds: [Required] A list of metrics to calculate and their associated
      thresholds. Required.
-    :vartype metric_thresholds: list[~arm_ml_service.models.DataQualityMetricThresholdBase]
+    :vartype metric_thresholds:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.DataQualityMetricThresholdBase]
     :ivar production_data: [Required] The data produced by the production service which drift will
      be calculated for. Required.
-    :vartype production_data: ~arm_ml_service.models.MonitoringInputDataBase
+    :vartype production_data:
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringInputDataBase
     :ivar reference_data: [Required] The data to calculate drift against. Required.
-    :vartype reference_data: ~arm_ml_service.models.MonitoringInputDataBase
+    :vartype reference_data: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringInputDataBase
     :ivar signal_type: [Required] Specifies the type of signal to monitor. Required. Tracks model
      input data integrity.
-    :vartype signal_type: str or ~arm_ml_service.models.DATA_QUALITY
+    :vartype signal_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.DATA_QUALITY
     """
 
     feature_data_type_override: Optional[dict[str, Union[str, "_models.MonitoringFeatureDataType"]]] = rest_field(
@@ -8420,9 +9155,9 @@ class Datastore(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.DatastoreProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.DatastoreProperties
     """
 
     properties: "_models.DatastoreProperties" = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -8459,9 +9194,9 @@ class DataVersionBase(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.DataVersionBaseProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.DataVersionBaseProperties
     """
 
     properties: "_models.DataVersionBaseProperties" = rest_field(
@@ -8505,7 +9240,7 @@ class DataVersionBaseProperties(AssetBase):
     :vartype is_archived: bool
     :ivar data_type: [Required] Specifies the type of data. Required. Known values are: "uri_file",
      "uri_folder", and "mltable".
-    :vartype data_type: str or ~arm_ml_service.models.DataType
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.DataType
     :ivar data_uri: [Required] Uri of the data. Example:
      `https://go.microsoft.com/fwlink/?linkid=2202330
      <https://go.microsoft.com/fwlink/?linkid=2202330>`_. Required.
@@ -8552,7 +9287,7 @@ class OnlineScaleSettings(_Model):
 
     :ivar scale_type: [Required] Type of deployment scaling algorithm. Required. Known values are:
      "Default" and "TargetUtilization".
-    :vartype scale_type: str or ~arm_ml_service.models.ScaleType
+    :vartype scale_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ScaleType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -8582,7 +9317,7 @@ class DefaultScaleSettings(OnlineScaleSettings, discriminator="Default"):
     """DefaultScaleSettings.
 
     :ivar scale_type: [Required] Type of deployment scaling algorithm. Required. DEFAULT.
-    :vartype scale_type: str or ~arm_ml_service.models.DEFAULT
+    :vartype scale_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.DEFAULT
     """
 
     scale_type: Literal[ScaleType.DEFAULT] = rest_discriminator(name="scaleType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -8603,6 +9338,227 @@ class DefaultScaleSettings(OnlineScaleSettings, discriminator="Default"):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.scale_type = ScaleType.DEFAULT  # type: ignore
+
+
+class DeltaModelCurrentState(_Model):
+    """Contract for DeltaModelCurrentState.
+
+    :ivar count: Gets or sets Count of instances with model.
+    :vartype count: int
+    :ivar sample_instance_id: Gets or sets sample of instances with model.
+    :vartype sample_instance_id: str
+    :ivar status: Gets or sets status.
+    :vartype status: str
+    """
+
+    count: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Gets or sets Count of instances with model."""
+    sample_instance_id: Optional[str] = rest_field(
+        name="sampleInstanceID", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets sample of instances with model."""
+    status: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Gets or sets status."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        count: Optional[int] = None,
+        sample_instance_id: Optional[str] = None,
+        status: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class DeltaModelListRequest(_Model):
+    """DeltaModelListRequest.
+
+    :ivar count: Gets or sets number of delta models to return. Default: -1, means that all will be
+     returned.
+    :vartype count: int
+    :ivar skip_token: Gets or sets skip token for paginated response.
+    :vartype skip_token: str
+    :ivar target_base_model: Gets or sets target base model.
+    :vartype target_base_model: str
+    """
+
+    count: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Gets or sets number of delta models to return. Default: -1, means that all will be returned."""
+    skip_token: Optional[str] = rest_field(name="skipToken", visibility=["read", "create", "update", "delete", "query"])
+    """Gets or sets skip token for paginated response."""
+    target_base_model: Optional[str] = rest_field(
+        name="targetBaseModel", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets target base model."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        count: Optional[int] = None,
+        skip_token: Optional[str] = None,
+        target_base_model: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class DeltaModelModifyRequest(_Model):
+    """Contract base for DeltaModelChangeRequest. Used for adding or removing.
+
+    :ivar add_delta_models: Gets or sets delta models to remove.
+    :vartype add_delta_models: list[str]
+    :ivar remove_delta_models: Gets or sets delta models to remove.
+    :vartype remove_delta_models: list[str]
+    :ivar target_base_model: Gets or sets target base model.
+    :vartype target_base_model: str
+    """
+
+    add_delta_models: Optional[list[str]] = rest_field(
+        name="addDeltaModels", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets delta models to remove."""
+    remove_delta_models: Optional[list[str]] = rest_field(
+        name="removeDeltaModels", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets delta models to remove."""
+    target_base_model: Optional[str] = rest_field(
+        name="targetBaseModel", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets target base model."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        add_delta_models: Optional[list[str]] = None,
+        remove_delta_models: Optional[list[str]] = None,
+        target_base_model: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class DeltaModelStatusRequest(_Model):
+    """DeltaModelStatusRequest.
+
+    :ivar delta_models: Gets or sets collection of delta models to retrieve status for.
+    :vartype delta_models: list[str]
+    :ivar target_base_model: Gets or sets target base model.
+    :vartype target_base_model: str
+    """
+
+    delta_models: Optional[list[str]] = rest_field(
+        name="deltaModels", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets collection of delta models to retrieve status for."""
+    target_base_model: Optional[str] = rest_field(
+        name="targetBaseModel", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets target base model."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        delta_models: Optional[list[str]] = None,
+        target_base_model: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class DeltaModelStatusResponse(_Model):
+    """Contract returning to user the delta models.
+
+    :ivar actual_instance_count: Gets or sets actual instance count.
+    :vartype actual_instance_count: int
+    :ivar delta_models: Gets or sets dictionary representing modelID and its current state.
+    :vartype delta_models: dict[str,
+     list[~azure.ai.ml._restclient.arm_ml_service.models.DeltaModelCurrentState]]
+    :ivar expected_instance_count: Gets or sets expected instance count.
+    :vartype expected_instance_count: int
+    :ivar revision_id: Gets or sets revision ID.
+    :vartype revision_id: str
+    :ivar target_base_model: Gets or sets target base model.
+    :vartype target_base_model: str
+    """
+
+    actual_instance_count: Optional[int] = rest_field(
+        name="actualInstanceCount", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets actual instance count."""
+    delta_models: Optional[dict[str, list["_models.DeltaModelCurrentState"]]] = rest_field(
+        name="deltaModels", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets dictionary representing modelID and its current state."""
+    expected_instance_count: Optional[int] = rest_field(
+        name="expectedInstanceCount", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets expected instance count."""
+    revision_id: Optional[str] = rest_field(
+        name="revisionId", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets revision ID."""
+    target_base_model: Optional[str] = rest_field(
+        name="targetBaseModel", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets target base model."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        actual_instance_count: Optional[int] = None,
+        delta_models: Optional[dict[str, list["_models.DeltaModelCurrentState"]]] = None,
+        expected_instance_count: Optional[int] = None,
+        revision_id: Optional[str] = None,
+        target_base_model: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
 
 
 class DeploymentLogs(_Model):
@@ -8638,7 +9594,7 @@ class DeploymentLogsRequest(_Model):
 
     :ivar container_type: The type of container to retrieve logs from. Known values are:
      "StorageInitializer" and "InferenceServer".
-    :vartype container_type: str or ~arm_ml_service.models.ContainerType
+    :vartype container_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ContainerType
     :ivar tail: The maximum number of lines to tail.
     :vartype tail: int
     """
@@ -8875,7 +9831,7 @@ class DiagnoseResponseResult(_Model):
     """DiagnoseResponseResult.
 
     :ivar value:
-    :vartype value: ~arm_ml_service.models.DiagnoseResponseResultValue
+    :vartype value: ~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseResponseResultValue
     """
 
     value: Optional["_models.DiagnoseResponseResultValue"] = rest_field(
@@ -8904,23 +9860,30 @@ class DiagnoseResponseResultValue(_Model):
     """DiagnoseResponseResultValue.
 
     :ivar user_defined_route_results:
-    :vartype user_defined_route_results: list[~arm_ml_service.models.DiagnoseResult]
+    :vartype user_defined_route_results:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseResult]
     :ivar network_security_rule_results:
-    :vartype network_security_rule_results: list[~arm_ml_service.models.DiagnoseResult]
+    :vartype network_security_rule_results:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseResult]
     :ivar resource_lock_results:
-    :vartype resource_lock_results: list[~arm_ml_service.models.DiagnoseResult]
+    :vartype resource_lock_results:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseResult]
     :ivar dns_resolution_results:
-    :vartype dns_resolution_results: list[~arm_ml_service.models.DiagnoseResult]
+    :vartype dns_resolution_results:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseResult]
     :ivar storage_account_results:
-    :vartype storage_account_results: list[~arm_ml_service.models.DiagnoseResult]
+    :vartype storage_account_results:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseResult]
     :ivar key_vault_results:
-    :vartype key_vault_results: list[~arm_ml_service.models.DiagnoseResult]
+    :vartype key_vault_results: list[~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseResult]
     :ivar container_registry_results:
-    :vartype container_registry_results: list[~arm_ml_service.models.DiagnoseResult]
+    :vartype container_registry_results:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseResult]
     :ivar application_insights_results:
-    :vartype application_insights_results: list[~arm_ml_service.models.DiagnoseResult]
+    :vartype application_insights_results:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseResult]
     :ivar other_results:
-    :vartype other_results: list[~arm_ml_service.models.DiagnoseResult]
+    :vartype other_results: list[~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseResult]
     """
 
     user_defined_route_results: Optional[list["_models.DiagnoseResult"]] = rest_field(
@@ -8984,7 +9947,7 @@ class DiagnoseResult(_Model):
     :vartype code: str
     :ivar level: Level of workspace setup error. Known values are: "Warning", "Error", and
      "Information".
-    :vartype level: str or ~arm_ml_service.models.DiagnoseResultLevel
+    :vartype level: str or ~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseResultLevel
     :ivar message: Message of workspace setup error.
     :vartype message: str
     """
@@ -9001,7 +9964,7 @@ class DiagnoseWorkspaceParameters(_Model):
     """Parameters to diagnose a workspace.
 
     :ivar value:
-    :vartype value: ~arm_ml_service.models.DiagnoseRequestProperties
+    :vartype value: ~azure.ai.ml._restclient.arm_ml_service.models.DiagnoseRequestProperties
     """
 
     value: Optional["_models.DiagnoseRequestProperties"] = rest_field(
@@ -9026,21 +9989,124 @@ class DiagnoseWorkspaceParameters(_Model):
         super().__init__(*args, **kwargs)
 
 
+class DistillationJob(JobBaseProperties, discriminator="Distillation"):
+    """Distillation Job definition.
+
+    :ivar description: The asset description text.
+    :vartype description: str
+    :ivar properties: The asset property dictionary.
+    :vartype properties: dict[str, str]
+    :ivar tags: Tag dictionary. Tags can be added, removed, and updated.
+    :vartype tags: dict[str, str]
+    :ivar component_id: ARM resource ID of the component resource.
+    :vartype component_id: str
+    :ivar compute_id: ARM resource ID of the compute resource.
+    :vartype compute_id: str
+    :ivar display_name: Display name of job.
+    :vartype display_name: str
+    :ivar experiment_name: The name of the experiment the job belongs to. If not set, the job is
+     placed in the "Default" experiment.
+    :vartype experiment_name: str
+    :ivar identity: Identity configuration. If set, this should be one of AmlToken,
+     ManagedIdentity, UserIdentity or null. Defaults to AmlToken if null.
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.IdentityConfiguration
+    :ivar is_archived: Is the asset archived?.
+    :vartype is_archived: bool
+    :ivar notification_setting: Notification setting for the job.
+    :vartype notification_setting:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NotificationSetting
+    :ivar parent_job_name: Parent job name.
+    :vartype parent_job_name: str
+    :ivar services: List of JobEndpoints. For local jobs, a job endpoint will have an endpoint
+     value of FileStreamObject.
+    :vartype services: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobService]
+    :ivar status: Status of the job. Known values are: "NotStarted", "Starting", "Provisioning",
+     "Preparing", "Queued", "Running", "Finalizing", "CancelRequested", "Completed", "Failed",
+     "Canceled", "NotResponding", "Paused", and "Unknown".
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobStatus
+    :ivar data_generation_details: [Required]. Required.
+    :vartype data_generation_details:
+     ~azure.ai.ml._restclient.arm_ml_service.models.DataGenerationVertical
+    :ivar finetuning_details: [Required]. Required.
+    :vartype finetuning_details: ~azure.ai.ml._restclient.arm_ml_service.models.FinetuningDetails
+    :ivar outputs: [Required]. Required.
+    :vartype outputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobOutput]
+    :ivar queue_settings: Queue settings for the job.
+    :vartype queue_settings: ~azure.ai.ml._restclient.arm_ml_service.models.QueueSettings
+    :ivar resources: Instance types and other resources for the job.
+    :vartype resources: ~azure.ai.ml._restclient.arm_ml_service.models.JobResources
+    :ivar job_type: [Required] Specifies the type of job. Required. DISTILLATION.
+    :vartype job_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.DISTILLATION
+    """
+
+    data_generation_details: "_models.DataGenerationVertical" = rest_field(
+        name="dataGenerationDetails", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """[Required]. Required."""
+    finetuning_details: "_models.FinetuningDetails" = rest_field(
+        name="finetuningDetails", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """[Required]. Required."""
+    outputs: dict[str, "_models.JobOutput"] = rest_field(visibility=["read", "create"])
+    """[Required]. Required."""
+    queue_settings: Optional["_models.QueueSettings"] = rest_field(name="queueSettings", visibility=["read", "create"])
+    """Queue settings for the job."""
+    resources: Optional["_models.JobResources"] = rest_field(visibility=["read", "create"])
+    """Instance types and other resources for the job."""
+    job_type: Literal[JobType.DISTILLATION] = rest_discriminator(name="jobType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """[Required] Specifies the type of job. Required. DISTILLATION."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        data_generation_details: "_models.DataGenerationVertical",
+        finetuning_details: "_models.FinetuningDetails",
+        outputs: dict[str, "_models.JobOutput"],
+        description: Optional[str] = None,
+        properties: Optional[dict[str, str]] = None,
+        tags: Optional[dict[str, str]] = None,
+        component_id: Optional[str] = None,
+        compute_id: Optional[str] = None,
+        display_name: Optional[str] = None,
+        experiment_name: Optional[str] = None,
+        identity: Optional["_models.IdentityConfiguration"] = None,
+        is_archived: Optional[bool] = None,
+        notification_setting: Optional["_models.NotificationSetting"] = None,
+        parent_job_name: Optional[str] = None,
+        services: Optional[dict[str, "_models.JobService"]] = None,
+        queue_settings: Optional["_models.QueueSettings"] = None,
+        resources: Optional["_models.JobResources"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.job_type = JobType.DISTILLATION  # type: ignore
+
+
 class DistributionConfiguration(_Model):
     """Base definition for job distribution configuration.
 
     You probably want to use the sub-classes and not this class directly. Known sub-classes are:
-    Mpi, PyTorch, TensorFlow
+    Mpi, PyTorch, Ray, TensorFlow
 
     :ivar distribution_type: [Required] Specifies the type of distribution framework. Required.
-     Known values are: "PyTorch", "TensorFlow", and "Mpi".
-    :vartype distribution_type: str or ~arm_ml_service.models.DistributionType
+     Known values are: "PyTorch", "TensorFlow", "Mpi", and "Ray".
+    :vartype distribution_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DistributionType
     """
 
     __mapping__: dict[str, _Model] = {}
     distribution_type: str = rest_discriminator(name="distributionType", visibility=["read", "create"])
     """[Required] Specifies the type of distribution framework. Required. Known values are:
-     \"PyTorch\", \"TensorFlow\", and \"Mpi\"."""
+     \"PyTorch\", \"TensorFlow\", \"Mpi\", and \"Ray\"."""
 
     @overload
     def __init__(
@@ -9097,7 +10163,8 @@ class DockerCredential(DataReferenceCredential, discriminator="DockerCredentials
     :vartype user_name: str
     :ivar credential_type: [Required] Credential type used to authentication with storage.
      Required. DOCKER_CREDENTIALS.
-    :vartype credential_type: str or ~arm_ml_service.models.DOCKER_CREDENTIALS
+    :vartype credential_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DOCKER_CREDENTIALS
     """
 
     password: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -9162,15 +10229,16 @@ class EncryptionProperty(_Model):
      data with encryption.
     :vartype cosmos_db_resource_id: str
     :ivar identity: Identity to be used with the keyVault.
-    :vartype identity: ~arm_ml_service.models.IdentityForCmk
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.IdentityForCmk
     :ivar key_vault_properties: KeyVault details to do the encryption. Required.
-    :vartype key_vault_properties: ~arm_ml_service.models.KeyVaultProperties
+    :vartype key_vault_properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.KeyVaultProperties
     :ivar search_account_resource_id: The byok search account that customer brings to store
      customer's data with encryption.
     :vartype search_account_resource_id: str
     :ivar status: Indicates whether or not the encryption is enabled for the workspace. Required.
      Known values are: "Enabled" and "Disabled".
-    :vartype status: str or ~arm_ml_service.models.EncryptionStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.EncryptionStatus
     :ivar storage_account_resource_id: The byok storage account that customer brings to store
      customer's data with encryption.
     :vartype storage_account_resource_id: str
@@ -9229,7 +10297,8 @@ class EncryptionUpdateProperties(_Model):
     """EncryptionUpdateProperties.
 
     :ivar key_vault_properties: Required.
-    :vartype key_vault_properties: ~arm_ml_service.models.EncryptionKeyVaultUpdateProperties
+    :vartype key_vault_properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.EncryptionKeyVaultUpdateProperties
     """
 
     key_vault_properties: "_models.EncryptionKeyVaultUpdateProperties" = rest_field(
@@ -9259,7 +10328,7 @@ class Endpoint(_Model):
     """Endpoint.
 
     :ivar protocol: Endpoint Communication Protocol. Known values are: "tcp", "udp", and "http".
-    :vartype protocol: str or ~arm_ml_service.models.Protocol
+    :vartype protocol: str or ~azure.ai.ml._restclient.arm_ml_service.models.Protocol
     :ivar name: Name of the Endpoint.
     :vartype name: str
     :ivar target: Application port inside the container.
@@ -9387,6 +10456,556 @@ class EndpointAuthToken(_Model):
         super().__init__(*args, **kwargs)
 
 
+class EndpointDeploymentModel(_Model):
+    """EndpointDeploymentModel.
+
+    :ivar format: Model format.
+    :vartype format: str
+    :ivar name: Model name.
+    :vartype name: str
+    :ivar source: Optional. Deployment model source ARM resource ID.
+    :vartype source: str
+    :ivar version: Model version.
+    :vartype version: str
+    """
+
+    format: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Model format."""
+    name: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Model name."""
+    source: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Optional. Deployment model source ARM resource ID."""
+    version: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Model version."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        format: Optional[str] = None,
+        name: Optional[str] = None,
+        source: Optional[str] = None,
+        version: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class EndpointDeploymentResourcePropertiesBasicResource(ProxyResource):  # pylint: disable=name-too-long
+    """EndpointDeploymentResourcePropertiesBasicResource is preview-only.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
+     information.
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
+    :ivar properties: Required.
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.EndpointDeploymentResourceProperties
+    """
+
+    properties: "_models.EndpointDeploymentResourceProperties" = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Required."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        properties: "_models.EndpointDeploymentResourceProperties",
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class EndpointKeys(_Model):
+    """EndpointKeys.
+
+    :ivar keys_property: Dictionary of Keys for the endpoint.
+    :vartype keys_property: ~azure.ai.ml._restclient.arm_ml_service.models.AccountApiKeys
+    """
+
+    keys_property: Optional["_models.AccountApiKeys"] = rest_field(
+        name="keys", visibility=["read", "create", "update", "delete", "query"], original_tsp_name="keys"
+    )
+    """Dictionary of Keys for the endpoint."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        keys_property: Optional["_models.AccountApiKeys"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class EndpointModelDeprecationProperties(_Model):
+    """EndpointModelDeprecationProperties.
+
+    :ivar fine_tune: The datetime of deprecation of the fineTune Model.
+    :vartype fine_tune: ~datetime.datetime
+    :ivar inference: The datetime of deprecation of the inference Model.
+    :vartype inference: ~datetime.datetime
+    """
+
+    fine_tune: Optional[datetime.datetime] = rest_field(
+        name="fineTune", visibility=["read", "create", "update", "delete", "query"], format="rfc3339"
+    )
+    """The datetime of deprecation of the fineTune Model."""
+    inference: Optional[datetime.datetime] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"], format="rfc3339"
+    )
+    """The datetime of deprecation of the inference Model."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        fine_tune: Optional[datetime.datetime] = None,
+        inference: Optional[datetime.datetime] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class EndpointModelProperties(_Model):
+    """Endpoint Model properties.
+
+    :ivar capabilities: The capabilities.
+    :vartype capabilities: dict[str, str]
+    :ivar deprecation:
+    :vartype deprecation:
+     ~azure.ai.ml._restclient.arm_ml_service.models.EndpointModelDeprecationProperties
+    :ivar finetune_capabilities: The capabilities for finetune models.
+    :vartype finetune_capabilities: dict[str, str]
+    :ivar format: Deployment model format.
+    :vartype format: str
+    :ivar is_default_version: If the model is default version.
+    :vartype is_default_version: bool
+    :ivar lifecycle_status: Model lifecycle status. Known values are: "GenerallyAvailable" and
+     "Preview".
+    :vartype lifecycle_status: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ModelLifecycleStatus
+    :ivar max_capacity: The max capacity.
+    :vartype max_capacity: int
+    :ivar name: Deployment model name.
+    :vartype name: str
+    :ivar skus: The list of Model Sku.
+    :vartype skus: list[~azure.ai.ml._restclient.arm_ml_service.models.EndpointModelSkuProperties]
+    :ivar system_data:
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
+    :ivar version: Optional. Deployment model version. If version is not specified, a default
+     version will be assigned. The default version is different for different models and might
+     change when there is new version available for a model. Default version for a model could be
+     found from list models API.
+    :vartype version: str
+    """
+
+    capabilities: Optional[dict[str, str]] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """The capabilities."""
+    deprecation: Optional["_models.EndpointModelDeprecationProperties"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    finetune_capabilities: Optional[dict[str, str]] = rest_field(
+        name="finetuneCapabilities", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The capabilities for finetune models."""
+    format: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Deployment model format."""
+    is_default_version: Optional[bool] = rest_field(
+        name="isDefaultVersion", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """If the model is default version."""
+    lifecycle_status: Optional[Union[str, "_models.ModelLifecycleStatus"]] = rest_field(
+        name="lifecycleStatus", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Model lifecycle status. Known values are: \"GenerallyAvailable\" and \"Preview\"."""
+    max_capacity: Optional[int] = rest_field(
+        name="maxCapacity", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The max capacity."""
+    name: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Deployment model name."""
+    skus: Optional[list["_models.EndpointModelSkuProperties"]] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The list of Model Sku."""
+    system_data: Optional["_models.SystemData"] = rest_field(
+        name="systemData", visibility=["read", "create", "update", "delete", "query"]
+    )
+    version: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Optional. Deployment model version. If version is not specified, a default version will be
+     assigned. The default version is different for different models and might change when there is
+     new version available for a model. Default version for a model could be found from list models
+     API."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        capabilities: Optional[dict[str, str]] = None,
+        deprecation: Optional["_models.EndpointModelDeprecationProperties"] = None,
+        finetune_capabilities: Optional[dict[str, str]] = None,
+        format: Optional[str] = None,
+        is_default_version: Optional[bool] = None,
+        lifecycle_status: Optional[Union[str, "_models.ModelLifecycleStatus"]] = None,
+        max_capacity: Optional[int] = None,
+        name: Optional[str] = None,
+        skus: Optional[list["_models.EndpointModelSkuProperties"]] = None,
+        system_data: Optional["_models.SystemData"] = None,
+        version: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class EndpointModels(_Model):
+    """Paged collection of EndpointModelProperties items.
+
+    :ivar value: The EndpointModelProperties items on this page. Required.
+    :vartype value: list[~azure.ai.ml._restclient.arm_ml_service.models.EndpointModelProperties]
+    :ivar next_link: The link to the next page of items.
+    :vartype next_link: str
+    """
+
+    value: list["_models.EndpointModelProperties"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The EndpointModelProperties items on this page. Required."""
+    next_link: Optional[str] = rest_field(name="nextLink", visibility=["read", "create", "update", "delete", "query"])
+    """The link to the next page of items."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        value: list["_models.EndpointModelProperties"],
+        next_link: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class EndpointModelSkuCapacityProperties(_Model):
+    """EndpointModelSkuCapacityProperties.
+
+    :ivar default: The default capacity.
+    :vartype default: int
+    :ivar maximum: The maximum capacity.
+    :vartype maximum: int
+    """
+
+    default: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """The default capacity."""
+    maximum: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """The maximum capacity."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        default: Optional[int] = None,
+        maximum: Optional[int] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class EndpointModelSkuProperties(_Model):
+    """EndpointModelSkuProperties.
+
+    :ivar capacity:
+    :vartype capacity:
+     ~azure.ai.ml._restclient.arm_ml_service.models.EndpointModelSkuCapacityProperties
+    :ivar connection_ids: The list of ARM id for the connection support this SKU.
+    :vartype connection_ids: list[str]
+    :ivar deprecation_date: The datetime of deprecation of the model SKU.
+    :vartype deprecation_date: ~datetime.datetime
+    :ivar name: The name of the model SKU.
+    :vartype name: str
+    :ivar rate_limits:
+    :vartype rate_limits:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.EndpointModelSkuRateLimitProperties]
+    :ivar usage_name: The usage name of the model SKU.
+    :vartype usage_name: str
+    """
+
+    capacity: Optional["_models.EndpointModelSkuCapacityProperties"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    connection_ids: Optional[list[str]] = rest_field(
+        name="connectionIds", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The list of ARM id for the connection support this SKU."""
+    deprecation_date: Optional[datetime.datetime] = rest_field(
+        name="deprecationDate", visibility=["read", "create", "update", "delete", "query"], format="rfc3339"
+    )
+    """The datetime of deprecation of the model SKU."""
+    name: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """The name of the model SKU."""
+    rate_limits: Optional[list["_models.EndpointModelSkuRateLimitProperties"]] = rest_field(
+        name="rateLimits", visibility=["read", "create", "update", "delete", "query"]
+    )
+    usage_name: Optional[str] = rest_field(name="usageName", visibility=["read", "create", "update", "delete", "query"])
+    """The usage name of the model SKU."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        capacity: Optional["_models.EndpointModelSkuCapacityProperties"] = None,
+        connection_ids: Optional[list[str]] = None,
+        deprecation_date: Optional[datetime.datetime] = None,
+        name: Optional[str] = None,
+        rate_limits: Optional[list["_models.EndpointModelSkuRateLimitProperties"]] = None,
+        usage_name: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class EndpointModelSkuRateLimitProperties(_Model):
+    """EndpointModelSkuRateLimitProperties.
+
+    :ivar count: The count value of Call Rate Limit.
+    :vartype count: float
+    :ivar renewal_period: The renewal period in seconds of Call Rate Limit.
+    :vartype renewal_period: float
+    :ivar rules: The call rate limit for the model.
+    :vartype rules:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.EndpointModelSkuRateLimitRuleProperties]
+    """
+
+    count: Optional[float] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """The count value of Call Rate Limit."""
+    renewal_period: Optional[float] = rest_field(
+        name="renewalPeriod", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The renewal period in seconds of Call Rate Limit."""
+    rules: Optional[list["_models.EndpointModelSkuRateLimitRuleProperties"]] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The call rate limit for the model."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        count: Optional[float] = None,
+        renewal_period: Optional[float] = None,
+        rules: Optional[list["_models.EndpointModelSkuRateLimitRuleProperties"]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class EndpointModelSkuRateLimitRulePatternProperties(_Model):  # pylint: disable=name-too-long
+    """EndpointModelSkuRateLimitRulePatternProperties.
+
+    :ivar method:
+    :vartype method: str
+    :ivar path:
+    :vartype path: str
+    """
+
+    method: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    path: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+
+    @overload
+    def __init__(
+        self,
+        *,
+        method: Optional[str] = None,
+        path: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class EndpointModelSkuRateLimitRuleProperties(_Model):
+    """EndpointModelSkuRateLimitRuleProperties.
+
+    :ivar count:
+    :vartype count: float
+    :ivar dynamic_throttling_enabled: If the dynamic throttling is enabled.
+    :vartype dynamic_throttling_enabled: bool
+    :ivar key:
+    :vartype key: str
+    :ivar match_patterns:
+    :vartype match_patterns:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.EndpointModelSkuRateLimitRulePatternProperties]
+    :ivar min_count:
+    :vartype min_count: float
+    :ivar renewal_period:
+    :vartype renewal_period: float
+    """
+
+    count: Optional[float] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    dynamic_throttling_enabled: Optional[bool] = rest_field(
+        name="dynamicThrottlingEnabled", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """If the dynamic throttling is enabled."""
+    key: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    match_patterns: Optional[list["_models.EndpointModelSkuRateLimitRulePatternProperties"]] = rest_field(
+        name="matchPatterns", visibility=["read", "create", "update", "delete", "query"]
+    )
+    min_count: Optional[float] = rest_field(name="minCount", visibility=["read", "create", "update", "delete", "query"])
+    renewal_period: Optional[float] = rest_field(
+        name="renewalPeriod", visibility=["read", "create", "update", "delete", "query"]
+    )
+
+    @overload
+    def __init__(
+        self,
+        *,
+        count: Optional[float] = None,
+        dynamic_throttling_enabled: Optional[bool] = None,
+        key: Optional[str] = None,
+        match_patterns: Optional[list["_models.EndpointModelSkuRateLimitRulePatternProperties"]] = None,
+        min_count: Optional[float] = None,
+        renewal_period: Optional[float] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class EndpointResourcePropertiesBasicResource(ProxyResource):
+    """EndpointResourcePropertiesBasicResource is a preview-only resource.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
+     information.
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
+    :ivar properties: Required.
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.EndpointResourceProperties
+    """
+
+    properties: "_models.EndpointResourceProperties" = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Required."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        properties: "_models.EndpointResourceProperties",
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class EndpointScheduleAction(ScheduleActionBase, discriminator="InvokeBatchEndpoint"):
     """EndpointScheduleAction.
 
@@ -9395,7 +11014,8 @@ class EndpointScheduleAction(ScheduleActionBase, discriminator="InvokeBatchEndpo
     :vartype endpoint_invocation_definition: dict[str, any]
     :ivar action_type: [Required] Specifies the action type of the schedule. Required.
      INVOKE_BATCH_ENDPOINT.
-    :vartype action_type: str or ~arm_ml_service.models.INVOKE_BATCH_ENDPOINT
+    :vartype action_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.INVOKE_BATCH_ENDPOINT
     """
 
     endpoint_invocation_definition: dict[str, Any] = rest_field(
@@ -9437,9 +11057,10 @@ class EnvironmentContainer(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.EnvironmentContainerProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.EnvironmentContainerProperties
     """
 
     properties: "_models.EnvironmentContainerProperties" = rest_field(
@@ -9482,7 +11103,8 @@ class EnvironmentContainerProperties(AssetContainer):
     :vartype next_version: str
     :ivar provisioning_state: Provisioning state for the environment container. Known values are:
      "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     """
 
     provisioning_state: Optional[Union[str, "_models.AssetProvisioningState"]] = rest_field(
@@ -9516,7 +11138,7 @@ class EnvironmentVariable(_Model):
     """EnvironmentVariable.
 
     :ivar type: Type of Environment Variable. "local"
-    :vartype type: str or ~arm_ml_service.models.EnvironmentVariableType
+    :vartype type: str or ~azure.ai.ml._restclient.arm_ml_service.models.EnvironmentVariableType
     :ivar value: Value of the Environment variable.
     :vartype value: str
     """
@@ -9560,9 +11182,10 @@ class EnvironmentVersion(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.EnvironmentVersionProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.EnvironmentVersionProperties
     """
 
     properties: "_models.EnvironmentVersionProperties" = rest_field(
@@ -9603,9 +11226,9 @@ class EnvironmentVersionProperties(AssetBase):
     :vartype is_archived: bool
     :ivar auto_rebuild: AutoRebuild setting for the derived image. Known values are: "Disabled" and
      "OnBaseImageUpdate".
-    :vartype auto_rebuild: str or ~arm_ml_service.models.AutoRebuildSetting
+    :vartype auto_rebuild: str or ~azure.ai.ml._restclient.arm_ml_service.models.AutoRebuildSetting
     :ivar build: Configuration settings for Docker build context.
-    :vartype build: ~arm_ml_service.models.BuildContext
+    :vartype build: ~azure.ai.ml._restclient.arm_ml_service.models.BuildContext
     :ivar conda_file: Standard configuration file used by Conda that lets you install any kind of
      package, including Python, R, and C/C++ packages. <see
      href="https://repo2docker.readthedocs.io/en/latest/config_files.html#environment-yml-install-a-conda-environment"
@@ -9615,18 +11238,23 @@ class EnvironmentVersionProperties(AssetBase):
      service <see
      href="https://docs.microsoft.com/en-us/azure/machine-learning/resource-curated-environments"
      />. Known values are: "Curated" and "UserCreated".
-    :vartype environment_type: str or ~arm_ml_service.models.EnvironmentType
+    :vartype environment_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.EnvironmentType
     :ivar image: Name of the image that will be used for the environment. <seealso
      href="https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-custom-docker-image#use-a-custom-base-image"
      />.
     :vartype image: str
+    :ivar image_details: Environment image details.
+    :vartype image_details: ~azure.ai.ml._restclient.arm_ml_service.models.ImageDetails
     :ivar inference_config: Defines configuration specific to inference.
-    :vartype inference_config: ~arm_ml_service.models.InferenceContainerProperties
+    :vartype inference_config:
+     ~azure.ai.ml._restclient.arm_ml_service.models.InferenceContainerProperties
     :ivar os_type: The type of operating system. Known values are: "Linux" and "Windows".
-    :vartype os_type: str or ~arm_ml_service.models.OperatingSystemType
+    :vartype os_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.OperatingSystemType
     :ivar provisioning_state: Provisioning state for the environment version. Known values are:
      "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     :ivar stage: Stage in the environment lifecycle assigned to this environment.
     :vartype stage: str
     """
@@ -9653,6 +11281,10 @@ class EnvironmentVersionProperties(AssetBase):
     """Name of the image that will be used for the environment. <seealso
      href=\"https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-custom-docker-image#use-a-custom-base-image\"
      />."""
+    image_details: Optional["_models.ImageDetails"] = rest_field(
+        name="imageDetails", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Environment image details."""
     inference_config: Optional["_models.InferenceContainerProperties"] = rest_field(
         name="inferenceConfig", visibility=["read", "create"]
     )
@@ -9682,6 +11314,7 @@ class EnvironmentVersionProperties(AssetBase):
         build: Optional["_models.BuildContext"] = None,
         conda_file: Optional[str] = None,
         image: Optional[str] = None,
+        image_details: Optional["_models.ImageDetails"] = None,
         inference_config: Optional["_models.InferenceContainerProperties"] = None,
         os_type: Optional[Union[str, "_models.OperatingSystemType"]] = None,
         stage: Optional[str] = None,
@@ -9723,9 +11356,10 @@ class ErrorDetail(_Model):
     :ivar target: The error target.
     :vartype target: str
     :ivar details: The error details.
-    :vartype details: list[~arm_ml_service.models.ErrorDetail]
+    :vartype details: list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorDetail]
     :ivar additional_info: The error additional info.
-    :vartype additional_info: list[~arm_ml_service.models.ErrorAdditionalInfo]
+    :vartype additional_info:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorAdditionalInfo]
     """
 
     code: Optional[str] = rest_field(visibility=["read"])
@@ -9746,7 +11380,7 @@ class ErrorResponse(_Model):
     """Error response.
 
     :ivar error: The error object.
-    :vartype error: ~arm_ml_service.models.ErrorDetail
+    :vartype error: ~azure.ai.ml._restclient.arm_ml_service.models.ErrorDetail
     """
 
     error: Optional["_models.ErrorDetail"] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -9776,9 +11410,9 @@ class EstimatedVMPrice(_Model):
     :ivar retail_price: Retail price. Required.
     :vartype retail_price: float
     :ivar os_type: OS type. Required. Known values are: "Linux" and "Windows".
-    :vartype os_type: str or ~arm_ml_service.models.VMPriceOSType
+    :vartype os_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.VMPriceOSType
     :ivar vm_tier: VM tier. Required. Known values are: "Standard", "LowPriority", and "Spot".
-    :vartype vm_tier: str or ~arm_ml_service.models.VMTier
+    :vartype vm_tier: str or ~azure.ai.ml._restclient.arm_ml_service.models.VMTier
     """
 
     retail_price: float = rest_field(name="retailPrice", visibility=["read", "create", "update", "delete", "query"])
@@ -9816,11 +11450,12 @@ class EstimatedVMPrices(_Model):
     """The estimated price info for using a VM.
 
     :ivar billing_currency: Billing currency. Required. "USD"
-    :vartype billing_currency: str or ~arm_ml_service.models.BillingCurrency
+    :vartype billing_currency: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.BillingCurrency
     :ivar unit_of_measure: Unit of time measure. Required. "OneHour"
-    :vartype unit_of_measure: str or ~arm_ml_service.models.UnitOfMeasure
+    :vartype unit_of_measure: str or ~azure.ai.ml._restclient.arm_ml_service.models.UnitOfMeasure
     :ivar values_property: List of estimated VM prices. Required.
-    :vartype values_property: list[~arm_ml_service.models.EstimatedVMPrice]
+    :vartype values_property: list[~azure.ai.ml._restclient.arm_ml_service.models.EstimatedVMPrice]
     """
 
     billing_currency: Union[str, "_models.BillingCurrency"] = rest_field(
@@ -9860,7 +11495,7 @@ class ExternalFQDNResponse(_Model):
     """ExternalFQDNResponse.
 
     :ivar value:
-    :vartype value: list[~arm_ml_service.models.FQDNEndpointsPropertyBag]
+    :vartype value: list[~azure.ai.ml._restclient.arm_ml_service.models.FQDNEndpointsPropertyBag]
     """
 
     value: Optional[list["_models.FQDNEndpointsPropertyBag"]] = rest_field(
@@ -9898,9 +11533,9 @@ class Feature(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.FeatureProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.FeatureProperties
     """
 
     properties: "_models.FeatureProperties" = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -9928,26 +11563,31 @@ class FeatureAttributionDriftMonitoringSignal(MonitoringSignalBase, discriminato
     """FeatureAttributionDriftMonitoringSignal.
 
     :ivar notification_types: The current notification mode for this signal.
-    :vartype notification_types: list[str or ~arm_ml_service.models.MonitoringNotificationType]
+    :vartype notification_types: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringNotificationType]
     :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
     :vartype properties: dict[str, str]
     :ivar feature_data_type_override: A dictionary that maps feature names to their respective data
      types.
     :vartype feature_data_type_override: dict[str, str or
-     ~arm_ml_service.models.MonitoringFeatureDataType]
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringFeatureDataType]
     :ivar feature_importance_settings: [Required] The settings for computing feature importance.
      Required.
-    :vartype feature_importance_settings: ~arm_ml_service.models.FeatureImportanceSettings
+    :vartype feature_importance_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.FeatureImportanceSettings
     :ivar metric_threshold: [Required] A list of metrics to calculate and their associated
      thresholds. Required.
-    :vartype metric_threshold: ~arm_ml_service.models.FeatureAttributionMetricThreshold
+    :vartype metric_threshold:
+     ~azure.ai.ml._restclient.arm_ml_service.models.FeatureAttributionMetricThreshold
     :ivar production_data: [Required] The data which drift will be calculated for. Required.
-    :vartype production_data: list[~arm_ml_service.models.MonitoringInputDataBase]
+    :vartype production_data:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.MonitoringInputDataBase]
     :ivar reference_data: [Required] The data to calculate drift against. Required.
-    :vartype reference_data: ~arm_ml_service.models.MonitoringInputDataBase
+    :vartype reference_data: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringInputDataBase
     :ivar signal_type: [Required] Specifies the type of signal to monitor. Required. Tracks feature
      importance change in production, comparing against feature importance at training time.
-    :vartype signal_type: str or ~arm_ml_service.models.FEATURE_ATTRIBUTION_DRIFT
+    :vartype signal_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.FEATURE_ATTRIBUTION_DRIFT
     """
 
     feature_data_type_override: Optional[dict[str, Union[str, "_models.MonitoringFeatureDataType"]]] = rest_field(
@@ -10002,10 +11642,10 @@ class FeatureAttributionMetricThreshold(_Model):
 
     :ivar metric: [Required] The feature attribution metric to calculate. Required.
      "NormalizedDiscountedCumulativeGain"
-    :vartype metric: str or ~arm_ml_service.models.FeatureAttributionMetric
+    :vartype metric: str or ~azure.ai.ml._restclient.arm_ml_service.models.FeatureAttributionMetric
     :ivar threshold: The threshold value. If null, a default value will be set depending on the
      selected metric.
-    :vartype threshold: ~arm_ml_service.models.MonitoringThreshold
+    :vartype threshold: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringThreshold
     """
 
     metric: Union[str, "_models.FeatureAttributionMetric"] = rest_field(visibility=["read", "create"])
@@ -10038,7 +11678,7 @@ class FeatureImportanceSettings(_Model):
 
     :ivar mode: The mode of operation for computing feature importance. Known values are:
      "Disabled" and "Enabled".
-    :vartype mode: str or ~arm_ml_service.models.FeatureImportanceMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.FeatureImportanceMode
     :ivar target_column: The name of the target column within the input data asset.
     :vartype target_column: str
     """
@@ -10083,7 +11723,7 @@ class FeatureProperties(ResourceBase):
     :vartype tags: dict[str, str]
     :ivar data_type: Specifies type. Known values are: "String", "Integer", "Long", "Float",
      "Double", "Binary", "Datetime", and "Boolean".
-    :vartype data_type: str or ~arm_ml_service.models.FeatureDataType
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.FeatureDataType
     :ivar feature_name: Specifies name.
     :vartype feature_name: str
     """
@@ -10133,9 +11773,10 @@ class FeaturesetContainer(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.FeaturesetContainerProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.FeaturesetContainerProperties
     """
 
     properties: "_models.FeaturesetContainerProperties" = rest_field(
@@ -10178,7 +11819,8 @@ class FeaturesetContainerProperties(AssetContainer):
     :vartype next_version: str
     :ivar provisioning_state: Provisioning state for the featureset container. Known values are:
      "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     """
 
     provisioning_state: Optional[Union[str, "_models.AssetProvisioningState"]] = rest_field(
@@ -10249,9 +11891,9 @@ class FeaturesetVersion(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.FeaturesetVersionProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.FeaturesetVersionProperties
     """
 
     properties: "_models.FeaturesetVersionProperties" = rest_field(
@@ -10282,19 +11924,21 @@ class FeaturesetVersionBackfillRequest(_Model):
 
     :ivar data_availability_status: Specified the data availability status that you want to
      backfill.
-    :vartype data_availability_status: list[str or ~arm_ml_service.models.DataAvailabilityStatus]
+    :vartype data_availability_status: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DataAvailabilityStatus]
     :ivar description: Specifies description.
     :vartype description: str
     :ivar display_name: Specifies description.
     :vartype display_name: str
     :ivar feature_window: Specifies the backfill feature window to be materialized.
-    :vartype feature_window: ~arm_ml_service.models.FeatureWindow
+    :vartype feature_window: ~azure.ai.ml._restclient.arm_ml_service.models.FeatureWindow
     :ivar job_id: Specify the jobId to retry the failed materialization.
     :vartype job_id: str
     :ivar properties: Specifies the properties.
     :vartype properties: dict[str, str]
     :ivar resource: Specifies the compute resource settings.
-    :vartype resource: ~arm_ml_service.models.MaterializationComputeResource
+    :vartype resource:
+     ~azure.ai.ml._restclient.arm_ml_service.models.MaterializationComputeResource
     :ivar spark_configuration: Specifies the spark compute settings.
     :vartype spark_configuration: dict[str, str]
     :ivar tags: Specifies the tags.
@@ -10400,12 +12044,14 @@ class FeaturesetVersionProperties(AssetBase):
     :ivar entities: Specifies list of entities.
     :vartype entities: list[str]
     :ivar materialization_settings: Specifies the materialization settings.
-    :vartype materialization_settings: ~arm_ml_service.models.MaterializationSettings
+    :vartype materialization_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.MaterializationSettings
     :ivar provisioning_state: Provisioning state for the featureset version container. Known values
      are: "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     :ivar specification: Specifies the feature spec details.
-    :vartype specification: ~arm_ml_service.models.FeaturesetSpecification
+    :vartype specification: ~azure.ai.ml._restclient.arm_ml_service.models.FeaturesetSpecification
     :ivar stage: Specifies the asset stage.
     :vartype stage: str
     """
@@ -10467,9 +12113,10 @@ class FeaturestoreEntityContainer(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.FeaturestoreEntityContainerProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.FeaturestoreEntityContainerProperties
     """
 
     properties: "_models.FeaturestoreEntityContainerProperties" = rest_field(
@@ -10512,7 +12159,8 @@ class FeaturestoreEntityContainerProperties(AssetContainer):
     :vartype next_version: str
     :ivar provisioning_state: Provisioning state for the featurestore entity container. Known
      values are: "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     """
 
     provisioning_state: Optional[Union[str, "_models.AssetProvisioningState"]] = rest_field(
@@ -10555,9 +12203,10 @@ class FeaturestoreEntityVersion(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.FeaturestoreEntityVersionProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.FeaturestoreEntityVersionProperties
     """
 
     properties: "_models.FeaturestoreEntityVersionProperties" = rest_field(
@@ -10597,10 +12246,11 @@ class FeaturestoreEntityVersionProperties(AssetBase):
     :ivar is_archived: Is the asset archived?.
     :vartype is_archived: bool
     :ivar index_columns: Specifies index columns.
-    :vartype index_columns: list[~arm_ml_service.models.IndexColumn]
+    :vartype index_columns: list[~azure.ai.ml._restclient.arm_ml_service.models.IndexColumn]
     :ivar provisioning_state: Provisioning state for the featurestore entity version. Known values
      are: "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     :ivar stage: Specifies the asset stage.
     :vartype stage: str
     """
@@ -10645,7 +12295,7 @@ class FeatureStoreSettings(_Model):
     """FeatureStoreSettings.
 
     :ivar compute_runtime:
-    :vartype compute_runtime: ~arm_ml_service.models.ComputeRuntimeDto
+    :vartype compute_runtime: ~azure.ai.ml._restclient.arm_ml_service.models.ComputeRuntimeDto
     :ivar offline_store_connection_name:
     :vartype offline_store_connection_name: str
     :ivar online_store_connection_name:
@@ -10689,7 +12339,7 @@ class FeatureSubset(MonitoringFeatureFilterBase, discriminator="FeatureSubset"):
     :vartype features: list[str]
     :ivar filter_type: [Required] Specifies the feature filter to leverage when selecting features
      to calculate metrics over. Required. Includes a user-defined subset of features.
-    :vartype filter_type: str or ~arm_ml_service.models.FEATURE_SUBSET
+    :vartype filter_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.FEATURE_SUBSET
     """
 
     features: list[str] = rest_field(visibility=["read", "create"])
@@ -10784,6 +12434,43 @@ class FeaturizationSettings(_Model):
         super().__init__(*args, **kwargs)
 
 
+class FinetuningDetails(_Model):
+    """FinetuningDetails.
+
+    :ivar hyper_parameters: Finetuning Hyperparameters.
+    :vartype hyper_parameters: dict[str, str]
+    :ivar student_model: [Required] Student model for fine tuning. Required.
+    :vartype student_model: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
+    """
+
+    hyper_parameters: Optional[dict[str, str]] = rest_field(
+        name="hyperParameters", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Finetuning Hyperparameters."""
+    student_model: "_models.JobInput" = rest_field(
+        name="studentModel", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """[Required] Student model for fine tuning. Required."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        student_model: "_models.JobInput",
+        hyper_parameters: Optional[dict[str, str]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class FineTuningJob(JobBaseProperties, discriminator="FineTuning"):
     """FineTuning Job definition.
 
@@ -10804,28 +12491,31 @@ class FineTuningJob(JobBaseProperties, discriminator="FineTuning"):
     :vartype experiment_name: str
     :ivar identity: Identity configuration. If set, this should be one of AmlToken,
      ManagedIdentity, UserIdentity or null. Defaults to AmlToken if null.
-    :vartype identity: ~arm_ml_service.models.IdentityConfiguration
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.IdentityConfiguration
     :ivar is_archived: Is the asset archived?.
     :vartype is_archived: bool
     :ivar notification_setting: Notification setting for the job.
-    :vartype notification_setting: ~arm_ml_service.models.NotificationSetting
+    :vartype notification_setting:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NotificationSetting
+    :ivar parent_job_name: Parent job name.
+    :vartype parent_job_name: str
     :ivar services: List of JobEndpoints. For local jobs, a job endpoint will have an endpoint
      value of FileStreamObject.
-    :vartype services: dict[str, ~arm_ml_service.models.JobService]
+    :vartype services: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobService]
     :ivar status: Status of the job. Known values are: "NotStarted", "Starting", "Provisioning",
      "Preparing", "Queued", "Running", "Finalizing", "CancelRequested", "Completed", "Failed",
      "Canceled", "NotResponding", "Paused", and "Unknown".
-    :vartype status: str or ~arm_ml_service.models.JobStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobStatus
     :ivar fine_tuning_details: [Required]. Required.
-    :vartype fine_tuning_details: ~arm_ml_service.models.FineTuningVertical
+    :vartype fine_tuning_details: ~azure.ai.ml._restclient.arm_ml_service.models.FineTuningVertical
     :ivar outputs: [Required]. Required.
-    :vartype outputs: dict[str, ~arm_ml_service.models.JobOutput]
+    :vartype outputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobOutput]
     :ivar queue_settings: Queue settings for the job.
-    :vartype queue_settings: ~arm_ml_service.models.QueueSettings
+    :vartype queue_settings: ~azure.ai.ml._restclient.arm_ml_service.models.QueueSettings
     :ivar resources: Instance types and other resources for the job.
-    :vartype resources: ~arm_ml_service.models.JobResources
-    :ivar job_type: [Required] Specifies the type of job. Required. Default value is "FineTuning".
-    :vartype job_type: str
+    :vartype resources: ~azure.ai.ml._restclient.arm_ml_service.models.JobResources
+    :ivar job_type: [Required] Specifies the type of job. Required. FINE_TUNING.
+    :vartype job_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.FINE_TUNING
     """
 
     fine_tuning_details: "_models.FineTuningVertical" = rest_field(
@@ -10838,8 +12528,8 @@ class FineTuningJob(JobBaseProperties, discriminator="FineTuning"):
     """Queue settings for the job."""
     resources: Optional["_models.JobResources"] = rest_field(visibility=["read", "create"])
     """Instance types and other resources for the job."""
-    job_type: Literal["FineTuning"] = rest_discriminator(name="jobType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
-    """[Required] Specifies the type of job. Required. Default value is \"FineTuning\"."""
+    job_type: Literal[JobType.FINE_TUNING] = rest_discriminator(name="jobType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """[Required] Specifies the type of job. Required. FINE_TUNING."""
 
     @overload
     def __init__(
@@ -10857,6 +12547,7 @@ class FineTuningJob(JobBaseProperties, discriminator="FineTuning"):
         identity: Optional["_models.IdentityConfiguration"] = None,
         is_archived: Optional[bool] = None,
         notification_setting: Optional["_models.NotificationSetting"] = None,
+        parent_job_name: Optional[str] = None,
         services: Optional[dict[str, "_models.JobService"]] = None,
         queue_settings: Optional["_models.QueueSettings"] = None,
         resources: Optional["_models.JobResources"] = None,
@@ -10871,7 +12562,7 @@ class FineTuningJob(JobBaseProperties, discriminator="FineTuning"):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.job_type = "FineTuning"  # type: ignore
+        self.job_type = JobType.FINE_TUNING  # type: ignore
 
 
 class MonitoringInputDataBase(_Model):
@@ -10886,11 +12577,12 @@ class MonitoringInputDataBase(_Model):
     :vartype data_context: str
     :ivar input_data_type: [Required] Specifies the type of signal to monitor. Required. Known
      values are: "Static", "Rolling", and "Fixed".
-    :vartype input_data_type: str or ~arm_ml_service.models.MonitoringInputDataType
+    :vartype input_data_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringInputDataType
     :ivar job_input_type: [Required] Specifies the type of job. Required. Known values are:
      "literal", "uri_file", "uri_folder", "mltable", "custom_model", "mlflow_model", and
      "triton_model".
-    :vartype job_input_type: str or ~arm_ml_service.models.JobInputType
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobInputType
     :ivar uri: [Required] Input Asset URI. Required.
     :vartype uri: str
     """
@@ -10941,12 +12633,12 @@ class FixedInputData(MonitoringInputDataBase, discriminator="Fixed"):
     :ivar job_input_type: [Required] Specifies the type of job. Required. Known values are:
      "literal", "uri_file", "uri_folder", "mltable", "custom_model", "mlflow_model", and
      "triton_model".
-    :vartype job_input_type: str or ~arm_ml_service.models.JobInputType
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobInputType
     :ivar uri: [Required] Input Asset URI. Required.
     :vartype uri: str
     :ivar input_data_type: [Required] Specifies the type of signal to monitor. Required. An input
      data with tabular format which doesn't require preprocessing.
-    :vartype input_data_type: str or ~arm_ml_service.models.FIXED
+    :vartype input_data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.FIXED
     """
 
     input_data_type: Literal[MonitoringInputDataType.FIXED] = rest_discriminator(name="inputDataType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -11008,28 +12700,30 @@ class Forecasting(AutoMLVertical, discriminator="Forecasting"):
 
     :ivar log_verbosity: Enum for setting log verbosity. Known values are: "NotSet", "Debug",
      "Info", "Warning", "Error", and "Critical".
-    :vartype log_verbosity: str or ~arm_ml_service.models.LogVerbosity
+    :vartype log_verbosity: str or ~azure.ai.ml._restclient.arm_ml_service.models.LogVerbosity
     :ivar target_column_name: Target column name: This is prediction values column. Also known as
      label column name in context of classification tasks.
     :vartype target_column_name: str
     :ivar training_data: [Required] Training data input. Required.
-    :vartype training_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar cv_split_column_names: Columns to use for CVSplit data.
     :vartype cv_split_column_names: list[str]
     :ivar featurization_settings: Featurization inputs needed for AutoML job.
-    :vartype featurization_settings: ~arm_ml_service.models.TableVerticalFeaturizationSettings
+    :vartype featurization_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TableVerticalFeaturizationSettings
     :ivar limit_settings: Execution constraints for AutoMLJob.
-    :vartype limit_settings: ~arm_ml_service.models.TableVerticalLimitSettings
+    :vartype limit_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TableVerticalLimitSettings
     :ivar n_cross_validations: Number of cross validation folds to be applied on training dataset
      when validation dataset is not provided.
-    :vartype n_cross_validations: ~arm_ml_service.models.NCrossValidations
+    :vartype n_cross_validations: ~azure.ai.ml._restclient.arm_ml_service.models.NCrossValidations
     :ivar test_data: Test data input.
-    :vartype test_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype test_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar test_data_size: The fraction of test dataset that needs to be set aside for validation
      purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
     :vartype test_data_size: float
     :ivar validation_data: Validation data inputs.
-    :vartype validation_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar validation_data_size: The fraction of training dataset that needs to be set aside for
      validation purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
     :vartype validation_data_size: float
@@ -11037,17 +12731,20 @@ class Forecasting(AutoMLVertical, discriminator="Forecasting"):
      weighted column as an input, causing rows in the data to be weighted up or down.
     :vartype weight_column_name: str
     :ivar forecasting_settings: Forecasting task specific inputs.
-    :vartype forecasting_settings: ~arm_ml_service.models.ForecastingSettings
+    :vartype forecasting_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ForecastingSettings
     :ivar primary_metric: Primary metrics for Forecasting task. Known values are:
      "SpearmanCorrelation", "NormalizedRootMeanSquaredError", "R2Score", and
      "NormalizedMeanAbsoluteError".
-    :vartype primary_metric: str or ~arm_ml_service.models.ForecastingPrimaryMetrics
+    :vartype primary_metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ForecastingPrimaryMetrics
     :ivar training_settings: Inputs for training phase for an AutoML Job.
-    :vartype training_settings: ~arm_ml_service.models.ForecastingTrainingSettings
+    :vartype training_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ForecastingTrainingSettings
     :ivar task_type: [Required] Task type for AutoMLJob. Required. Forecasting is a special kind of
      regression task that deals with time-series data and creates forecasting model that can be used
      to predict the near future values based on the inputs.
-    :vartype task_type: str or ~arm_ml_service.models.FORECASTING
+    :vartype task_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.FORECASTING
     """
 
     cv_split_column_names: Optional[list[str]] = rest_field(
@@ -11153,28 +12850,30 @@ class ForecastingSettings(_Model):
     :vartype cv_step_size: int
     :ivar feature_lags: Flag for generating lags for the numeric features. Known values are: "None"
      and "Auto".
-    :vartype feature_lags: str or ~arm_ml_service.models.FeatureLags
+    :vartype feature_lags: str or ~azure.ai.ml._restclient.arm_ml_service.models.FeatureLags
     :ivar forecast_horizon: The desired maximum forecast horizon in units of time-series frequency.
-    :vartype forecast_horizon: ~arm_ml_service.models.ForecastHorizon
+    :vartype forecast_horizon: ~azure.ai.ml._restclient.arm_ml_service.models.ForecastHorizon
     :ivar frequency: When forecasting, this parameter represents the period with which the forecast
      is desired, for example daily, weekly, yearly, etc. The forecast frequency is dataset frequency
      by default.
     :vartype frequency: str
     :ivar seasonality: Set time series seasonality as an integer multiple of the series frequency.
      If seasonality is set to 'auto', it will be inferred.
-    :vartype seasonality: ~arm_ml_service.models.Seasonality
+    :vartype seasonality: ~azure.ai.ml._restclient.arm_ml_service.models.Seasonality
     :ivar short_series_handling_config: The parameter defining how if AutoML should handle short
      time series. Known values are: "None", "Auto", "Pad", and "Drop".
     :vartype short_series_handling_config: str or
-     ~arm_ml_service.models.ShortSeriesHandlingConfiguration
+     ~azure.ai.ml._restclient.arm_ml_service.models.ShortSeriesHandlingConfiguration
     :ivar target_aggregate_function: Target aggregate function. Known values are: "None", "Sum",
      "Max", "Min", and "Mean".
-    :vartype target_aggregate_function: str or ~arm_ml_service.models.TargetAggregationFunction
+    :vartype target_aggregate_function: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.TargetAggregationFunction
     :ivar target_lags: The number of past periods to lag from the target column.
-    :vartype target_lags: ~arm_ml_service.models.TargetLags
+    :vartype target_lags: ~azure.ai.ml._restclient.arm_ml_service.models.TargetLags
     :ivar target_rolling_window_size: The number of past periods used to create a rolling window
      average of the target column.
-    :vartype target_rolling_window_size: ~arm_ml_service.models.TargetRollingWindowSize
+    :vartype target_rolling_window_size:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TargetRollingWindowSize
     :ivar time_column_name: The name of the time column. This parameter is required when
      forecasting to specify the datetime column in the input data used for building the time series
      and inferring its frequency.
@@ -11185,7 +12884,7 @@ class ForecastingSettings(_Model):
     :vartype time_series_id_column_names: list[str]
     :ivar use_stl: Configure STL Decomposition of the time-series target column. Known values are:
      "None", "Season", and "SeasonTrend".
-    :vartype use_stl: str or ~arm_ml_service.models.UseStl
+    :vartype use_stl: str or ~azure.ai.ml._restclient.arm_ml_service.models.UseStl
     """
 
     country_or_region_for_holidays: Optional[str] = rest_field(
@@ -11297,11 +12996,14 @@ class ForecastingTrainingSettings(TrainingSettings):
      parameter with a higher value than 300 secs, if more time is needed.
     :vartype ensemble_model_download_timeout: ~datetime.timedelta
     :ivar stack_ensemble_settings: Stack ensemble settings for stack ensemble run.
-    :vartype stack_ensemble_settings: ~arm_ml_service.models.StackEnsembleSettings
+    :vartype stack_ensemble_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.StackEnsembleSettings
     :ivar allowed_training_algorithms: Allowed models for forecasting task.
-    :vartype allowed_training_algorithms: list[str or ~arm_ml_service.models.ForecastingModels]
+    :vartype allowed_training_algorithms: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ForecastingModels]
     :ivar blocked_training_algorithms: Blocked models for forecasting task.
-    :vartype blocked_training_algorithms: list[str or ~arm_ml_service.models.ForecastingModels]
+    :vartype blocked_training_algorithms: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ForecastingModels]
     """
 
     allowed_training_algorithms: Optional[list[Union[str, "_models.ForecastingModels"]]] = rest_field(
@@ -11345,7 +13047,8 @@ class FQDNEndpoint(_Model):
     :ivar domain_name:
     :vartype domain_name: str
     :ivar endpoint_details:
-    :vartype endpoint_details: list[~arm_ml_service.models.FQDNEndpointDetail]
+    :vartype endpoint_details:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.FQDNEndpointDetail]
     """
 
     domain_name: Optional[str] = rest_field(
@@ -11407,7 +13110,7 @@ class FQDNEndpoints(_Model):
     :ivar category:
     :vartype category: str
     :ivar endpoints:
-    :vartype endpoints: list[~arm_ml_service.models.FQDNEndpoint]
+    :vartype endpoints: list[~azure.ai.ml._restclient.arm_ml_service.models.FQDNEndpoint]
     """
 
     category: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -11438,7 +13141,7 @@ class FQDNEndpointsPropertyBag(_Model):
     """Property bag for FQDN endpoints result.
 
     :ivar properties:
-    :vartype properties: ~arm_ml_service.models.FQDNEndpoints
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.FQDNEndpoints
     """
 
     properties: Optional["_models.FQDNEndpoints"] = rest_field(
@@ -11471,13 +13174,13 @@ class OutboundRule(_Model):
 
     :ivar category: Category of a managed network Outbound Rule of a machine learning workspace.
      Known values are: "Required", "Recommended", "UserDefined", and "Dependency".
-    :vartype category: str or ~arm_ml_service.models.RuleCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.RuleCategory
     :ivar status: Type of a managed network Outbound Rule of a machine learning workspace. Known
      values are: "Inactive", "Active", "Provisioning", "Deleting", and "Failed".
-    :vartype status: str or ~arm_ml_service.models.RuleStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.RuleStatus
     :ivar type: Type of a managed network Outbound Rule of a machine learning workspace. Required.
      Known values are: "FQDN", "PrivateEndpoint", and "ServiceTag".
-    :vartype type: str or ~arm_ml_service.models.RuleType
+    :vartype type: str or ~azure.ai.ml._restclient.arm_ml_service.models.RuleType
     :ivar error_information: Error information about an outbound rule of a machine learning
      workspace if RuleStatus is failed.
     :vartype error_information: str
@@ -11529,10 +13232,10 @@ class FqdnOutboundRule(OutboundRule, discriminator="FQDN"):
 
     :ivar category: Category of a managed network Outbound Rule of a machine learning workspace.
      Known values are: "Required", "Recommended", "UserDefined", and "Dependency".
-    :vartype category: str or ~arm_ml_service.models.RuleCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.RuleCategory
     :ivar status: Type of a managed network Outbound Rule of a machine learning workspace. Known
      values are: "Inactive", "Active", "Provisioning", "Deleting", and "Failed".
-    :vartype status: str or ~arm_ml_service.models.RuleStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.RuleStatus
     :ivar error_information: Error information about an outbound rule of a machine learning
      workspace if RuleStatus is failed.
     :vartype error_information: str
@@ -11542,7 +13245,7 @@ class FqdnOutboundRule(OutboundRule, discriminator="FQDN"):
     :vartype destination: str
     :ivar type: Type of a managed network Outbound Rule of a machine learning workspace. Required.
      FQDN.
-    :vartype type: str or ~arm_ml_service.models.FQDN
+    :vartype type: str or ~azure.ai.ml._restclient.arm_ml_service.models.FQDN
     """
 
     destination: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -11577,7 +13280,7 @@ class GetBlobReferenceForConsumptionDto(_Model):
      <https://blob.windows.core.net/Container/Path>`_.
     :vartype blob_uri: str
     :ivar credential: Credential info to access storage account.
-    :vartype credential: ~arm_ml_service.models.DataReferenceCredential
+    :vartype credential: ~azure.ai.ml._restclient.arm_ml_service.models.DataReferenceCredential
     :ivar storage_account_arm_id: The ARM id of the storage account.
     :vartype storage_account_arm_id: str
     """
@@ -11652,7 +13355,7 @@ class GetBlobReferenceSASResponseDto(_Model):
 
     :ivar blob_reference_for_consumption: Blob reference for consumption details.
     :vartype blob_reference_for_consumption:
-     ~arm_ml_service.models.GetBlobReferenceForConsumptionDto
+     ~azure.ai.ml._restclient.arm_ml_service.models.GetBlobReferenceForConsumptionDto
     """
 
     blob_reference_for_consumption: Optional["_models.GetBlobReferenceForConsumptionDto"] = rest_field(
@@ -11683,7 +13386,7 @@ class GridSamplingAlgorithm(SamplingAlgorithm, discriminator="Grid"):
 
     :ivar sampling_algorithm_type: [Required] The algorithm used for generating hyperparameter
      values, along with configuration properties. Required. GRID.
-    :vartype sampling_algorithm_type: str or ~arm_ml_service.models.GRID
+    :vartype sampling_algorithm_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.GRID
     """
 
     sampling_algorithm_type: Literal[SamplingAlgorithmType.GRID] = rest_discriminator(name="samplingAlgorithmType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -11707,6 +13410,143 @@ class GridSamplingAlgorithm(SamplingAlgorithm, discriminator="Grid"):
         self.sampling_algorithm_type = SamplingAlgorithmType.GRID  # type: ignore
 
 
+class GroupEnvironmentConfiguration(_Model):
+    """Environment configuration options.
+
+    :ivar environment_id: ARM resource ID of the environment specification for the inference pool.
+    :vartype environment_id: str
+    :ivar environment_variables: Environment variables configuration for the inference pool.
+    :vartype environment_variables:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.StringStringKeyValuePair]
+    :ivar liveness_probe: Liveness probe monitors the health of the container regularly.
+    :vartype liveness_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
+    :ivar readiness_probe: Readiness probe validates if the container is ready to serve traffic.
+     The properties and defaults are the same as liveness probe.
+    :vartype readiness_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
+    :ivar startup_probe: This verifies whether the application within a container is started.
+     Startup probes run before any other probe, and, unless it finishes successfully, disables other
+     probes.
+    :vartype startup_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
+    """
+
+    environment_id: Optional[str] = rest_field(
+        name="environmentId", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """ARM resource ID of the environment specification for the inference pool."""
+    environment_variables: Optional[list["_models.StringStringKeyValuePair"]] = rest_field(
+        name="environmentVariables", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Environment variables configuration for the inference pool."""
+    liveness_probe: Optional["_models.ProbeSettings"] = rest_field(
+        name="livenessProbe", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Liveness probe monitors the health of the container regularly."""
+    readiness_probe: Optional["_models.ProbeSettings"] = rest_field(
+        name="readinessProbe", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Readiness probe validates if the container is ready to serve traffic. The properties and
+     defaults are the same as liveness probe."""
+    startup_probe: Optional["_models.ProbeSettings"] = rest_field(
+        name="startupProbe", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """This verifies whether the application within a container is started. Startup probes run before
+     any other probe, and, unless it finishes successfully, disables other probes."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        environment_id: Optional[str] = None,
+        environment_variables: Optional[list["_models.StringStringKeyValuePair"]] = None,
+        liveness_probe: Optional["_models.ProbeSettings"] = None,
+        readiness_probe: Optional["_models.ProbeSettings"] = None,
+        startup_probe: Optional["_models.ProbeSettings"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class GroupModelConfiguration(_Model):
+    """Model configuration options.
+
+    :ivar model_id: The URI path to the model.
+    :vartype model_id: str
+    """
+
+    model_id: Optional[str] = rest_field(name="modelId", visibility=["read", "create", "update", "delete", "query"])
+    """The URI path to the model."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        model_id: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class GroupStatus(_Model):
+    """GroupStatus.
+
+    :ivar actual_capacity_info: Gets or sets the actual capacity info for the group.
+    :vartype actual_capacity_info:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ActualCapacityInfo
+    :ivar endpoint_count: Gets or sets the actual number of endpoints in the group.
+    :vartype endpoint_count: int
+    :ivar requested_capacity: Gets or sets the request number of instances for the group.
+    :vartype requested_capacity: int
+    """
+
+    actual_capacity_info: Optional["_models.ActualCapacityInfo"] = rest_field(
+        name="actualCapacityInfo", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets the actual capacity info for the group."""
+    endpoint_count: Optional[int] = rest_field(
+        name="endpointCount", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets the actual number of endpoints in the group."""
+    requested_capacity: Optional[int] = rest_field(
+        name="requestedCapacity", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets the request number of instances for the group."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        actual_capacity_info: Optional["_models.ActualCapacityInfo"] = None,
+        endpoint_count: Optional[int] = None,
+        requested_capacity: Optional[int] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class HDInsight(Compute, discriminator="HDInsight"):
     """A HDInsight compute.
 
@@ -11715,7 +13555,8 @@ class HDInsight(Compute, discriminator="HDInsight"):
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Known values are: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar description: The description of the Machine Learning compute.
     :vartype description: str
     :ivar created_on: The time at which the compute was created.
@@ -11725,7 +13566,8 @@ class HDInsight(Compute, discriminator="HDInsight"):
     :ivar resource_id: ARM resource id of the underlying compute.
     :vartype resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
-    :vartype provisioning_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype provisioning_errors:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -11733,9 +13575,9 @@ class HDInsight(Compute, discriminator="HDInsight"):
      and AAD exclusively for authentication.
     :vartype disable_local_auth: bool
     :ivar properties:
-    :vartype properties: ~arm_ml_service.models.HDInsightProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.HDInsightProperties
     :ivar compute_type: The type of compute. Required. HD_INSIGHT.
-    :vartype compute_type: str or ~arm_ml_service.models.HD_INSIGHT
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.HD_INSIGHT
     """
 
     properties: Optional["_models.HDInsightProperties"] = rest_field(
@@ -11775,7 +13617,8 @@ class HDInsightProperties(_Model):
     :ivar address: Public IP address of the master node of the cluster.
     :vartype address: str
     :ivar administrator_account: Admin credentials for master node of the cluster.
-    :vartype administrator_account: ~arm_ml_service.models.VirtualMachineSshCredentials
+    :vartype administrator_account:
+     ~azure.ai.ml._restclient.arm_ml_service.models.VirtualMachineSshCredentials
     """
 
     ssh_port: Optional[int] = rest_field(name="sshPort", visibility=["read", "create", "update", "delete", "query"])
@@ -11813,7 +13656,7 @@ class IdAssetReference(AssetReferenceBase, discriminator="Id"):
     :ivar asset_id: [Required] ARM resource ID of the asset. Required.
     :vartype asset_id: str
     :ivar reference_type: [Required] Specifies the type of asset reference. Required. ID.
-    :vartype reference_type: str or ~arm_ml_service.models.ID
+    :vartype reference_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ID
     """
 
     asset_id: str = rest_field(name="assetId", visibility=["read", "create", "update", "delete", "query"])
@@ -11871,11 +13714,42 @@ class IdentityForCmk(_Model):
         super().__init__(*args, **kwargs)
 
 
+class IdleShutdownSetting(_Model):
+    """Stops compute instance after user defined period of inactivity.
+
+    :ivar idle_time_before_shutdown: Time is defined in ISO8601 format. Minimum is 15 min, maximum
+     is 3 days.
+    :vartype idle_time_before_shutdown: str
+    """
+
+    idle_time_before_shutdown: Optional[str] = rest_field(
+        name="idleTimeBeforeShutdown", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Time is defined in ISO8601 format. Minimum is 15 min, maximum is 3 days."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        idle_time_before_shutdown: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class Image(_Model):
     """Image.
 
     :ivar type: Type of the image. Known values are: "docker" and "azureml".
-    :vartype type: str or ~arm_ml_service.models.ImageType
+    :vartype type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ImageType
     :ivar reference: Image reference URL if type is docker. Environment name if type is azureml.
     :vartype reference: str
     :ivar version: Version of image being used. If latest then skip this field.
@@ -11918,36 +13792,38 @@ class ImageClassification(AutoMLVertical, discriminator="ImageClassification"):
 
     :ivar log_verbosity: Enum for setting log verbosity. Known values are: "NotSet", "Debug",
      "Info", "Warning", "Error", and "Critical".
-    :vartype log_verbosity: str or ~arm_ml_service.models.LogVerbosity
+    :vartype log_verbosity: str or ~azure.ai.ml._restclient.arm_ml_service.models.LogVerbosity
     :ivar target_column_name: Target column name: This is prediction values column. Also known as
      label column name in context of classification tasks.
     :vartype target_column_name: str
     :ivar training_data: [Required] Training data input. Required.
-    :vartype training_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar model_settings: Settings used for training the model.
-    :vartype model_settings: ~arm_ml_service.models.ImageModelSettingsClassification
+    :vartype model_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ImageModelSettingsClassification
     :ivar search_space: Search space for sampling different combinations of models and their
      hyperparameters.
     :vartype search_space:
-     list[~arm_ml_service.models.ImageModelDistributionSettingsClassification]
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ImageModelDistributionSettingsClassification]
     :ivar limit_settings: [Required] Limit settings for the AutoML job. Required.
-    :vartype limit_settings: ~arm_ml_service.models.ImageLimitSettings
+    :vartype limit_settings: ~azure.ai.ml._restclient.arm_ml_service.models.ImageLimitSettings
     :ivar sweep_settings: Model sweeping and hyperparameter sweeping related settings.
-    :vartype sweep_settings: ~arm_ml_service.models.ImageSweepSettings
+    :vartype sweep_settings: ~azure.ai.ml._restclient.arm_ml_service.models.ImageSweepSettings
     :ivar validation_data: Validation data inputs.
-    :vartype validation_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar validation_data_size: The fraction of training dataset that needs to be set aside for
      validation purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
     :vartype validation_data_size: float
     :ivar primary_metric: Primary metrics for classification tasks. Known values are:
      "AUCWeighted", "Accuracy", "NormMacroRecall", "AveragePrecisionScoreWeighted", and
      "PrecisionScoreWeighted".
-    :vartype primary_metric: str or ~arm_ml_service.models.ClassificationPrimaryMetrics
+    :vartype primary_metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ClassificationPrimaryMetrics
     :ivar task_type: [Required] Task type for AutoMLJob. Required. Image Classification.
      Multi-class image classification is used when an image is classified with only a single label
      from a set of classes - e.g. each image is classified as either an image of a 'cat' or a 'dog'
      or a 'duck'.
-    :vartype task_type: str or ~arm_ml_service.models.IMAGE_CLASSIFICATION
+    :vartype task_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.IMAGE_CLASSIFICATION
     """
 
     model_settings: Optional["_models.ImageModelSettingsClassification"] = rest_field(
@@ -12020,35 +13896,38 @@ class ImageClassificationMultilabel(AutoMLVertical, discriminator="ImageClassifi
 
     :ivar log_verbosity: Enum for setting log verbosity. Known values are: "NotSet", "Debug",
      "Info", "Warning", "Error", and "Critical".
-    :vartype log_verbosity: str or ~arm_ml_service.models.LogVerbosity
+    :vartype log_verbosity: str or ~azure.ai.ml._restclient.arm_ml_service.models.LogVerbosity
     :ivar target_column_name: Target column name: This is prediction values column. Also known as
      label column name in context of classification tasks.
     :vartype target_column_name: str
     :ivar training_data: [Required] Training data input. Required.
-    :vartype training_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar model_settings: Settings used for training the model.
-    :vartype model_settings: ~arm_ml_service.models.ImageModelSettingsClassification
+    :vartype model_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ImageModelSettingsClassification
     :ivar search_space: Search space for sampling different combinations of models and their
      hyperparameters.
     :vartype search_space:
-     list[~arm_ml_service.models.ImageModelDistributionSettingsClassification]
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ImageModelDistributionSettingsClassification]
     :ivar limit_settings: [Required] Limit settings for the AutoML job. Required.
-    :vartype limit_settings: ~arm_ml_service.models.ImageLimitSettings
+    :vartype limit_settings: ~azure.ai.ml._restclient.arm_ml_service.models.ImageLimitSettings
     :ivar sweep_settings: Model sweeping and hyperparameter sweeping related settings.
-    :vartype sweep_settings: ~arm_ml_service.models.ImageSweepSettings
+    :vartype sweep_settings: ~azure.ai.ml._restclient.arm_ml_service.models.ImageSweepSettings
     :ivar validation_data: Validation data inputs.
-    :vartype validation_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar validation_data_size: The fraction of training dataset that needs to be set aside for
      validation purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
     :vartype validation_data_size: float
     :ivar primary_metric: Primary metrics for classification multilabel tasks. Known values are:
      "AUCWeighted", "Accuracy", "NormMacroRecall", "AveragePrecisionScoreWeighted",
      "PrecisionScoreWeighted", and "IOU".
-    :vartype primary_metric: str or ~arm_ml_service.models.ClassificationMultilabelPrimaryMetrics
+    :vartype primary_metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ClassificationMultilabelPrimaryMetrics
     :ivar task_type: [Required] Task type for AutoMLJob. Required. Image Classification Multilabel.
      Multi-label image classification is used when an image could have one or more labels from a set
      of labels - e.g. an image could be labeled with both 'cat' and 'dog'.
-    :vartype task_type: str or ~arm_ml_service.models.IMAGE_CLASSIFICATION_MULTILABEL
+    :vartype task_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.IMAGE_CLASSIFICATION_MULTILABEL
     """
 
     model_settings: Optional["_models.ImageModelSettingsClassification"] = rest_field(
@@ -12115,39 +13994,126 @@ class ImageClassificationMultilabel(AutoMLVertical, discriminator="ImageClassifi
         self.task_type = TaskType.IMAGE_CLASSIFICATION_MULTILABEL  # type: ignore
 
 
+class ImageDetails(_Model):
+    """ImageDetails.
+
+    :ivar exists: Indicates if image exists.
+    :vartype exists: bool
+    :ivar image: Container image details.
+    :vartype image: ~azure.ai.ml._restclient.arm_ml_service.models.ImageInfo
+    :ivar vulnerability_findings: Vulnerability findings details.
+    :vartype vulnerability_findings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.VulnerabilityFindings
+    """
+
+    exists: Optional[bool] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Indicates if image exists."""
+    image: Optional["_models.ImageInfo"] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Container image details."""
+    vulnerability_findings: Optional["_models.VulnerabilityFindings"] = rest_field(
+        name="vulnerabilityFindings", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Vulnerability findings details."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        exists: Optional[bool] = None,
+        image: Optional["_models.ImageInfo"] = None,
+        vulnerability_findings: Optional["_models.VulnerabilityFindings"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class ImageInfo(_Model):
+    """ImageInfo.
+
+    :ivar digest: Image digest.
+    :vartype digest: str
+    :ivar hostname: Container registry host name.
+    :vartype hostname: str
+    :ivar repository: Repository name.
+    :vartype repository: str
+    :ivar tag: Image tag.
+    :vartype tag: str
+    """
+
+    digest: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Image digest."""
+    hostname: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Container registry host name."""
+    repository: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Repository name."""
+    tag: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Image tag."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        digest: Optional[str] = None,
+        hostname: Optional[str] = None,
+        repository: Optional[str] = None,
+        tag: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class ImageInstanceSegmentation(AutoMLVertical, discriminator="ImageInstanceSegmentation"):
     """Image Instance Segmentation. Instance segmentation is used to identify objects in an image at
     the pixel level, drawing a polygon around each object in the image.
 
     :ivar log_verbosity: Enum for setting log verbosity. Known values are: "NotSet", "Debug",
      "Info", "Warning", "Error", and "Critical".
-    :vartype log_verbosity: str or ~arm_ml_service.models.LogVerbosity
+    :vartype log_verbosity: str or ~azure.ai.ml._restclient.arm_ml_service.models.LogVerbosity
     :ivar target_column_name: Target column name: This is prediction values column. Also known as
      label column name in context of classification tasks.
     :vartype target_column_name: str
     :ivar training_data: [Required] Training data input. Required.
-    :vartype training_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar model_settings: Settings used for training the model.
-    :vartype model_settings: ~arm_ml_service.models.ImageModelSettingsObjectDetection
+    :vartype model_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ImageModelSettingsObjectDetection
     :ivar search_space: Search space for sampling different combinations of models and their
      hyperparameters.
     :vartype search_space:
-     list[~arm_ml_service.models.ImageModelDistributionSettingsObjectDetection]
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ImageModelDistributionSettingsObjectDetection]
     :ivar limit_settings: [Required] Limit settings for the AutoML job. Required.
-    :vartype limit_settings: ~arm_ml_service.models.ImageLimitSettings
+    :vartype limit_settings: ~azure.ai.ml._restclient.arm_ml_service.models.ImageLimitSettings
     :ivar sweep_settings: Model sweeping and hyperparameter sweeping related settings.
-    :vartype sweep_settings: ~arm_ml_service.models.ImageSweepSettings
+    :vartype sweep_settings: ~azure.ai.ml._restclient.arm_ml_service.models.ImageSweepSettings
     :ivar validation_data: Validation data inputs.
-    :vartype validation_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar validation_data_size: The fraction of training dataset that needs to be set aside for
      validation purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
     :vartype validation_data_size: float
     :ivar primary_metric: Primary metrics for InstanceSegmentation tasks. "MeanAveragePrecision"
-    :vartype primary_metric: str or ~arm_ml_service.models.InstanceSegmentationPrimaryMetrics
+    :vartype primary_metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.InstanceSegmentationPrimaryMetrics
     :ivar task_type: [Required] Task type for AutoMLJob. Required. Image Instance Segmentation.
      Instance segmentation is used to identify objects in an image at the pixel level, drawing a
      polygon around each object in the image.
-    :vartype task_type: str or ~arm_ml_service.models.IMAGE_INSTANCE_SEGMENTATION
+    :vartype task_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.IMAGE_INSTANCE_SEGMENTATION
     """
 
     model_settings: Optional["_models.ImageModelSettingsObjectDetection"] = rest_field(
@@ -12264,7 +14230,7 @@ class ImageMetadata(_Model):
      latest operating system image.
     :vartype is_latest_os_image_version: bool
     :ivar os_patching_status: Metadata about the os patching.
-    :vartype os_patching_status: ~arm_ml_service.models.OsPatchingStatus
+    :vartype os_patching_status: ~azure.ai.ml._restclient.arm_ml_service.models.OsPatchingStatus
     """
 
     current_image_version: Optional[str] = rest_field(
@@ -13012,7 +14978,7 @@ class ImageModelSettings(_Model):
     :ivar checkpoint_frequency: Frequency to store model checkpoints. Must be a positive integer.
     :vartype checkpoint_frequency: int
     :ivar checkpoint_model: The pretrained checkpoint model for incremental training.
-    :vartype checkpoint_model: ~arm_ml_service.models.MLFlowModelJobInput
+    :vartype checkpoint_model: ~azure.ai.ml._restclient.arm_ml_service.models.MLFlowModelJobInput
     :ivar checkpoint_run_id: The id of a previous run that has a pretrained checkpoint for
      incremental training.
     :vartype checkpoint_run_id: str
@@ -13046,7 +15012,8 @@ class ImageModelSettings(_Model):
     :vartype learning_rate: float
     :ivar learning_rate_scheduler: Learning rate scheduler enum. Known values are: "None",
      "WarmupCosine", and "Step".
-    :vartype learning_rate_scheduler: str or ~arm_ml_service.models.LearningRateScheduler
+    :vartype learning_rate_scheduler: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.LearningRateScheduler
     :ivar model_name: Name of the model to use for training. For more information on the available
      models please visit the official documentation:
      `https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models
@@ -13062,7 +15029,7 @@ class ImageModelSettings(_Model):
     :vartype number_of_workers: int
     :ivar optimizer: Stochastic optimizer for image models. Known values are: "None", "Sgd",
      "Adam", and "Adamw".
-    :vartype optimizer: str or ~arm_ml_service.models.StochasticOptimizer
+    :vartype optimizer: str or ~azure.ai.ml._restclient.arm_ml_service.models.StochasticOptimizer
     :ivar random_seed: Random seed to be used when using deterministic training.
     :vartype random_seed: int
     :ivar step_lr_gamma: Value of gamma when learning rate scheduler is 'step'. Must be a float in
@@ -13286,7 +15253,7 @@ class ImageModelSettingsClassification(ImageModelSettings):
     :ivar checkpoint_frequency: Frequency to store model checkpoints. Must be a positive integer.
     :vartype checkpoint_frequency: int
     :ivar checkpoint_model: The pretrained checkpoint model for incremental training.
-    :vartype checkpoint_model: ~arm_ml_service.models.MLFlowModelJobInput
+    :vartype checkpoint_model: ~azure.ai.ml._restclient.arm_ml_service.models.MLFlowModelJobInput
     :ivar checkpoint_run_id: The id of a previous run that has a pretrained checkpoint for
      incremental training.
     :vartype checkpoint_run_id: str
@@ -13320,7 +15287,8 @@ class ImageModelSettingsClassification(ImageModelSettings):
     :vartype learning_rate: float
     :ivar learning_rate_scheduler: Learning rate scheduler enum. Known values are: "None",
      "WarmupCosine", and "Step".
-    :vartype learning_rate_scheduler: str or ~arm_ml_service.models.LearningRateScheduler
+    :vartype learning_rate_scheduler: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.LearningRateScheduler
     :ivar model_name: Name of the model to use for training. For more information on the available
      models please visit the official documentation:
      `https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models
@@ -13336,7 +15304,7 @@ class ImageModelSettingsClassification(ImageModelSettings):
     :vartype number_of_workers: int
     :ivar optimizer: Stochastic optimizer for image models. Known values are: "None", "Sgd",
      "Adam", and "Adamw".
-    :vartype optimizer: str or ~arm_ml_service.models.StochasticOptimizer
+    :vartype optimizer: str or ~azure.ai.ml._restclient.arm_ml_service.models.StochasticOptimizer
     :ivar random_seed: Random seed to be used when using deterministic training.
     :vartype random_seed: int
     :ivar step_lr_gamma: Value of gamma when learning rate scheduler is 'step'. Must be a float in
@@ -13468,7 +15436,7 @@ class ImageModelSettingsObjectDetection(ImageModelSettings):
     :ivar checkpoint_frequency: Frequency to store model checkpoints. Must be a positive integer.
     :vartype checkpoint_frequency: int
     :ivar checkpoint_model: The pretrained checkpoint model for incremental training.
-    :vartype checkpoint_model: ~arm_ml_service.models.MLFlowModelJobInput
+    :vartype checkpoint_model: ~azure.ai.ml._restclient.arm_ml_service.models.MLFlowModelJobInput
     :ivar checkpoint_run_id: The id of a previous run that has a pretrained checkpoint for
      incremental training.
     :vartype checkpoint_run_id: str
@@ -13502,7 +15470,8 @@ class ImageModelSettingsObjectDetection(ImageModelSettings):
     :vartype learning_rate: float
     :ivar learning_rate_scheduler: Learning rate scheduler enum. Known values are: "None",
      "WarmupCosine", and "Step".
-    :vartype learning_rate_scheduler: str or ~arm_ml_service.models.LearningRateScheduler
+    :vartype learning_rate_scheduler: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.LearningRateScheduler
     :ivar model_name: Name of the model to use for training. For more information on the available
      models please visit the official documentation:
      `https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models
@@ -13518,7 +15487,7 @@ class ImageModelSettingsObjectDetection(ImageModelSettings):
     :vartype number_of_workers: int
     :ivar optimizer: Stochastic optimizer for image models. Known values are: "None", "Sgd",
      "Adam", and "Adamw".
-    :vartype optimizer: str or ~arm_ml_service.models.StochasticOptimizer
+    :vartype optimizer: str or ~azure.ai.ml._restclient.arm_ml_service.models.StochasticOptimizer
     :ivar random_seed: Random seed to be used when using deterministic training.
     :vartype random_seed: int
     :ivar step_lr_gamma: Value of gamma when learning rate scheduler is 'step'. Must be a float in
@@ -13560,7 +15529,7 @@ class ImageModelSettingsObjectDetection(ImageModelSettings):
     :vartype min_size: int
     :ivar model_size: Image model size. Known values are: "None", "Small", "Medium", "Large", and
      "ExtraLarge".
-    :vartype model_size: str or ~arm_ml_service.models.ModelSize
+    :vartype model_size: str or ~azure.ai.ml._restclient.arm_ml_service.models.ModelSize
     :ivar multi_scale: Enable multi-scale image by varying image size by +/- 50%. Note: training
      run may get into CUDA OOM if no sufficient GPU memory. Note: This settings is only supported
      for the 'yolov5' algorithm.
@@ -13584,7 +15553,8 @@ class ImageModelSettingsObjectDetection(ImageModelSettings):
     :vartype validation_iou_threshold: float
     :ivar validation_metric_type: Metric computation method to use for validation metrics in image
      tasks. Known values are: "None", "Coco", "Voc", and "CocoVoc".
-    :vartype validation_metric_type: str or ~arm_ml_service.models.ValidationMetricType
+    :vartype validation_metric_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ValidationMetricType
     """
 
     box_detections_per_image: Optional[int] = rest_field(
@@ -13721,33 +15691,36 @@ class ImageObjectDetection(AutoMLVertical, discriminator="ImageObjectDetection")
 
     :ivar log_verbosity: Enum for setting log verbosity. Known values are: "NotSet", "Debug",
      "Info", "Warning", "Error", and "Critical".
-    :vartype log_verbosity: str or ~arm_ml_service.models.LogVerbosity
+    :vartype log_verbosity: str or ~azure.ai.ml._restclient.arm_ml_service.models.LogVerbosity
     :ivar target_column_name: Target column name: This is prediction values column. Also known as
      label column name in context of classification tasks.
     :vartype target_column_name: str
     :ivar training_data: [Required] Training data input. Required.
-    :vartype training_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar model_settings: Settings used for training the model.
-    :vartype model_settings: ~arm_ml_service.models.ImageModelSettingsObjectDetection
+    :vartype model_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ImageModelSettingsObjectDetection
     :ivar search_space: Search space for sampling different combinations of models and their
      hyperparameters.
     :vartype search_space:
-     list[~arm_ml_service.models.ImageModelDistributionSettingsObjectDetection]
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ImageModelDistributionSettingsObjectDetection]
     :ivar limit_settings: [Required] Limit settings for the AutoML job. Required.
-    :vartype limit_settings: ~arm_ml_service.models.ImageLimitSettings
+    :vartype limit_settings: ~azure.ai.ml._restclient.arm_ml_service.models.ImageLimitSettings
     :ivar sweep_settings: Model sweeping and hyperparameter sweeping related settings.
-    :vartype sweep_settings: ~arm_ml_service.models.ImageSweepSettings
+    :vartype sweep_settings: ~azure.ai.ml._restclient.arm_ml_service.models.ImageSweepSettings
     :ivar validation_data: Validation data inputs.
-    :vartype validation_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar validation_data_size: The fraction of training dataset that needs to be set aside for
      validation purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
     :vartype validation_data_size: float
     :ivar primary_metric: Primary metrics for Image ObjectDetection task. "MeanAveragePrecision"
-    :vartype primary_metric: str or ~arm_ml_service.models.ObjectDetectionPrimaryMetrics
+    :vartype primary_metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ObjectDetectionPrimaryMetrics
     :ivar task_type: [Required] Task type for AutoMLJob. Required. Image Object Detection. Object
      detection is used to identify objects in an image and locate each object with a bounding box
      e.g. locate all dogs and cats in an image and draw a bounding box around each.
-    :vartype task_type: str or ~arm_ml_service.models.IMAGE_OBJECT_DETECTION
+    :vartype task_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.IMAGE_OBJECT_DETECTION
     """
 
     model_settings: Optional["_models.ImageModelSettingsObjectDetection"] = rest_field(
@@ -13816,10 +15789,12 @@ class ImageSweepSettings(_Model):
     """Model sweeping and hyperparameter sweeping related settings.
 
     :ivar early_termination: Type of early termination policy.
-    :vartype early_termination: ~arm_ml_service.models.EarlyTerminationPolicy
+    :vartype early_termination:
+     ~azure.ai.ml._restclient.arm_ml_service.models.EarlyTerminationPolicy
     :ivar sampling_algorithm: [Required] Type of the hyperparameter sampling algorithms. Required.
      Known values are: "Grid", "Random", and "Bayesian".
-    :vartype sampling_algorithm: str or ~arm_ml_service.models.SamplingAlgorithmType
+    :vartype sampling_algorithm: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.SamplingAlgorithmType
     """
 
     early_termination: Optional["_models.EarlyTerminationPolicy"] = rest_field(
@@ -13858,7 +15833,7 @@ class IndexColumn(_Model):
     :vartype column_name: str
     :ivar data_type: Specifies the data type. Known values are: "String", "Integer", "Long",
      "Float", "Double", "Binary", "Datetime", and "Boolean".
-    :vartype data_type: str or ~arm_ml_service.models.FeatureDataType
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.FeatureDataType
     """
 
     column_name: Optional[str] = rest_field(
@@ -13894,14 +15869,14 @@ class InferenceContainerProperties(_Model):
     """InferenceContainerProperties.
 
     :ivar liveness_route: The route to check the liveness of the inference server container.
-    :vartype liveness_route: ~arm_ml_service.models.Route
+    :vartype liveness_route: ~azure.ai.ml._restclient.arm_ml_service.models.Route
     :ivar readiness_route: The route to check the readiness of the inference server container.
-    :vartype readiness_route: ~arm_ml_service.models.Route
+    :vartype readiness_route: ~azure.ai.ml._restclient.arm_ml_service.models.Route
     :ivar scoring_route: The port to send the scoring requests to, within the inference server
      container.
-    :vartype scoring_route: ~arm_ml_service.models.Route
+    :vartype scoring_route: ~azure.ai.ml._restclient.arm_ml_service.models.Route
     :ivar startup_route: The route to check the startup of the application in the container.
-    :vartype startup_route: ~arm_ml_service.models.Route
+    :vartype startup_route: ~azure.ai.ml._restclient.arm_ml_service.models.Route
     """
 
     liveness_route: Optional["_models.Route"] = rest_field(
@@ -13942,13 +15917,431 @@ class InferenceContainerProperties(_Model):
         super().__init__(*args, **kwargs)
 
 
+class InferenceEndpoint(TrackedResource):
+    """InferenceEndpoint is a preview-only resource.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
+     information.
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
+    :ivar tags: Resource tags.
+    :vartype tags: dict[str, str]
+    :ivar location: The geo-location where the resource lives. Required.
+    :vartype location: str
+    :ivar properties: [Required] Additional attributes of the entity. Required.
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.InferenceEndpointProperties
+    :ivar identity: Managed service identity (system assigned and/or user assigned identities).
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
+    :ivar kind: Metadata used by portal/tooling/etc to render different UX experiences for
+     resources of the same type.
+    :vartype kind: str
+    :ivar sku: Sku details required for ARM contract for Autoscaling.
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
+    """
+
+    properties: "_models.InferenceEndpointProperties" = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """[Required] Additional attributes of the entity. Required."""
+    identity: Optional["_models.ManagedServiceIdentity"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Managed service identity (system assigned and/or user assigned identities)."""
+    kind: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Metadata used by portal/tooling/etc to render different UX experiences for resources of the
+     same type."""
+    sku: Optional["_models.Sku"] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Sku details required for ARM contract for Autoscaling."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        location: str,
+        properties: "_models.InferenceEndpointProperties",
+        tags: Optional[dict[str, str]] = None,
+        identity: Optional["_models.ManagedServiceIdentity"] = None,
+        kind: Optional[str] = None,
+        sku: Optional["_models.Sku"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class PropertiesBase(_Model):
+    """Base definition for pool resources.
+
+    :ivar description: Description of the resource.
+    :vartype description: str
+    :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
+    :vartype properties:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.StringStringKeyValuePair]
+    """
+
+    description: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Description of the resource."""
+    properties: Optional[list["_models.StringStringKeyValuePair"]] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Property dictionary. Properties can be added, but not removed or altered."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        description: Optional[str] = None,
+        properties: Optional[list["_models.StringStringKeyValuePair"]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class InferenceEndpointProperties(PropertiesBase):
+    """InferenceEndpoint configuration.
+
+    :ivar description: Description of the resource.
+    :vartype description: str
+    :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
+    :vartype properties:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.StringStringKeyValuePair]
+    :ivar auth_mode: [Required] Authentication mode for the endpoint. Required. "AAD"
+    :vartype auth_mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.AuthMode
+    :ivar endpoint_uri: Endpoint URI for the inference endpoint.
+    :vartype endpoint_uri: str
+    :ivar group_name: [Required] Group within the same pool with which this endpoint needs to be
+     associated with. Required.
+    :vartype group_name: str
+    :ivar provisioning_state: Provisioning state for the endpoint. Known values are: "Creating",
+     "Deleting", "Succeeded", "Failed", "Updating", and "Canceled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.PoolProvisioningState
+    :ivar request_configuration: RequestConfiguration for endpoint.
+    :vartype request_configuration:
+     ~azure.ai.ml._restclient.arm_ml_service.models.RequestConfiguration
+    """
+
+    auth_mode: Union[str, "_models.AuthMode"] = rest_field(
+        name="authMode", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """[Required] Authentication mode for the endpoint. Required. \"AAD\""""
+    endpoint_uri: Optional[str] = rest_field(name="endpointUri", visibility=["read"])
+    """Endpoint URI for the inference endpoint."""
+    group_name: str = rest_field(name="groupName", visibility=["read", "create", "update", "delete", "query"])
+    """[Required] Group within the same pool with which this endpoint needs to be associated with.
+     Required."""
+    provisioning_state: Optional[Union[str, "_models.PoolProvisioningState"]] = rest_field(
+        name="provisioningState", visibility=["read"]
+    )
+    """Provisioning state for the endpoint. Known values are: \"Creating\", \"Deleting\",
+     \"Succeeded\", \"Failed\", \"Updating\", and \"Canceled\"."""
+    request_configuration: Optional["_models.RequestConfiguration"] = rest_field(
+        name="requestConfiguration", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """RequestConfiguration for endpoint."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        auth_mode: Union[str, "_models.AuthMode"],
+        group_name: str,
+        description: Optional[str] = None,
+        properties: Optional[list["_models.StringStringKeyValuePair"]] = None,
+        request_configuration: Optional["_models.RequestConfiguration"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class InferenceGroup(TrackedResource):
+    """InferenceGroup is a preview-only resource.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
+     information.
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
+    :ivar tags: Resource tags.
+    :vartype tags: dict[str, str]
+    :ivar location: The geo-location where the resource lives. Required.
+    :vartype location: str
+    :ivar properties: [Required] Additional attributes of the entity. Required.
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.InferenceGroupProperties
+    :ivar identity: Managed service identity (system assigned and/or user assigned identities).
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
+    :ivar kind: Metadata used by portal/tooling/etc to render different UX experiences for
+     resources of the same type.
+    :vartype kind: str
+    :ivar sku: Sku details required for ARM contract for Autoscaling.
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
+    """
+
+    properties: "_models.InferenceGroupProperties" = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """[Required] Additional attributes of the entity. Required."""
+    identity: Optional["_models.ManagedServiceIdentity"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Managed service identity (system assigned and/or user assigned identities)."""
+    kind: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Metadata used by portal/tooling/etc to render different UX experiences for resources of the
+     same type."""
+    sku: Optional["_models.Sku"] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Sku details required for ARM contract for Autoscaling."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        location: str,
+        properties: "_models.InferenceGroupProperties",
+        tags: Optional[dict[str, str]] = None,
+        identity: Optional["_models.ManagedServiceIdentity"] = None,
+        kind: Optional[str] = None,
+        sku: Optional["_models.Sku"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class InferenceGroupProperties(PropertiesBase):
+    """Inference group configuration.
+
+    :ivar description: Description of the resource.
+    :vartype description: str
+    :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
+    :vartype properties:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.StringStringKeyValuePair]
+    :ivar environment_configuration: Gets or sets environment configuration for the inference
+     group. Used if PoolType=ScaleUnit.
+    :vartype environment_configuration:
+     ~azure.ai.ml._restclient.arm_ml_service.models.GroupEnvironmentConfiguration
+    :ivar model_configuration: Gets or sets model configuration for the inference group. Used if
+     PoolType=ScaleUnit.
+    :vartype model_configuration:
+     ~azure.ai.ml._restclient.arm_ml_service.models.GroupModelConfiguration
+    :ivar node_sku_type: Gets or sets compute instance type.
+    :vartype node_sku_type: str
+    :ivar provisioning_state: Provisioning state for the inference group. Known values are:
+     "Creating", "Deleting", "Succeeded", "Failed", "Updating", and "Canceled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.PoolProvisioningState
+    :ivar scale_unit_size: Gets or sets Scale Unit size.
+    :vartype scale_unit_size: int
+    """
+
+    environment_configuration: Optional["_models.GroupEnvironmentConfiguration"] = rest_field(
+        name="environmentConfiguration", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets environment configuration for the inference group. Used if PoolType=ScaleUnit."""
+    model_configuration: Optional["_models.GroupModelConfiguration"] = rest_field(
+        name="modelConfiguration", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets model configuration for the inference group. Used if PoolType=ScaleUnit."""
+    node_sku_type: Optional[str] = rest_field(
+        name="nodeSkuType", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets compute instance type."""
+    provisioning_state: Optional[Union[str, "_models.PoolProvisioningState"]] = rest_field(
+        name="provisioningState", visibility=["read"]
+    )
+    """Provisioning state for the inference group. Known values are: \"Creating\", \"Deleting\",
+     \"Succeeded\", \"Failed\", \"Updating\", and \"Canceled\"."""
+    scale_unit_size: Optional[int] = rest_field(
+        name="scaleUnitSize", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets Scale Unit size."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        description: Optional[str] = None,
+        properties: Optional[list["_models.StringStringKeyValuePair"]] = None,
+        environment_configuration: Optional["_models.GroupEnvironmentConfiguration"] = None,
+        model_configuration: Optional["_models.GroupModelConfiguration"] = None,
+        node_sku_type: Optional[str] = None,
+        scale_unit_size: Optional[int] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class InferencePool(TrackedResource):
+    """InferencePool is a preview-only resource.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
+     information.
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
+    :ivar tags: Resource tags.
+    :vartype tags: dict[str, str]
+    :ivar location: The geo-location where the resource lives. Required.
+    :vartype location: str
+    :ivar properties: [Required] Additional attributes of the entity. Required.
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.InferencePoolProperties
+    :ivar identity: Managed service identity (system assigned and/or user assigned identities).
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
+    :ivar kind: Metadata used by portal/tooling/etc to render different UX experiences for
+     resources of the same type.
+    :vartype kind: str
+    :ivar sku: Sku details required for ARM contract for Autoscaling.
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
+    """
+
+    properties: "_models.InferencePoolProperties" = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """[Required] Additional attributes of the entity. Required."""
+    identity: Optional["_models.ManagedServiceIdentity"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Managed service identity (system assigned and/or user assigned identities)."""
+    kind: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Metadata used by portal/tooling/etc to render different UX experiences for resources of the
+     same type."""
+    sku: Optional["_models.Sku"] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Sku details required for ARM contract for Autoscaling."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        location: str,
+        properties: "_models.InferencePoolProperties",
+        tags: Optional[dict[str, str]] = None,
+        identity: Optional["_models.ManagedServiceIdentity"] = None,
+        kind: Optional[str] = None,
+        sku: Optional["_models.Sku"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class InferencePoolProperties(PropertiesBase):
+    """Inference pool configuration.
+
+    :ivar description: Description of the resource.
+    :vartype description: str
+    :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
+    :vartype properties:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.StringStringKeyValuePair]
+    :ivar provisioning_state: Provisioning state for the pool. Known values are: "Creating",
+     "Deleting", "Succeeded", "Failed", "Updating", and "Canceled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.PoolProvisioningState
+    :ivar scale_unit_configuration: Gets or sets ScaleUnitConfiguration for the inference pool.
+     Used if PoolType=ScaleUnit.
+    :vartype scale_unit_configuration:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ScaleUnitConfiguration
+    """
+
+    provisioning_state: Optional[Union[str, "_models.PoolProvisioningState"]] = rest_field(
+        name="provisioningState", visibility=["read"]
+    )
+    """Provisioning state for the pool. Known values are: \"Creating\", \"Deleting\", \"Succeeded\",
+     \"Failed\", \"Updating\", and \"Canceled\"."""
+    scale_unit_configuration: Optional["_models.ScaleUnitConfiguration"] = rest_field(
+        name="scaleUnitConfiguration", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets ScaleUnitConfiguration for the inference pool. Used if PoolType=ScaleUnit."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        description: Optional[str] = None,
+        properties: Optional[list["_models.StringStringKeyValuePair"]] = None,
+        scale_unit_configuration: Optional["_models.ScaleUnitConfiguration"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class InstanceTypeSchema(_Model):
     """Instance type schema.
 
     :ivar node_selector: Node Selector.
     :vartype node_selector: dict[str, str]
     :ivar resources: Resource requests/limits for this instance type.
-    :vartype resources: ~arm_ml_service.models.InstanceTypeSchemaResources
+    :vartype resources: ~azure.ai.ml._restclient.arm_ml_service.models.InstanceTypeSchemaResources
     """
 
     node_selector: Optional[dict[str, str]] = rest_field(
@@ -14057,9 +16450,9 @@ class JobBase(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.JobBaseProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.JobBaseProperties
     """
 
     properties: "_models.JobBaseProperties" = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -14174,9 +16567,9 @@ class JobScheduleAction(ScheduleActionBase, discriminator="CreateJob"):
     """JobScheduleAction.
 
     :ivar job_definition: [Required] Defines Schedule action definition details. Required.
-    :vartype job_definition: ~arm_ml_service.models.JobBaseProperties
+    :vartype job_definition: ~azure.ai.ml._restclient.arm_ml_service.models.JobBaseProperties
     :ivar action_type: [Required] Specifies the action type of the schedule. Required. CREATE_JOB.
-    :vartype action_type: str or ~arm_ml_service.models.CREATE_JOB
+    :vartype action_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CREATE_JOB
     """
 
     job_definition: "_models.JobBaseProperties" = rest_field(
@@ -14216,7 +16609,7 @@ class JobService(_Model):
     :vartype job_service_type: str
     :ivar nodes: Nodes that user would like to start the service on. If Nodes is not set or set to
      null, the service will only be started on leader node.
-    :vartype nodes: ~arm_ml_service.models.Nodes
+    :vartype nodes: ~azure.ai.ml._restclient.arm_ml_service.models.Nodes
     :ivar port: Port for endpoint.
     :vartype port: int
     :ivar properties: Additional properties to set on the endpoint.
@@ -14353,7 +16746,8 @@ class Kubernetes(Compute, discriminator="Kubernetes"):
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Known values are: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar description: The description of the Machine Learning compute.
     :vartype description: str
     :ivar created_on: The time at which the compute was created.
@@ -14363,7 +16757,8 @@ class Kubernetes(Compute, discriminator="Kubernetes"):
     :ivar resource_id: ARM resource id of the underlying compute.
     :vartype resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
-    :vartype provisioning_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype provisioning_errors:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -14371,9 +16766,9 @@ class Kubernetes(Compute, discriminator="Kubernetes"):
      and AAD exclusively for authentication.
     :vartype disable_local_auth: bool
     :ivar properties: Properties of Kubernetes.
-    :vartype properties: ~arm_ml_service.models.KubernetesProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.KubernetesProperties
     :ivar compute_type: The type of compute. Required. KUBERNETES.
-    :vartype compute_type: str or ~arm_ml_service.models.KUBERNETES
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.KUBERNETES
     """
 
     properties: Optional["_models.KubernetesProperties"] = rest_field(
@@ -14413,7 +16808,7 @@ class OnlineDeploymentProperties(EndpointDeploymentPropertiesBase):
     KubernetesOnlineDeployment, ManagedOnlineDeployment
 
     :ivar code_configuration: Code configuration for the endpoint deployment.
-    :vartype code_configuration: ~arm_ml_service.models.CodeConfiguration
+    :vartype code_configuration: ~azure.ai.ml._restclient.arm_ml_service.models.CodeConfiguration
     :ivar description: Description of the endpoint deployment.
     :vartype description: str
     :ivar environment_id: ARM resource ID or AssetId of the environment specification for the
@@ -14426,37 +16821,39 @@ class OnlineDeploymentProperties(EndpointDeploymentPropertiesBase):
     :ivar app_insights_enabled: If true, enables Application Insights logging.
     :vartype app_insights_enabled: bool
     :ivar data_collector: The mdc configuration, we disable mdc when it's null.
-    :vartype data_collector: ~arm_ml_service.models.DataCollector
+    :vartype data_collector: ~azure.ai.ml._restclient.arm_ml_service.models.DataCollector
     :ivar egress_public_network_access: Enum to determine whether PublicNetworkAccess is Enabled or
      Disabled for egress of a deployment. Known values are: "Enabled" and "Disabled".
     :vartype egress_public_network_access: str or
-     ~arm_ml_service.models.EgressPublicNetworkAccessType
+     ~azure.ai.ml._restclient.arm_ml_service.models.EgressPublicNetworkAccessType
     :ivar endpoint_compute_type: [Required] The compute type of the endpoint. Required. Known
      values are: "Managed", "Kubernetes", and "AzureMLCompute".
-    :vartype endpoint_compute_type: str or ~arm_ml_service.models.EndpointComputeType
+    :vartype endpoint_compute_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.EndpointComputeType
     :ivar instance_type: Compute instance type. Default: Standard_F4s_v2.
     :vartype instance_type: str
     :ivar liveness_probe: Liveness probe monitors the health of the container regularly.
-    :vartype liveness_probe: ~arm_ml_service.models.ProbeSettings
+    :vartype liveness_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
     :ivar model: The URI path to the model.
     :vartype model: str
     :ivar model_mount_path: The path to mount the model in custom container.
     :vartype model_mount_path: str
     :ivar provisioning_state: Provisioning state for the endpoint deployment. Known values are:
      "Creating", "Deleting", "Scaling", "Updating", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.DeploymentProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DeploymentProvisioningState
     :ivar readiness_probe: Readiness probe validates if the container is ready to serve traffic.
      The properties and defaults are the same as liveness probe.
-    :vartype readiness_probe: ~arm_ml_service.models.ProbeSettings
+    :vartype readiness_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
     :ivar request_settings: Request settings for the deployment.
-    :vartype request_settings: ~arm_ml_service.models.OnlineRequestSettings
+    :vartype request_settings: ~azure.ai.ml._restclient.arm_ml_service.models.OnlineRequestSettings
     :ivar scale_settings: Scale settings for the deployment. If it is null or not provided, it
      defaults to TargetUtilizationScaleSettings for KubernetesOnlineDeployment and to
      DefaultScaleSettings for ManagedOnlineDeployment.
-    :vartype scale_settings: ~arm_ml_service.models.OnlineScaleSettings
+    :vartype scale_settings: ~azure.ai.ml._restclient.arm_ml_service.models.OnlineScaleSettings
     :ivar startup_probe: Startup probe verify whether an application within a container has started
      successfully.
-    :vartype startup_probe: ~arm_ml_service.models.ProbeSettings
+    :vartype startup_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -14553,7 +16950,7 @@ class KubernetesOnlineDeployment(OnlineDeploymentProperties, discriminator="Kube
     """Properties specific to a KubernetesOnlineDeployment.
 
     :ivar code_configuration: Code configuration for the endpoint deployment.
-    :vartype code_configuration: ~arm_ml_service.models.CodeConfiguration
+    :vartype code_configuration: ~azure.ai.ml._restclient.arm_ml_service.models.CodeConfiguration
     :ivar description: Description of the endpoint deployment.
     :vartype description: str
     :ivar environment_id: ARM resource ID or AssetId of the environment specification for the
@@ -14566,39 +16963,42 @@ class KubernetesOnlineDeployment(OnlineDeploymentProperties, discriminator="Kube
     :ivar app_insights_enabled: If true, enables Application Insights logging.
     :vartype app_insights_enabled: bool
     :ivar data_collector: The mdc configuration, we disable mdc when it's null.
-    :vartype data_collector: ~arm_ml_service.models.DataCollector
+    :vartype data_collector: ~azure.ai.ml._restclient.arm_ml_service.models.DataCollector
     :ivar egress_public_network_access: Enum to determine whether PublicNetworkAccess is Enabled or
      Disabled for egress of a deployment. Known values are: "Enabled" and "Disabled".
     :vartype egress_public_network_access: str or
-     ~arm_ml_service.models.EgressPublicNetworkAccessType
+     ~azure.ai.ml._restclient.arm_ml_service.models.EgressPublicNetworkAccessType
     :ivar instance_type: Compute instance type. Default: Standard_F4s_v2.
     :vartype instance_type: str
     :ivar liveness_probe: Liveness probe monitors the health of the container regularly.
-    :vartype liveness_probe: ~arm_ml_service.models.ProbeSettings
+    :vartype liveness_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
     :ivar model: The URI path to the model.
     :vartype model: str
     :ivar model_mount_path: The path to mount the model in custom container.
     :vartype model_mount_path: str
     :ivar provisioning_state: Provisioning state for the endpoint deployment. Known values are:
      "Creating", "Deleting", "Scaling", "Updating", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.DeploymentProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DeploymentProvisioningState
     :ivar readiness_probe: Readiness probe validates if the container is ready to serve traffic.
      The properties and defaults are the same as liveness probe.
-    :vartype readiness_probe: ~arm_ml_service.models.ProbeSettings
+    :vartype readiness_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
     :ivar request_settings: Request settings for the deployment.
-    :vartype request_settings: ~arm_ml_service.models.OnlineRequestSettings
+    :vartype request_settings: ~azure.ai.ml._restclient.arm_ml_service.models.OnlineRequestSettings
     :ivar scale_settings: Scale settings for the deployment. If it is null or not provided, it
      defaults to TargetUtilizationScaleSettings for KubernetesOnlineDeployment and to
      DefaultScaleSettings for ManagedOnlineDeployment.
-    :vartype scale_settings: ~arm_ml_service.models.OnlineScaleSettings
+    :vartype scale_settings: ~azure.ai.ml._restclient.arm_ml_service.models.OnlineScaleSettings
     :ivar startup_probe: Startup probe verify whether an application within a container has started
      successfully.
-    :vartype startup_probe: ~arm_ml_service.models.ProbeSettings
+    :vartype startup_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
     :ivar container_resource_requirements: The resource requirements for the container (cpu and
      memory).
-    :vartype container_resource_requirements: ~arm_ml_service.models.ContainerResourceRequirements
+    :vartype container_resource_requirements:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ContainerResourceRequirements
     :ivar endpoint_compute_type: [Required] The compute type of the endpoint. Required. KUBERNETES.
-    :vartype endpoint_compute_type: str or ~arm_ml_service.models.KUBERNETES
+    :vartype endpoint_compute_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.KUBERNETES
     """
 
     container_resource_requirements: Optional["_models.ContainerResourceRequirements"] = rest_field(
@@ -14661,7 +17061,8 @@ class KubernetesProperties(_Model):
     :ivar default_instance_type: Default instance type.
     :vartype default_instance_type: str
     :ivar instance_types: Instance Type Schema.
-    :vartype instance_types: dict[str, ~arm_ml_service.models.InstanceTypeSchema]
+    :vartype instance_types: dict[str,
+     ~azure.ai.ml._restclient.arm_ml_service.models.InstanceTypeSchema]
     """
 
     relay_connection_string: Optional[str] = rest_field(
@@ -14718,6 +17119,67 @@ class KubernetesProperties(_Model):
         super().__init__(*args, **kwargs)
 
 
+class LabelGeneration(DataGenerationVertical, discriminator="LabelGeneration"):
+    """LabelGeneration.
+
+    :ivar data_generation_task_type: [Required] DataGeneration Task type. Required. Known values
+     are: "Conversation", "Math", "Nli", "NluQa", and "Summarization".
+    :vartype data_generation_task_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DataGenerationTaskType
+    :ivar prompt_settings: Prompt Settings.
+    :vartype prompt_settings: ~azure.ai.ml._restclient.arm_ml_service.models.PromptSettings
+    :ivar teacher_model_endpoint: [Required] Teacher Model Endpoint Details. Required.
+    :vartype teacher_model_endpoint:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TeacherModelEndpoint
+    :ivar teacher_model_settings:
+    :vartype teacher_model_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TeacherModelSettings
+    :ivar training_data: Training data for fine tuning.
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
+    :ivar validation_data: Validation data for fine tuning.
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.JobInput
+    :ivar data_generation_type: [Required] Enum to determine the type of Data Generation. Required.
+     Label Generation by Teacher Model Inferencing.
+    :vartype data_generation_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.LABEL_GENERATION
+    """
+
+    training_data: Optional["_models.JobInput"] = rest_field(
+        name="trainingData", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Training data for fine tuning."""
+    validation_data: Optional["_models.JobInput"] = rest_field(
+        name="validationData", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Validation data for fine tuning."""
+    data_generation_type: Literal[DataGenerationType.LABEL_GENERATION] = rest_discriminator(name="dataGenerationType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """[Required] Enum to determine the type of Data Generation. Required. Label Generation by Teacher
+     Model Inferencing."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        data_generation_task_type: Union[str, "_models.DataGenerationTaskType"],
+        teacher_model_endpoint: "_models.TeacherModelEndpoint",
+        prompt_settings: Optional["_models.PromptSettings"] = None,
+        teacher_model_settings: Optional["_models.TeacherModelSettings"] = None,
+        training_data: Optional["_models.JobInput"] = None,
+        validation_data: Optional["_models.JobInput"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.data_generation_type = DataGenerationType.LABEL_GENERATION  # type: ignore
+
+
 class OneLakeArtifact(_Model):
     """OneLake artifact (data source) configuration.
 
@@ -14727,7 +17189,8 @@ class OneLakeArtifact(_Model):
     :ivar artifact_name: [Required] OneLake artifact name. Required.
     :vartype artifact_name: str
     :ivar artifact_type: [Required] OneLake artifact type. Required. "LakeHouse"
-    :vartype artifact_type: str or ~arm_ml_service.models.OneLakeArtifactType
+    :vartype artifact_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.OneLakeArtifactType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -14763,7 +17226,7 @@ class LakeHouseArtifact(OneLakeArtifact, discriminator="LakeHouse"):
     :ivar artifact_name: [Required] OneLake artifact name. Required.
     :vartype artifact_name: str
     :ivar artifact_type: [Required] OneLake artifact type. Required. LAKE_HOUSE.
-    :vartype artifact_type: str or ~arm_ml_service.models.LAKE_HOUSE
+    :vartype artifact_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.LAKE_HOUSE
     """
 
     artifact_type: Literal[OneLakeArtifactType.LAKE_HOUSE] = rest_discriminator(name="artifactType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -14820,9 +17283,11 @@ class ListWorkspaceKeysResult(_Model):
     :ivar app_insights_instrumentation_key: The access key of the workspace app insights.
     :vartype app_insights_instrumentation_key: str
     :ivar container_registry_credentials:
-    :vartype container_registry_credentials: ~arm_ml_service.models.RegistryListCredentialsResult
+    :vartype container_registry_credentials:
+     ~azure.ai.ml._restclient.arm_ml_service.models.RegistryListCredentialsResult
     :ivar notebook_access_keys:
-    :vartype notebook_access_keys: ~arm_ml_service.models.ListNotebookKeysResult
+    :vartype notebook_access_keys:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ListNotebookKeysResult
     :ivar user_storage_arm_id: The arm Id key of the workspace storage.
     :vartype user_storage_arm_id: str
     :ivar user_storage_key: The access key of the workspace storage.
@@ -14871,7 +17336,7 @@ class LiteralJobInput(JobInput, discriminator="literal"):
     :ivar value: [Required] Literal value for the input. Required.
     :vartype value: str
     :ivar job_input_type: [Required] Specifies the type of job. Required. LITERAL.
-    :vartype job_input_type: str or ~arm_ml_service.models.LITERAL
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.LITERAL
     """
 
     value: str = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -14903,10 +17368,11 @@ class ManagedComputeIdentity(MonitorComputeIdentityBase, discriminator="ManagedI
     """Managed compute identity definition.
 
     :ivar identity: The identity which will be leveraged by the monitoring jobs.
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     :ivar compute_identity_type: [Required] Specifies the type of identity to use within the
      monitoring jobs. Required. Authenticates through a user-provided managed identity.
-    :vartype compute_identity_type: str or ~arm_ml_service.models.MANAGED_IDENTITY
+    :vartype compute_identity_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MANAGED_IDENTITY
     """
 
     identity: Optional["_models.ManagedServiceIdentity"] = rest_field(
@@ -14949,7 +17415,7 @@ class ManagedIdentity(IdentityConfiguration, discriminator="Managed"):
      do not set this field.
     :vartype resource_id: str
     :ivar identity_type: [Required] Specifies the type of identity framework. Required. MANAGED.
-    :vartype identity_type: str or ~arm_ml_service.models.MANAGED
+    :vartype identity_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.MANAGED
     """
 
     client_id: Optional[str] = rest_field(name="clientId", visibility=["read", "create"])
@@ -15010,7 +17476,7 @@ class ManagedIdentityAuthTypeWorkspaceConnectionProperties(
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -15019,15 +17485,16 @@ class ManagedIdentityAuthTypeWorkspaceConnectionProperties(
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -15035,9 +17502,10 @@ class ManagedIdentityAuthTypeWorkspaceConnectionProperties(
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar credentials:
-    :vartype credentials: ~arm_ml_service.models.WorkspaceConnectionManagedIdentity
+    :vartype credentials:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceConnectionManagedIdentity
     :ivar auth_type: Authentication type of the connection target. Required. MANAGED_IDENTITY.
-    :vartype auth_type: str or ~arm_ml_service.models.MANAGED_IDENTITY
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.MANAGED_IDENTITY
     """
 
     credentials: Optional["_models.WorkspaceConnectionManagedIdentity"] = rest_field(
@@ -15094,7 +17562,8 @@ class ManagedIdentityCredential(DataReferenceCredential, discriminator="ManagedI
     :vartype user_managed_identity_tenant_id: str
     :ivar credential_type: [Required] Credential type used to authentication with storage.
      Required. MANAGED_IDENTITY.
-    :vartype credential_type: str or ~arm_ml_service.models.MANAGED_IDENTITY
+    :vartype credential_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MANAGED_IDENTITY
     """
 
     managed_identity_type: Optional[str] = rest_field(
@@ -15179,7 +17648,7 @@ class ManagedNetworkProvisionStatus(_Model):
     :vartype spark_ready: bool
     :ivar status: Status for the managed network of a machine learning workspace. Known values are:
      "Inactive" and "Active".
-    :vartype status: str or ~arm_ml_service.models.ManagedNetworkStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedNetworkStatus
     """
 
     spark_ready: Optional[bool] = rest_field(
@@ -15218,20 +17687,21 @@ class ManagedNetworkSettings(_Model):
     :vartype enable_network_monitor: bool
     :ivar isolation_mode: Isolation mode for the managed network of a machine learning workspace.
      Known values are: "Disabled", "AllowInternetOutbound", and "AllowOnlyApprovedOutbound".
-    :vartype isolation_mode: str or ~arm_ml_service.models.IsolationMode
+    :vartype isolation_mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.IsolationMode
     :ivar network_id:
     :vartype network_id: str
     :ivar outbound_rules: Dictionary of <OutboundRule>.
-    :vartype outbound_rules: dict[str, ~arm_ml_service.models.OutboundRule]
+    :vartype outbound_rules: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.OutboundRule]
     :ivar status: Status of the Provisioning for the managed network of a machine learning
      workspace.
-    :vartype status: ~arm_ml_service.models.ManagedNetworkProvisionStatus
+    :vartype status: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedNetworkProvisionStatus
     :ivar firewall_sku: Firewall Sku used for FQDN Rules. Known values are: "Standard" and "Basic".
-    :vartype firewall_sku: str or ~arm_ml_service.models.FirewallSku
+    :vartype firewall_sku: str or ~azure.ai.ml._restclient.arm_ml_service.models.FirewallSku
     :ivar managed_network_kind: The Kind of the managed network. Users can switch from V1 to V2 for
      granular access controls, but cannot switch back to V1 once V2 is enabled. Known values are:
      "V1" and "V2".
-    :vartype managed_network_kind: str or ~arm_ml_service.models.ManagedNetworkKind
+    :vartype managed_network_kind: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedNetworkKind
     :ivar firewall_public_ip_address: Public IP address assigned to the Azure Firewall.
     :vartype firewall_public_ip_address: str
     """
@@ -15289,11 +17759,194 @@ class ManagedNetworkSettings(_Model):
         super().__init__(*args, **kwargs)
 
 
+class ManagedNetworkSettingsBasicResource(Resource):
+    """ManagedNetworkSettingsBasicResource.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
+     information.
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
+    :ivar properties: Managed Network settings for a machine learning workspace.
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedNetworkSettings
+    """
+
+    properties: Optional["_models.ManagedNetworkSettings"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Managed Network settings for a machine learning workspace."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        properties: Optional["_models.ManagedNetworkSettings"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class ManagedNetworkSettingsEx(ManagedNetworkSettings):
+    """ManagedNetworkSettingsEx.
+
+    :ivar enable_network_monitor: A flag to indicate if monitoring needs to be enabled for the
+     managed network.
+    :vartype enable_network_monitor: bool
+    :ivar isolation_mode: Isolation mode for the managed network of a machine learning workspace.
+     Known values are: "Disabled", "AllowInternetOutbound", and "AllowOnlyApprovedOutbound".
+    :vartype isolation_mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.IsolationMode
+    :ivar network_id:
+    :vartype network_id: str
+    :ivar outbound_rules: Dictionary of <OutboundRule>.
+    :vartype outbound_rules: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.OutboundRule]
+    :ivar status: Status of the Provisioning for the managed network of a machine learning
+     workspace.
+    :vartype status: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedNetworkProvisionStatus
+    :ivar firewall_sku: Firewall Sku used for FQDN Rules. Known values are: "Standard" and "Basic".
+    :vartype firewall_sku: str or ~azure.ai.ml._restclient.arm_ml_service.models.FirewallSku
+    :ivar managed_network_kind: The Kind of the managed network. Users can switch from V1 to V2 for
+     granular access controls, but cannot switch back to V1 once V2 is enabled. Known values are:
+     "V1" and "V2".
+    :vartype managed_network_kind: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedNetworkKind
+    :ivar firewall_public_ip_address: Public IP address assigned to the Azure Firewall.
+    :vartype firewall_public_ip_address: str
+    :ivar changeable_isolation_modes:
+    :vartype changeable_isolation_modes: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.IsolationMode]
+    """
+
+    changeable_isolation_modes: Optional[list[Union[str, "_models.IsolationMode"]]] = rest_field(
+        name="changeableIsolationModes", visibility=["read"]
+    )
+
+    @overload
+    def __init__(
+        self,
+        *,
+        enable_network_monitor: Optional[bool] = None,
+        isolation_mode: Optional[Union[str, "_models.IsolationMode"]] = None,
+        outbound_rules: Optional[dict[str, "_models.OutboundRule"]] = None,
+        status: Optional["_models.ManagedNetworkProvisionStatus"] = None,
+        firewall_sku: Optional[Union[str, "_models.FirewallSku"]] = None,
+        managed_network_kind: Optional[Union[str, "_models.ManagedNetworkKind"]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class ManagedNetworkSettingsProperties(_Model):
+    """The properties of the managed network settings of a machine learning workspace.
+
+    :ivar managed_network: Managed Network settings for a machine learning workspace.
+    :vartype managed_network:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedNetworkSettingsEx
+    :ivar provisioning_state: The current deployment state of the managed network resource. The
+     provisioningState is to indicate states for resource provisioning. Known values are:
+     "Deferred", "Updating", "Succeeded", "Failed", "Deleting", and "Deleted".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedNetworkProvisioningState
+    """
+
+    managed_network: Optional["_models.ManagedNetworkSettingsEx"] = rest_field(
+        name="managedNetwork", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Managed Network settings for a machine learning workspace."""
+    provisioning_state: Optional[Union[str, "_models.ManagedNetworkProvisioningState"]] = rest_field(
+        name="provisioningState", visibility=["read"]
+    )
+    """The current deployment state of the managed network resource. The provisioningState is to
+     indicate states for resource provisioning. Known values are: \"Deferred\", \"Updating\",
+     \"Succeeded\", \"Failed\", \"Deleting\", and \"Deleted\"."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        managed_network: Optional["_models.ManagedNetworkSettingsEx"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class ManagedNetworkSettingsPropertiesBasicResource(ProxyResource):  # pylint: disable=name-too-long
+    """ManagedNetworkSettingsPropertiesBasicResource is a preview-only resource.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
+     information.
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
+    :ivar properties: The properties of the managed network settings of a machine learning
+     workspace.
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedNetworkSettingsProperties
+    """
+
+    properties: Optional["_models.ManagedNetworkSettingsProperties"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The properties of the managed network settings of a machine learning workspace."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        properties: Optional["_models.ManagedNetworkSettingsProperties"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class ManagedOnlineDeployment(OnlineDeploymentProperties, discriminator="Managed"):
     """Properties specific to a ManagedOnlineDeployment.
 
     :ivar code_configuration: Code configuration for the endpoint deployment.
-    :vartype code_configuration: ~arm_ml_service.models.CodeConfiguration
+    :vartype code_configuration: ~azure.ai.ml._restclient.arm_ml_service.models.CodeConfiguration
     :ivar description: Description of the endpoint deployment.
     :vartype description: str
     :ivar environment_id: ARM resource ID or AssetId of the environment specification for the
@@ -15306,36 +17959,37 @@ class ManagedOnlineDeployment(OnlineDeploymentProperties, discriminator="Managed
     :ivar app_insights_enabled: If true, enables Application Insights logging.
     :vartype app_insights_enabled: bool
     :ivar data_collector: The mdc configuration, we disable mdc when it's null.
-    :vartype data_collector: ~arm_ml_service.models.DataCollector
+    :vartype data_collector: ~azure.ai.ml._restclient.arm_ml_service.models.DataCollector
     :ivar egress_public_network_access: Enum to determine whether PublicNetworkAccess is Enabled or
      Disabled for egress of a deployment. Known values are: "Enabled" and "Disabled".
     :vartype egress_public_network_access: str or
-     ~arm_ml_service.models.EgressPublicNetworkAccessType
+     ~azure.ai.ml._restclient.arm_ml_service.models.EgressPublicNetworkAccessType
     :ivar instance_type: Compute instance type. Default: Standard_F4s_v2.
     :vartype instance_type: str
     :ivar liveness_probe: Liveness probe monitors the health of the container regularly.
-    :vartype liveness_probe: ~arm_ml_service.models.ProbeSettings
+    :vartype liveness_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
     :ivar model: The URI path to the model.
     :vartype model: str
     :ivar model_mount_path: The path to mount the model in custom container.
     :vartype model_mount_path: str
     :ivar provisioning_state: Provisioning state for the endpoint deployment. Known values are:
      "Creating", "Deleting", "Scaling", "Updating", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.DeploymentProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DeploymentProvisioningState
     :ivar readiness_probe: Readiness probe validates if the container is ready to serve traffic.
      The properties and defaults are the same as liveness probe.
-    :vartype readiness_probe: ~arm_ml_service.models.ProbeSettings
+    :vartype readiness_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
     :ivar request_settings: Request settings for the deployment.
-    :vartype request_settings: ~arm_ml_service.models.OnlineRequestSettings
+    :vartype request_settings: ~azure.ai.ml._restclient.arm_ml_service.models.OnlineRequestSettings
     :ivar scale_settings: Scale settings for the deployment. If it is null or not provided, it
      defaults to TargetUtilizationScaleSettings for KubernetesOnlineDeployment and to
      DefaultScaleSettings for ManagedOnlineDeployment.
-    :vartype scale_settings: ~arm_ml_service.models.OnlineScaleSettings
+    :vartype scale_settings: ~azure.ai.ml._restclient.arm_ml_service.models.OnlineScaleSettings
     :ivar startup_probe: Startup probe verify whether an application within a container has started
      successfully.
-    :vartype startup_probe: ~arm_ml_service.models.ProbeSettings
+    :vartype startup_probe: ~azure.ai.ml._restclient.arm_ml_service.models.ProbeSettings
     :ivar endpoint_compute_type: [Required] The compute type of the endpoint. Required. MANAGED.
-    :vartype endpoint_compute_type: str or ~arm_ml_service.models.MANAGED
+    :vartype endpoint_compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.MANAGED
     """
 
     endpoint_compute_type: Literal[EndpointComputeType.MANAGED] = rest_discriminator(name="endpointComputeType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -15375,6 +18029,152 @@ class ManagedOnlineDeployment(OnlineDeploymentProperties, discriminator="Managed
         self.endpoint_compute_type = EndpointComputeType.MANAGED  # type: ignore
 
 
+class ManagedOnlineEndpointDeploymentResourceProperties(
+    EndpointDeploymentResourceProperties, discriminator="managedOnlineEndpoint"
+):  # pylint: disable=name-too-long
+    """ManagedOnlineEndpointDeploymentResourceProperties.
+
+    :ivar failure_reason: The failure reason if the creation failed.
+    :vartype failure_reason: str
+    :ivar provisioning_state: Read-only provision state status property. Known values are:
+     "NotStarted", "Failed", "Creating", "Updating", "Succeeded", "Deleting", "Accepted",
+     "Canceled", "Scaling", and "Disabled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultResourceProvisioningState
+    :ivar endpoint_compute_type: Enum to determine endpoint compute type. Known values are:
+     "Managed", "Kubernetes", and "AzureMLCompute".
+    :vartype endpoint_compute_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.EndpointComputeType
+    :ivar model:
+    :vartype model: str
+    :ivar type: Kind of the deployment. Required. Default value is "managedOnlineEndpoint".
+    :vartype type: str
+    """
+
+    endpoint_compute_type: Optional[Union[str, "_models.EndpointComputeType"]] = rest_field(
+        name="endpointComputeType", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Enum to determine endpoint compute type. Known values are: \"Managed\", \"Kubernetes\", and
+     \"AzureMLCompute\"."""
+    model: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    type: Literal["managedOnlineEndpoint"] = rest_discriminator(name="type", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """Kind of the deployment. Required. Default value is \"managedOnlineEndpoint\"."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        failure_reason: Optional[str] = None,
+        endpoint_compute_type: Optional[Union[str, "_models.EndpointComputeType"]] = None,
+        model: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.type = "managedOnlineEndpoint"  # type: ignore
+
+
+class ManagedOnlineEndpointResourceProperties(EndpointResourceProperties, discriminator="managedOnlineEndpoint"):
+    """ManagedOnlineEndpointResourceProperties.
+
+    :ivar associated_resource_id: Byo resource id for creating the built-in model service
+     endpoints.
+    :vartype associated_resource_id: str
+    :ivar deployments: Deployments info.
+    :vartype deployments:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.EndpointDeploymentResourcePropertiesBasicResource]
+    :ivar endpoint_uri: Uri of the endpoint.
+    :vartype endpoint_uri: str
+    :ivar failure_reason: The failure reason if the creation failed.
+    :vartype failure_reason: str
+    :ivar location: Location of the endpoint. Since input dto and when parse endpoint resource
+     share the same contract this Location field is just for parse the endpoint resource info we
+     won't let customer specify the endpoint resource location since we will create it the same
+     location as workspace.
+    :vartype location: str
+    :ivar name: Name of the endpoint.
+    :vartype name: str
+    :ivar provisioning_state: Read-only provision state status property. Known values are:
+     "NotStarted", "Failed", "Creating", "Updating", "Succeeded", "Deleting", "Accepted",
+     "Canceled", "Scaling", and "Disabled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultResourceProvisioningState
+    :ivar should_create_ai_services_endpoint: Whether the proxy (non-byo) endpoint is a regular
+     endpoint or a OneKeyV2 AI services account endpoint.
+    :vartype should_create_ai_services_endpoint: bool
+    :ivar auth_mode: Enum to determine endpoint authentication mode. Known values are: "AMLToken",
+     "Key", and "AADToken".
+    :vartype auth_mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.EndpointAuthMode
+    :ivar compute:
+    :vartype compute: str
+    :ivar description:
+    :vartype description: str
+    :ivar mirror_traffic:
+    :vartype mirror_traffic: dict[str, int]
+    :ivar scoring_uri:
+    :vartype scoring_uri: str
+    :ivar traffic:
+    :vartype traffic: dict[str, int]
+    :ivar endpoint_type: Type of the endpoint. Required. MANAGED_ONLINE_ENDPOINT.
+    :vartype endpoint_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MANAGED_ONLINE_ENDPOINT
+    """
+
+    auth_mode: Optional[Union[str, "_models.EndpointAuthMode"]] = rest_field(
+        name="authMode", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Enum to determine endpoint authentication mode. Known values are: \"AMLToken\", \"Key\", and
+     \"AADToken\"."""
+    compute: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    description: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    mirror_traffic: Optional[dict[str, int]] = rest_field(
+        name="mirrorTraffic", visibility=["read", "create", "update", "delete", "query"]
+    )
+    scoring_uri: Optional[str] = rest_field(
+        name="scoringUri", visibility=["read", "create", "update", "delete", "query"]
+    )
+    traffic: Optional[dict[str, int]] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    endpoint_type: Literal[EndpointType.MANAGED_ONLINE_ENDPOINT] = rest_discriminator(name="endpointType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """Type of the endpoint. Required. MANAGED_ONLINE_ENDPOINT."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        associated_resource_id: Optional[str] = None,
+        deployments: Optional[list["_models.EndpointDeploymentResourcePropertiesBasicResource"]] = None,
+        endpoint_uri: Optional[str] = None,
+        failure_reason: Optional[str] = None,
+        location: Optional[str] = None,
+        name: Optional[str] = None,
+        should_create_ai_services_endpoint: Optional[bool] = None,
+        auth_mode: Optional[Union[str, "_models.EndpointAuthMode"]] = None,
+        compute: Optional[str] = None,
+        description: Optional[str] = None,
+        mirror_traffic: Optional[dict[str, int]] = None,
+        scoring_uri: Optional[str] = None,
+        traffic: Optional[dict[str, int]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.endpoint_type = EndpointType.MANAGED_ONLINE_ENDPOINT  # type: ignore
+
+
 class ManagedResourceGroupAssignedIdentities(_Model):
     """Details for managed resource group assigned identities.
 
@@ -15410,7 +18210,7 @@ class ManagedResourceGroupSettings(_Model):
 
     :ivar assigned_identities: List of assigned identities for the managed resource group.
     :vartype assigned_identities:
-     list[~arm_ml_service.models.ManagedResourceGroupAssignedIdentities]
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ManagedResourceGroupAssignedIdentities]
     """
 
     assigned_identities: Optional[list["_models.ManagedResourceGroupAssignedIdentities"]] = rest_field(
@@ -15446,10 +18246,12 @@ class ManagedServiceIdentity(_Model):
      provided for a system assigned identity.
     :vartype tenant_id: str
     :ivar type: The type of managed identity assigned to this resource. Required. Known values are:
-     "None", "SystemAssigned", "UserAssigned", and "SystemAssigned,UserAssigned".
-    :vartype type: str or ~arm_ml_service.models.ManagedServiceIdentityType
+     "None", "SystemAssigned", "UserAssigned", "SystemAssigned,UserAssigned", and "SystemAssigned,
+     UserAssigned".
+    :vartype type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentityType
     :ivar user_assigned_identities: The identities assigned to this resource by the user.
-    :vartype user_assigned_identities: dict[str, ~arm_ml_service.models.UserAssignedIdentity]
+    :vartype user_assigned_identities: dict[str,
+     ~azure.ai.ml._restclient.arm_ml_service.models.UserAssignedIdentity]
     """
 
     principal_id: Optional[str] = rest_field(name="principalId", visibility=["read"])
@@ -15462,7 +18264,8 @@ class ManagedServiceIdentity(_Model):
         visibility=["read", "create", "update", "delete", "query"]
     )
     """The type of managed identity assigned to this resource. Required. Known values are: \"None\",
-     \"SystemAssigned\", \"UserAssigned\", and \"SystemAssigned,UserAssigned\"."""
+     \"SystemAssigned\", \"UserAssigned\", \"SystemAssigned,UserAssigned\", and \"SystemAssigned,
+     UserAssigned\"."""
     user_assigned_identities: Optional[dict[str, "_models.UserAssignedIdentity"]] = rest_field(
         name="userAssignedIdentities", visibility=["read", "create", "update", "delete", "query"]
     )
@@ -15519,9 +18322,10 @@ class MarketplaceSubscription(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.MarketplaceSubscriptionProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.MarketplaceSubscriptionProperties
     """
 
     properties: "_models.MarketplaceSubscriptionProperties" = rest_field(
@@ -15551,18 +18355,18 @@ class MarketplaceSubscriptionProperties(_Model):
     """MarketplaceSubscriptionProperties.
 
     :ivar marketplace_plan: Marketplace Plan associated with the Marketplace Subscription.
-    :vartype marketplace_plan: ~arm_ml_service.models.MarketplacePlan
+    :vartype marketplace_plan: ~azure.ai.ml._restclient.arm_ml_service.models.MarketplacePlan
     :ivar marketplace_subscription_status: Current status of the Marketplace Subscription. Known
      values are: "Subscribed", "Suspended", and "Unsubscribed".
     :vartype marketplace_subscription_status: str or
-     ~arm_ml_service.models.MarketplaceSubscriptionStatus
+     ~azure.ai.ml._restclient.arm_ml_service.models.MarketplaceSubscriptionStatus
     :ivar model_id: [Required] Target Marketplace Model ID to create a Marketplace Subscription
      for. Required.
     :vartype model_id: str
     :ivar provisioning_state: Provisioning State of the Marketplace Subscription. Known values are:
      "Creating", "Deleting", "Succeeded", "Failed", "Updating", and "Canceled".
     :vartype provisioning_state: str or
-     ~arm_ml_service.models.MarketplaceSubscriptionProvisioningState
+     ~azure.ai.ml._restclient.arm_ml_service.models.MarketplaceSubscriptionProvisioningState
     """
 
     marketplace_plan: Optional["_models.MarketplacePlan"] = rest_field(name="marketplacePlan", visibility=["read"])
@@ -15632,16 +18436,18 @@ class MaterializationSettings(_Model):
     """MaterializationSettings.
 
     :ivar notification: Specifies the notification details.
-    :vartype notification: ~arm_ml_service.models.NotificationSetting
+    :vartype notification: ~azure.ai.ml._restclient.arm_ml_service.models.NotificationSetting
     :ivar resource: Specifies the compute resource settings.
-    :vartype resource: ~arm_ml_service.models.MaterializationComputeResource
+    :vartype resource:
+     ~azure.ai.ml._restclient.arm_ml_service.models.MaterializationComputeResource
     :ivar schedule: Specifies the schedule details.
-    :vartype schedule: ~arm_ml_service.models.RecurrenceTrigger
+    :vartype schedule: ~azure.ai.ml._restclient.arm_ml_service.models.RecurrenceTrigger
     :ivar spark_configuration: Specifies the spark compute settings.
     :vartype spark_configuration: dict[str, str]
     :ivar store_type: Specifies the stores to which materialization should happen. Known values
      are: "None", "Online", "Offline", and "OnlineAndOffline".
-    :vartype store_type: str or ~arm_ml_service.models.MaterializationStoreType
+    :vartype store_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MaterializationStoreType
     """
 
     notification: Optional["_models.NotificationSetting"] = rest_field(
@@ -15697,7 +18503,7 @@ class MedianStoppingPolicy(EarlyTerminationPolicy, discriminator="MedianStopping
     :ivar evaluation_interval: Interval (number of runs) between policy evaluations.
     :vartype evaluation_interval: int
     :ivar policy_type: [Required] Name of policy configuration. Required. MEDIAN_STOPPING.
-    :vartype policy_type: str or ~arm_ml_service.models.MEDIAN_STOPPING
+    :vartype policy_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.MEDIAN_STOPPING
     """
 
     policy_type: Literal[EarlyTerminationPolicyType.MEDIAN_STOPPING] = rest_discriminator(name="policyType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -15730,11 +18536,11 @@ class MLFlowModelJobInput(JobInput, discriminator="mlflow_model"):
     :vartype description: str
     :ivar mode: Enum to determine the input data delivery mode. Known values are: "ReadOnlyMount",
      "ReadWriteMount", "Download", "Direct", "EvalMount", and "EvalDownload".
-    :vartype mode: str or ~arm_ml_service.models.InputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.InputDeliveryMode
     :ivar uri: [Required] Input Asset URI. Required.
     :vartype uri: str
     :ivar job_input_type: [Required] Specifies the type of job. Required. MLFLOW_MODEL.
-    :vartype job_input_type: str or ~arm_ml_service.models.MLFLOW_MODEL
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.MLFLOW_MODEL
     """
 
     mode: Optional[Union[str, "_models.InputDeliveryMode"]] = rest_field(visibility=["read", "create"])
@@ -15775,11 +18581,11 @@ class MLFlowModelJobOutput(JobOutput, discriminator="mlflow_model"):
     :vartype asset_name: str
     :ivar mode: Output data delivery mode enums. Known values are: "ReadWriteMount", "Upload", and
      "Direct".
-    :vartype mode: str or ~arm_ml_service.models.OutputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.OutputDeliveryMode
     :ivar uri: Output Asset URI.
     :vartype uri: str
     :ivar job_output_type: [Required] Specifies the type of job. Required. MLFLOW_MODEL.
-    :vartype job_output_type: str or ~arm_ml_service.models.MLFLOW_MODEL
+    :vartype job_output_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.MLFLOW_MODEL
     """
 
     asset_name: Optional[str] = rest_field(name="assetName", visibility=["read", "create", "update", "delete", "query"])
@@ -15834,7 +18640,7 @@ class MLTableData(DataVersionBaseProperties, discriminator="mltable"):
     :ivar referenced_uris: Uris referenced in the MLTable definition (required for lineage).
     :vartype referenced_uris: list[str]
     :ivar data_type: [Required] Specifies the type of data. Required. MLTABLE.
-    :vartype data_type: str or ~arm_ml_service.models.MLTABLE
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.MLTABLE
     """
 
     referenced_uris: Optional[list[str]] = rest_field(name="referencedUris", visibility=["read", "create"])
@@ -15874,11 +18680,11 @@ class MLTableJobInput(JobInput, discriminator="mltable"):
     :vartype description: str
     :ivar mode: Enum to determine the input data delivery mode. Known values are: "ReadOnlyMount",
      "ReadWriteMount", "Download", "Direct", "EvalMount", and "EvalDownload".
-    :vartype mode: str or ~arm_ml_service.models.InputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.InputDeliveryMode
     :ivar uri: [Required] Input Asset URI. Required.
     :vartype uri: str
     :ivar job_input_type: [Required] Specifies the type of job. Required. MLTABLE.
-    :vartype job_input_type: str or ~arm_ml_service.models.MLTABLE
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.MLTABLE
     """
 
     mode: Optional[Union[str, "_models.InputDeliveryMode"]] = rest_field(visibility=["read", "create"])
@@ -15919,11 +18725,11 @@ class MLTableJobOutput(JobOutput, discriminator="mltable"):
     :vartype asset_name: str
     :ivar mode: Output data delivery mode enums. Known values are: "ReadWriteMount", "Upload", and
      "Direct".
-    :vartype mode: str or ~arm_ml_service.models.OutputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.OutputDeliveryMode
     :ivar uri: Output Asset URI.
     :vartype uri: str
     :ivar job_output_type: [Required] Specifies the type of job. Required. MLTABLE.
-    :vartype job_output_type: str or ~arm_ml_service.models.MLTABLE
+    :vartype job_output_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.MLTABLE
     """
 
     asset_name: Optional[str] = rest_field(name="assetName", visibility=["read", "create", "update", "delete", "query"])
@@ -15971,9 +18777,9 @@ class ModelContainer(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.ModelContainerProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.ModelContainerProperties
     """
 
     properties: "_models.ModelContainerProperties" = rest_field(
@@ -16016,7 +18822,8 @@ class ModelContainerProperties(AssetContainer):
     :vartype next_version: str
     :ivar provisioning_state: Provisioning state for the model container. Known values are:
      "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     """
 
     provisioning_state: Optional[Union[str, "_models.AssetProvisioningState"]] = rest_field(
@@ -16087,9 +18894,9 @@ class ModelVersion(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.ModelVersionProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.ModelVersionProperties
     """
 
     properties: "_models.ModelVersionProperties" = rest_field(
@@ -16129,7 +18936,7 @@ class ModelVersionProperties(AssetBase):
     :ivar is_archived: Is the asset archived?.
     :vartype is_archived: bool
     :ivar flavors: Mapping of model flavors to their properties.
-    :vartype flavors: dict[str, ~arm_ml_service.models.FlavorData]
+    :vartype flavors: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.FlavorData]
     :ivar job_name: Name of the training job which produced this model.
     :vartype job_name: str
     :ivar model_type: The storage format for this entity. Used for NCD.
@@ -16138,11 +18945,12 @@ class ModelVersionProperties(AssetBase):
     :vartype model_uri: str
     :ivar provisioning_state: Provisioning state for the model version. Known values are:
      "Succeeded", "Failed", "Canceled", "Creating", "Updating", and "Deleting".
-    :vartype provisioning_state: str or ~arm_ml_service.models.AssetProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AssetProvisioningState
     :ivar stage: Stage in the model lifecycle assigned to this model.
     :vartype stage: str
     :ivar datasets: Array of dataset references.
-    :vartype datasets: list[~arm_ml_service.models.DatasetReference]
+    :vartype datasets: list[~azure.ai.ml._restclient.arm_ml_service.models.DatasetReference]
     """
 
     flavors: Optional[dict[str, "_models.FlavorData"]] = rest_field(
@@ -16203,7 +19011,7 @@ class MonitorComputeConfigurationBase(_Model):
 
     :ivar compute_type: [Required] Specifies the type of signal to monitor. Required.
      "ServerlessSpark"
-    :vartype compute_type: str or ~arm_ml_service.models.MonitorComputeType
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.MonitorComputeType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -16232,14 +19040,17 @@ class MonitorDefinition(_Model):
     """MonitorDefinition.
 
     :ivar alert_notification_settings: The monitor's notification settings.
-    :vartype alert_notification_settings: ~arm_ml_service.models.MonitorNotificationSettings
+    :vartype alert_notification_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitorNotificationSettings
     :ivar compute_configuration: [Required] The ARM resource ID of the compute resource to run the
      monitoring job on. Required.
-    :vartype compute_configuration: ~arm_ml_service.models.MonitorComputeConfigurationBase
+    :vartype compute_configuration:
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitorComputeConfigurationBase
     :ivar monitoring_target: The entities targeted by the monitor.
-    :vartype monitoring_target: ~arm_ml_service.models.MonitoringTarget
+    :vartype monitoring_target: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringTarget
     :ivar signals: [Required] The signals to monitor. Required.
-    :vartype signals: dict[str, ~arm_ml_service.models.MonitoringSignalBase]
+    :vartype signals: dict[str,
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringSignalBase]
     """
 
     alert_notification_settings: Optional["_models.MonitorNotificationSettings"] = rest_field(
@@ -16315,7 +19126,7 @@ class MonitoringTarget(_Model):
     :vartype model_id: str
     :ivar task_type: [Required] The machine learning task type of the monitored model. Required.
      Known values are: "Classification" and "Regression".
-    :vartype task_type: str or ~arm_ml_service.models.ModelTaskType
+    :vartype task_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ModelTaskType
     """
 
     deployment_id: Optional[str] = rest_field(name="deploymentId", visibility=["read", "create"])
@@ -16378,7 +19189,8 @@ class MonitorNotificationSettings(_Model):
     """MonitorNotificationSettings.
 
     :ivar email_notification_settings: The AML notification email settings.
-    :vartype email_notification_settings: ~arm_ml_service.models.MonitorEmailNotificationSettings
+    :vartype email_notification_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitorEmailNotificationSettings
     """
 
     email_notification_settings: Optional["_models.MonitorEmailNotificationSettings"] = rest_field(
@@ -16409,14 +19221,15 @@ class MonitorServerlessSparkCompute(MonitorComputeConfigurationBase, discriminat
 
     :ivar compute_identity: [Required] The identity scheme leveraged to by the spark jobs running
      on serverless Spark. Required.
-    :vartype compute_identity: ~arm_ml_service.models.MonitorComputeIdentityBase
+    :vartype compute_identity:
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitorComputeIdentityBase
     :ivar instance_type: [Required] The instance type running the Spark job. Required.
     :vartype instance_type: str
     :ivar runtime_version: [Required] The Spark runtime version. Required.
     :vartype runtime_version: str
     :ivar compute_type: [Required] Specifies the type of signal to monitor. Required. Serverless
      Spark compute.
-    :vartype compute_type: str or ~arm_ml_service.models.SERVERLESS_SPARK
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SERVERLESS_SPARK
     """
 
     compute_identity: "_models.MonitorComputeIdentityBase" = rest_field(
@@ -16459,7 +19272,7 @@ class Mpi(DistributionConfiguration, discriminator="Mpi"):
     :vartype process_count_per_instance: int
     :ivar distribution_type: [Required] Specifies the type of distribution framework. Required.
      MPI.
-    :vartype distribution_type: str or ~arm_ml_service.models.MPI
+    :vartype distribution_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.MPI
     """
 
     process_count_per_instance: Optional[int] = rest_field(
@@ -16494,10 +19307,11 @@ class NetworkAcls(_Model):
     :ivar default_action: The default action when no rule from ipRules and from virtualNetworkRules
      match. This is only used after the bypass property has been evaluated. Known values are: "Deny"
      and "Allow".
-    :vartype default_action: str or ~arm_ml_service.models.DefaultActionType
+    :vartype default_action: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultActionType
     :ivar ip_rules: Rules governing the accessibility of a resource from a specific ip address or
      ip range.
-    :vartype ip_rules: list[~arm_ml_service.models.IPRule]
+    :vartype ip_rules: list[~azure.ai.ml._restclient.arm_ml_service.models.IPRule]
     """
 
     default_action: Optional[Union[str, "_models.DefaultActionType"]] = rest_field(
@@ -16652,7 +19466,7 @@ class NoneAuthTypeWorkspaceConnectionProperties(
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -16661,15 +19475,16 @@ class NoneAuthTypeWorkspaceConnectionProperties(
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -16677,7 +19492,7 @@ class NoneAuthTypeWorkspaceConnectionProperties(
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar auth_type: Authentication type of the connection target. Required. NONE.
-    :vartype auth_type: str or ~arm_ml_service.models.NONE
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.NONE
     """
 
     auth_type: Literal[ConnectionAuthType.NONE] = rest_discriminator(name="authType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -16716,7 +19531,7 @@ class NoneDatastoreCredentials(DatastoreCredentials, discriminator="None"):
 
     :ivar credentials_type: [Required] Credential type used to authentication with storage.
      Required. NONE.
-    :vartype credentials_type: str or ~arm_ml_service.models.NONE
+    :vartype credentials_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.NONE
     """
 
     credentials_type: Literal[CredentialsType.NONE] = rest_discriminator(name="credentialsType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -16813,7 +19628,8 @@ class NotebookResourceInfo(_Model):
     :ivar is_private_link_enabled:
     :vartype is_private_link_enabled: bool
     :ivar notebook_preparation_error: The error that occurs when preparing notebook.
-    :vartype notebook_preparation_error: ~arm_ml_service.models.NotebookPreparationError
+    :vartype notebook_preparation_error:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NotebookPreparationError
     :ivar resource_id: the data plane resourceId that used to initialize notebook component.
     :vartype resource_id: str
     """
@@ -16856,13 +19672,14 @@ class NotificationSetting(_Model):
     """Configuration for notification.
 
     :ivar email_on: Send email notification to user on specified notification type.
-    :vartype email_on: list[str or ~arm_ml_service.models.EmailNotificationEnableType]
+    :vartype email_on: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.EmailNotificationEnableType]
     :ivar emails: This is the email recipient list which has a limitation of 499 characters in
      total concat with comma separator.
     :vartype emails: list[str]
     :ivar webhooks: Send webhook callback to a service. Key is a user-provided name for the
      webhook.
-    :vartype webhooks: dict[str, ~arm_ml_service.models.Webhook]
+    :vartype webhooks: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.Webhook]
     """
 
     email_on: Optional[list[Union[str, "_models.EmailNotificationEnableType"]]] = rest_field(
@@ -16900,14 +19717,14 @@ class NumericalDataDriftMetricThreshold(DataDriftMetricThresholdBase, discrimina
 
     :ivar threshold: The threshold value. If null, a default value will be set depending on the
      selected metric.
-    :vartype threshold: ~arm_ml_service.models.MonitoringThreshold
+    :vartype threshold: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringThreshold
     :ivar metric: [Required] The numerical data drift metric to calculate. Required. Known values
      are: "JensenShannonDistance", "PopulationStabilityIndex", "NormalizedWassersteinDistance", and
      "TwoSampleKolmogorovSmirnovTest".
-    :vartype metric: str or ~arm_ml_service.models.NumericalDataDriftMetric
+    :vartype metric: str or ~azure.ai.ml._restclient.arm_ml_service.models.NumericalDataDriftMetric
     :ivar data_type: [Required] Specifies the data type of the metric threshold. Required. Used for
      features of numerical data type.
-    :vartype data_type: str or ~arm_ml_service.models.NUMERICAL
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.NUMERICAL
     """
 
     metric: Union[str, "_models.NumericalDataDriftMetric"] = rest_field(
@@ -16945,13 +19762,14 @@ class NumericalDataQualityMetricThreshold(DataQualityMetricThresholdBase, discri
 
     :ivar threshold: The threshold value. If null, a default value will be set depending on the
      selected metric.
-    :vartype threshold: ~arm_ml_service.models.MonitoringThreshold
+    :vartype threshold: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringThreshold
     :ivar metric: [Required] The numerical data quality metric to calculate. Required. Known values
      are: "NullValueRate", "DataTypeErrorRate", and "OutOfBoundsRate".
-    :vartype metric: str or ~arm_ml_service.models.NumericalDataQualityMetric
+    :vartype metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.NumericalDataQualityMetric
     :ivar data_type: [Required] Specifies the data type of the metric threshold. Required. Used for
      features of numerical data type.
-    :vartype data_type: str or ~arm_ml_service.models.NUMERICAL
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.NUMERICAL
     """
 
     metric: Union[str, "_models.NumericalDataQualityMetric"] = rest_field(visibility=["read", "create"])
@@ -16986,14 +19804,15 @@ class NumericalPredictionDriftMetricThreshold(PredictionDriftMetricThresholdBase
 
     :ivar threshold: The threshold value. If null, a default value will be set depending on the
      selected metric.
-    :vartype threshold: ~arm_ml_service.models.MonitoringThreshold
+    :vartype threshold: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringThreshold
     :ivar metric: [Required] The numerical prediction drift metric to calculate. Required. Known
      values are: "JensenShannonDistance", "PopulationStabilityIndex",
      "NormalizedWassersteinDistance", and "TwoSampleKolmogorovSmirnovTest".
-    :vartype metric: str or ~arm_ml_service.models.NumericalPredictionDriftMetric
+    :vartype metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.NumericalPredictionDriftMetric
     :ivar data_type: [Required] Specifies the data type of the metric threshold. Required. Used for
      features of numerical data type.
-    :vartype data_type: str or ~arm_ml_service.models.NUMERICAL
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.NUMERICAL
     """
 
     metric: Union[str, "_models.NumericalPredictionDriftMetric"] = rest_field(visibility=["read", "create"])
@@ -17051,7 +19870,7 @@ class OAuth2AuthTypeWorkspaceConnectionProperties(
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -17060,15 +19879,16 @@ class OAuth2AuthTypeWorkspaceConnectionProperties(
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -17076,9 +19896,9 @@ class OAuth2AuthTypeWorkspaceConnectionProperties(
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar credentials:
-    :vartype credentials: ~arm_ml_service.models.WorkspaceConnectionOAuth2
+    :vartype credentials: ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceConnectionOAuth2
     :ivar auth_type: Authentication type of the connection target. Required. O_AUTH2.
-    :vartype auth_type: str or ~arm_ml_service.models.O_AUTH2
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.O_AUTH2
     """
 
     credentials: Optional["_models.WorkspaceConnectionOAuth2"] = rest_field(
@@ -17121,7 +19941,7 @@ class Objective(_Model):
 
     :ivar goal: [Required] Defines supported metric goals for hyperparameter tuning. Required.
      Known values are: "Minimize" and "Maximize".
-    :vartype goal: str or ~arm_ml_service.models.Goal
+    :vartype goal: str or ~azure.ai.ml._restclient.arm_ml_service.models.Goal
     :ivar primary_metric: [Required] Name of the metric to optimize. Required.
     :vartype primary_metric: str
     """
@@ -17161,12 +19981,12 @@ class OneLakeDatastore(DatastoreProperties, discriminator="OneLake"):
     :ivar tags: Tag dictionary. Tags can be added, removed, and updated.
     :vartype tags: dict[str, str]
     :ivar credentials: [Required] Account credentials. Required.
-    :vartype credentials: ~arm_ml_service.models.DatastoreCredentials
+    :vartype credentials: ~azure.ai.ml._restclient.arm_ml_service.models.DatastoreCredentials
     :ivar is_default: Readonly property to indicate if datastore is the workspace default
      datastore.
     :vartype is_default: bool
     :ivar artifact: [Required] OneLake artifact backing the datastore. Required.
-    :vartype artifact: ~arm_ml_service.models.OneLakeArtifact
+    :vartype artifact: ~azure.ai.ml._restclient.arm_ml_service.models.OneLakeArtifact
     :ivar endpoint: OneLake endpoint to use for the datastore.
     :vartype endpoint: str
     :ivar one_lake_workspace_name: [Required] OneLake workspace name. Required.
@@ -17175,9 +19995,9 @@ class OneLakeDatastore(DatastoreProperties, discriminator="OneLake"):
      service data access to customer's storage. Known values are: "None",
      "WorkspaceSystemAssignedIdentity", and "WorkspaceUserAssignedIdentity".
     :vartype service_data_access_auth_identity: str or
-     ~arm_ml_service.models.ServiceDataAccessAuthIdentity
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServiceDataAccessAuthIdentity
     :ivar datastore_type: [Required] Storage type backing the datastore. Required. ONE_LAKE.
-    :vartype datastore_type: str or ~arm_ml_service.models.ONE_LAKE
+    :vartype datastore_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ONE_LAKE
     """
 
     artifact: "_models.OneLakeArtifact" = rest_field(visibility=["read", "create"])
@@ -17235,20 +20055,20 @@ class OnlineDeployment(TrackedResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     :ivar location: The geo-location where the resource lives. Required.
     :vartype location: str
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.OnlineDeploymentProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.OnlineDeploymentProperties
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     :ivar kind: Metadata used by portal/tooling/etc to render different UX experiences for
      resources of the same type.
     :vartype kind: str
     :ivar sku: Sku details required for ARM contract for Autoscaling.
-    :vartype sku: ~arm_ml_service.models.Sku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
     """
 
     properties: "_models.OnlineDeploymentProperties" = rest_field(
@@ -17302,20 +20122,20 @@ class OnlineEndpoint(TrackedResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     :ivar location: The geo-location where the resource lives. Required.
     :vartype location: str
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.OnlineEndpointProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.OnlineEndpointProperties
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     :ivar kind: Metadata used by portal/tooling/etc to render different UX experiences for
      resources of the same type.
     :vartype kind: str
     :ivar sku: Sku details required for ARM contract for Autoscaling.
-    :vartype sku: ~arm_ml_service.models.Sku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
     """
 
     properties: "_models.OnlineEndpointProperties" = rest_field(
@@ -17362,12 +20182,12 @@ class OnlineEndpointProperties(EndpointPropertiesBase):
      operation). Use 'Key' for key-based authentication. Use 'AMLToken' for Azure Machine Learning
      token-based authentication. Use 'AADToken' for Microsoft Entra token-based authentication.
      Required. Known values are: "AMLToken", "Key", and "AADToken".
-    :vartype auth_mode: str or ~arm_ml_service.models.EndpointAuthMode
+    :vartype auth_mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.EndpointAuthMode
     :ivar description: Description of the inference endpoint.
     :vartype description: str
     :ivar keys_property: EndpointAuthKeys to set initially on an Endpoint. This property will
      always be returned as null. AuthKey values must be retrieved using the ListKeys API.
-    :vartype keys_property: ~arm_ml_service.models.EndpointAuthKeys
+    :vartype keys_property: ~azure.ai.ml._restclient.arm_ml_service.models.EndpointAuthKeys
     :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
     :vartype properties: dict[str, str]
     :ivar scoring_uri: Endpoint URI.
@@ -17381,10 +20201,12 @@ class OnlineEndpointProperties(EndpointPropertiesBase):
     :vartype mirror_traffic: dict[str, int]
     :ivar provisioning_state: Provisioning state for the endpoint. Known values are: "Creating",
      "Deleting", "Succeeded", "Failed", "Updating", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.EndpointProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.EndpointProvisioningState
     :ivar public_network_access: Enum to determine whether PublicNetworkAccess is Enabled or
      Disabled. Known values are: "Enabled" and "Disabled".
-    :vartype public_network_access: str or ~arm_ml_service.models.PublicNetworkAccessType
+    :vartype public_network_access: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.PublicNetworkAccessType
     :ivar traffic: Percentage of traffic from endpoint to divert to each deployment. Traffic values
      need to sum to 100.
     :vartype traffic: dict[str, int]
@@ -17485,6 +20307,132 @@ class OnlineRequestSettings(_Model):
         super().__init__(*args, **kwargs)
 
 
+class OpenAIEndpointDeploymentResourceProperties(
+    EndpointDeploymentResourceProperties, discriminator="Azure.OpenAI"
+):  # pylint: disable=name-too-long
+    """OpenAIEndpointDeploymentResourceProperties.
+
+    :ivar failure_reason: The failure reason if the creation failed.
+    :vartype failure_reason: str
+    :ivar provisioning_state: Read-only provision state status property. Known values are:
+     "NotStarted", "Failed", "Creating", "Updating", "Succeeded", "Deleting", "Accepted",
+     "Canceled", "Scaling", and "Disabled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultResourceProvisioningState
+    :ivar model: Model used for the endpoint deployment. Required.
+    :vartype model: ~azure.ai.ml._restclient.arm_ml_service.models.EndpointDeploymentModel
+    :ivar rai_policy_name: The name of RAI policy.
+    :vartype rai_policy_name: str
+    :ivar sku:
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.CognitiveServicesSku
+    :ivar version_upgrade_option: Deployment model version upgrade option. Known values are:
+     "OnceNewDefaultVersionAvailable", "OnceCurrentVersionExpired", and "NoAutoUpgrade".
+    :vartype version_upgrade_option: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DeploymentModelVersionUpgradeOption
+    :ivar type: Kind of the deployment. Required. Default value is "Azure.OpenAI".
+    :vartype type: str
+    """
+
+    model: "_models.EndpointDeploymentModel" = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Model used for the endpoint deployment. Required."""
+    rai_policy_name: Optional[str] = rest_field(
+        name="raiPolicyName", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The name of RAI policy."""
+    sku: Optional["_models.CognitiveServicesSku"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    version_upgrade_option: Optional[Union[str, "_models.DeploymentModelVersionUpgradeOption"]] = rest_field(
+        name="versionUpgradeOption", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Deployment model version upgrade option. Known values are: \"OnceNewDefaultVersionAvailable\",
+     \"OnceCurrentVersionExpired\", and \"NoAutoUpgrade\"."""
+    type: Literal["Azure.OpenAI"] = rest_discriminator(name="type", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """Kind of the deployment. Required. Default value is \"Azure.OpenAI\"."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        model: "_models.EndpointDeploymentModel",
+        failure_reason: Optional[str] = None,
+        rai_policy_name: Optional[str] = None,
+        sku: Optional["_models.CognitiveServicesSku"] = None,
+        version_upgrade_option: Optional[Union[str, "_models.DeploymentModelVersionUpgradeOption"]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.type = "Azure.OpenAI"  # type: ignore
+
+
+class OpenAIEndpointResourceProperties(EndpointResourceProperties, discriminator="Azure.OpenAI"):
+    """OpenAIEndpointResourceProperties.
+
+    :ivar associated_resource_id: Byo resource id for creating the built-in model service
+     endpoints.
+    :vartype associated_resource_id: str
+    :ivar deployments: Deployments info.
+    :vartype deployments:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.EndpointDeploymentResourcePropertiesBasicResource]
+    :ivar endpoint_uri: Uri of the endpoint.
+    :vartype endpoint_uri: str
+    :ivar failure_reason: The failure reason if the creation failed.
+    :vartype failure_reason: str
+    :ivar location: Location of the endpoint. Since input dto and when parse endpoint resource
+     share the same contract this Location field is just for parse the endpoint resource info we
+     won't let customer specify the endpoint resource location since we will create it the same
+     location as workspace.
+    :vartype location: str
+    :ivar name: Name of the endpoint.
+    :vartype name: str
+    :ivar provisioning_state: Read-only provision state status property. Known values are:
+     "NotStarted", "Failed", "Creating", "Updating", "Succeeded", "Deleting", "Accepted",
+     "Canceled", "Scaling", and "Disabled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultResourceProvisioningState
+    :ivar should_create_ai_services_endpoint: Whether the proxy (non-byo) endpoint is a regular
+     endpoint or a OneKeyV2 AI services account endpoint.
+    :vartype should_create_ai_services_endpoint: bool
+    :ivar endpoint_type: Type of the endpoint. Required. AZURE_OPEN_AI.
+    :vartype endpoint_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AZURE_OPEN_AI
+    """
+
+    endpoint_type: Literal[EndpointType.AZURE_OPEN_AI] = rest_discriminator(name="endpointType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """Type of the endpoint. Required. AZURE_OPEN_AI."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        associated_resource_id: Optional[str] = None,
+        deployments: Optional[list["_models.EndpointDeploymentResourcePropertiesBasicResource"]] = None,
+        endpoint_uri: Optional[str] = None,
+        failure_reason: Optional[str] = None,
+        location: Optional[str] = None,
+        name: Optional[str] = None,
+        should_create_ai_services_endpoint: Optional[bool] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.endpoint_type = EndpointType.AZURE_OPEN_AI  # type: ignore
+
+
 class Operation(_Model):
     """REST API Operation.
 
@@ -17495,14 +20443,14 @@ class Operation(_Model):
      data-plane operations and "false" for Azure Resource Manager/control-plane operations.
     :vartype is_data_action: bool
     :ivar display: Localized display information for this particular operation.
-    :vartype display: ~arm_ml_service.models.OperationDisplay
+    :vartype display: ~azure.ai.ml._restclient.arm_ml_service.models.OperationDisplay
     :ivar origin: The intended executor of the operation; as in Resource Based Access Control
      (RBAC) and audit logs UX. Default value is "user,system". Known values are: "user", "system",
      and "user,system".
-    :vartype origin: str or ~arm_ml_service.models.Origin
+    :vartype origin: str or ~azure.ai.ml._restclient.arm_ml_service.models.Origin
     :ivar action_type: Extensible enum. Indicates the action type. "Internal" refers to actions
      that are for internal only APIs. "Internal"
-    :vartype action_type: str or ~arm_ml_service.models.ActionType
+    :vartype action_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ActionType
     """
 
     name: Optional[str] = rest_field(visibility=["read"])
@@ -17578,7 +20526,7 @@ class OsPatchingStatus(_Model):
 
     :ivar patch_status: The os patching status. Known values are: "CompletedWithWarnings",
      "Failed", "InProgress", "Succeeded", and "Unknown".
-    :vartype patch_status: str or ~arm_ml_service.models.PatchStatus
+    :vartype patch_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.PatchStatus
     :ivar latest_patch_time: Time of the latest os patching.
     :vartype latest_patch_time: str
     :ivar reboot_pending: Specifies whether this compute instance is pending for reboot to finish
@@ -17587,7 +20535,7 @@ class OsPatchingStatus(_Model):
     :ivar scheduled_reboot_time: Time of scheduled reboot.
     :vartype scheduled_reboot_time: str
     :ivar os_patching_errors: Collection of errors encountered when doing os patching.
-    :vartype os_patching_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype os_patching_errors: list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     """
 
     patch_status: Optional[Union[str, "_models.PatchStatus"]] = rest_field(
@@ -17648,10 +20596,10 @@ class OutboundRuleBasicResource(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: Outbound Rule for the managed network of a machine learning workspace.
      Required.
-    :vartype properties: ~arm_ml_service.models.OutboundRule
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.OutboundRule
     """
 
     properties: "_models.OutboundRule" = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -17683,7 +20631,7 @@ class OutputPathAssetReference(AssetReferenceBase, discriminator="OutputPath"):
     :ivar path: The path of the file/directory in the job output.
     :vartype path: str
     :ivar reference_type: [Required] Specifies the type of asset reference. Required. OUTPUT_PATH.
-    :vartype reference_type: str or ~arm_ml_service.models.OUTPUT_PATH
+    :vartype reference_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.OUTPUT_PATH
     """
 
     job_id: Optional[str] = rest_field(name="jobId", visibility=["read", "create", "update", "delete", "query"])
@@ -17711,6 +20659,55 @@ class OutputPathAssetReference(AssetReferenceBase, discriminator="OutputPath"):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.reference_type = ReferenceType.OUTPUT_PATH  # type: ignore
+
+
+class PackageDetails(_Model):
+    """PackageDetails.
+
+    :ivar install_path: Install path.
+    :vartype install_path: str
+    :ivar installed_version: Installed version.
+    :vartype installed_version: str
+    :ivar name: Package or dependency name.
+    :vartype name: str
+    :ivar patched_version: Patched version.
+    :vartype patched_version: str
+    """
+
+    install_path: Optional[str] = rest_field(
+        name="installPath", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Install path."""
+    installed_version: Optional[str] = rest_field(
+        name="installedVersion", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Installed version."""
+    name: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Package or dependency name."""
+    patched_version: Optional[str] = rest_field(
+        name="patchedVersion", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Patched version."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        install_path: Optional[str] = None,
+        installed_version: Optional[str] = None,
+        name: Optional[str] = None,
+        patched_version: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
 
 
 class PartialBatchDeployment(_Model):
@@ -17745,7 +20742,7 @@ class PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties(_Model):
     """Strictly used in update requests.
 
     :ivar properties: Additional attributes of the entity.
-    :vartype properties: ~arm_ml_service.models.PartialBatchDeployment
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.PartialBatchDeployment
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     """
@@ -17780,8 +20777,9 @@ class PartialManagedServiceIdentity(_Model):
     """Managed service identity (system assigned and/or user assigned identities).
 
     :ivar type: Managed service identity (system assigned and/or user assigned identities). Known
-     values are: "None", "SystemAssigned", "UserAssigned", and "SystemAssigned,UserAssigned".
-    :vartype type: str or ~arm_ml_service.models.ManagedServiceIdentityType
+     values are: "None", "SystemAssigned", "UserAssigned", "SystemAssigned,UserAssigned", and
+     "SystemAssigned, UserAssigned".
+    :vartype type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentityType
     :ivar user_assigned_identities: The set of user assigned identities associated with the
      resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form:
      '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
@@ -17793,7 +20791,8 @@ class PartialManagedServiceIdentity(_Model):
         visibility=["read", "create", "update", "delete", "query"]
     )
     """Managed service identity (system assigned and/or user assigned identities). Known values are:
-     \"None\", \"SystemAssigned\", \"UserAssigned\", and \"SystemAssigned,UserAssigned\"."""
+     \"None\", \"SystemAssigned\", \"UserAssigned\", \"SystemAssigned,UserAssigned\", and
+     \"SystemAssigned, UserAssigned\"."""
     user_assigned_identities: Optional[dict[str, Any]] = rest_field(
         name="userAssignedIdentities", visibility=["read", "create", "update", "delete", "query"]
     )
@@ -17855,7 +20854,7 @@ class PartialMinimalTrackedResourceWithIdentity(PartialMinimalTrackedResource): 
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
-    :vartype identity: ~arm_ml_service.models.PartialManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.PartialManagedServiceIdentity
     """
 
     identity: Optional["_models.PartialManagedServiceIdentity"] = rest_field(
@@ -17888,7 +20887,7 @@ class PartialMinimalTrackedResourceWithSku(PartialMinimalTrackedResource):
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     :ivar sku: Sku details required for ARM contract for Autoscaling.
-    :vartype sku: ~arm_ml_service.models.PartialSku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.PartialSku
     """
 
     sku: Optional["_models.PartialSku"] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -17919,9 +20918,9 @@ class PartialMinimalTrackedResourceWithSkuAndIdentity(PartialMinimalTrackedResou
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
-    :vartype identity: ~arm_ml_service.models.PartialManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.PartialManagedServiceIdentity
     :ivar sku: Sku details required for ARM contract for Autoscaling.
-    :vartype sku: ~arm_ml_service.models.PartialSku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.PartialSku
     """
 
     identity: Optional["_models.PartialManagedServiceIdentity"] = rest_field(
@@ -17955,9 +20954,10 @@ class PartialRegistryPartialTrackedResource(_Model):
     """Strictly used in update requests.
 
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
-    :vartype identity: ~arm_ml_service.models.RegistryPartialManagedServiceIdentity
+    :vartype identity:
+     ~azure.ai.ml._restclient.arm_ml_service.models.RegistryPartialManagedServiceIdentity
     :ivar sku: Sku details required for ARM contract for Autoscaling.
-    :vartype sku: ~arm_ml_service.models.PartialSku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.PartialSku
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     """
@@ -18008,7 +21008,7 @@ class PartialSku(_Model):
     :ivar tier: This field is required to be implemented by the Resource Provider if the service
      has more than one tier, but is not required on a PUT. Known values are: "Free", "Basic",
      "Standard", and "Premium".
-    :vartype tier: str or ~arm_ml_service.models.SkuTier
+    :vartype tier: str or ~azure.ai.ml._restclient.arm_ml_service.models.SkuTier
     """
 
     capacity: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -18089,7 +21089,7 @@ class PATAuthTypeWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, 
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -18098,15 +21098,16 @@ class PATAuthTypeWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, 
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -18114,9 +21115,10 @@ class PATAuthTypeWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, 
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar credentials:
-    :vartype credentials: ~arm_ml_service.models.WorkspaceConnectionPersonalAccessToken
+    :vartype credentials:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceConnectionPersonalAccessToken
     :ivar auth_type: Authentication type of the connection target. Required. PAT.
-    :vartype auth_type: str or ~arm_ml_service.models.PAT
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.PAT
     """
 
     credentials: Optional["_models.WorkspaceConnectionPersonalAccessToken"] = rest_field(
@@ -18162,7 +21164,8 @@ class PendingUploadCredentialDto(_Model):
 
     :ivar credential_type: [Required] Credential type used to authentication with storage.
      Required. "SAS"
-    :vartype credential_type: str or ~arm_ml_service.models.PendingUploadCredentialType
+    :vartype credential_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.PendingUploadCredentialType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -18196,7 +21199,8 @@ class PendingUploadRequestDto(_Model):
     :vartype pending_upload_id: str
     :ivar pending_upload_type: Type of storage to use for the pending upload location. Known values
      are: "None" and "TemporaryBlobReference".
-    :vartype pending_upload_type: str or ~arm_ml_service.models.PendingUploadType
+    :vartype pending_upload_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.PendingUploadType
     """
 
     pending_upload_id: Optional[str] = rest_field(
@@ -18232,12 +21236,14 @@ class PendingUploadResponseDto(_Model):
     """PendingUploadResponseDto.
 
     :ivar blob_reference_for_consumption: Container level read, write, list SAS.
-    :vartype blob_reference_for_consumption: ~arm_ml_service.models.BlobReferenceForConsumptionDto
+    :vartype blob_reference_for_consumption:
+     ~azure.ai.ml._restclient.arm_ml_service.models.BlobReferenceForConsumptionDto
     :ivar pending_upload_id: ID for this upload request.
     :vartype pending_upload_id: str
     :ivar pending_upload_type: Type of storage to use for the pending upload location. Known values
      are: "None" and "TemporaryBlobReference".
-    :vartype pending_upload_type: str or ~arm_ml_service.models.PendingUploadType
+    :vartype pending_upload_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.PendingUploadType
     """
 
     blob_reference_for_consumption: Optional["_models.BlobReferenceForConsumptionDto"] = rest_field(
@@ -18278,7 +21284,7 @@ class PersonalComputeInstanceSettings(_Model):
     """Settings for a personal compute instance.
 
     :ivar assigned_user: Assigned User.
-    :vartype assigned_user: ~arm_ml_service.models.AssignedUser
+    :vartype assigned_user: ~azure.ai.ml._restclient.arm_ml_service.models.AssignedUser
     """
 
     assigned_user: Optional["_models.AssignedUser"] = rest_field(
@@ -18324,30 +21330,33 @@ class PipelineJob(JobBaseProperties, discriminator="Pipeline"):
     :vartype experiment_name: str
     :ivar identity: Identity configuration. If set, this should be one of AmlToken,
      ManagedIdentity, UserIdentity or null. Defaults to AmlToken if null.
-    :vartype identity: ~arm_ml_service.models.IdentityConfiguration
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.IdentityConfiguration
     :ivar is_archived: Is the asset archived?.
     :vartype is_archived: bool
     :ivar notification_setting: Notification setting for the job.
-    :vartype notification_setting: ~arm_ml_service.models.NotificationSetting
+    :vartype notification_setting:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NotificationSetting
+    :ivar parent_job_name: Parent job name.
+    :vartype parent_job_name: str
     :ivar services: List of JobEndpoints. For local jobs, a job endpoint will have an endpoint
      value of FileStreamObject.
-    :vartype services: dict[str, ~arm_ml_service.models.JobService]
+    :vartype services: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobService]
     :ivar status: Status of the job. Known values are: "NotStarted", "Starting", "Provisioning",
      "Preparing", "Queued", "Running", "Finalizing", "CancelRequested", "Completed", "Failed",
      "Canceled", "NotResponding", "Paused", and "Unknown".
-    :vartype status: str or ~arm_ml_service.models.JobStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobStatus
     :ivar inputs: Inputs for the pipeline job.
-    :vartype inputs: dict[str, ~arm_ml_service.models.JobInput]
+    :vartype inputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobInput]
     :ivar jobs: Jobs construct the Pipeline Job.
     :vartype jobs: dict[str, any]
     :ivar outputs: Outputs for the pipeline job.
-    :vartype outputs: dict[str, ~arm_ml_service.models.JobOutput]
+    :vartype outputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobOutput]
     :ivar settings: Pipeline settings, for things like ContinueRunOnStepFailure etc.
     :vartype settings: any
     :ivar source_job_id: ARM resource ID of source job.
     :vartype source_job_id: str
     :ivar job_type: [Required] Specifies the type of job. Required. PIPELINE.
-    :vartype job_type: str or ~arm_ml_service.models.PIPELINE
+    :vartype job_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.PIPELINE
     """
 
     inputs: Optional[dict[str, "_models.JobInput"]] = rest_field(visibility=["read", "create"])
@@ -18377,6 +21386,7 @@ class PipelineJob(JobBaseProperties, discriminator="Pipeline"):
         identity: Optional["_models.IdentityConfiguration"] = None,
         is_archived: Optional[bool] = None,
         notification_setting: Optional["_models.NotificationSetting"] = None,
+        parent_job_name: Optional[str] = None,
         services: Optional[dict[str, "_models.JobService"]] = None,
         inputs: Optional[dict[str, "_models.JobInput"]] = None,
         jobs: Optional[dict[str, Any]] = None,
@@ -18401,24 +21411,27 @@ class PredictionDriftMonitoringSignal(MonitoringSignalBase, discriminator="Predi
     """PredictionDriftMonitoringSignal.
 
     :ivar notification_types: The current notification mode for this signal.
-    :vartype notification_types: list[str or ~arm_ml_service.models.MonitoringNotificationType]
+    :vartype notification_types: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringNotificationType]
     :ivar properties: Property dictionary. Properties can be added, but not removed or altered.
     :vartype properties: dict[str, str]
     :ivar feature_data_type_override: A dictionary that maps feature names to their respective data
      types.
     :vartype feature_data_type_override: dict[str, str or
-     ~arm_ml_service.models.MonitoringFeatureDataType]
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringFeatureDataType]
     :ivar metric_thresholds: [Required] A list of metrics to calculate and their associated
      thresholds. Required.
-    :vartype metric_thresholds: list[~arm_ml_service.models.PredictionDriftMetricThresholdBase]
+    :vartype metric_thresholds:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.PredictionDriftMetricThresholdBase]
     :ivar production_data: [Required] The data which drift will be calculated for. Required.
-    :vartype production_data: ~arm_ml_service.models.MonitoringInputDataBase
+    :vartype production_data:
+     ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringInputDataBase
     :ivar reference_data: [Required] The data to calculate drift against. Required.
-    :vartype reference_data: ~arm_ml_service.models.MonitoringInputDataBase
+    :vartype reference_data: ~azure.ai.ml._restclient.arm_ml_service.models.MonitoringInputDataBase
     :ivar signal_type: [Required] Specifies the type of signal to monitor. Required. Tracks
      prediction result data distribution change, comparing against validation/test label data or
      past production data.
-    :vartype signal_type: str or ~arm_ml_service.models.PREDICTION_DRIFT
+    :vartype signal_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.PREDICTION_DRIFT
     """
 
     feature_data_type_override: Optional[dict[str, Union[str, "_models.MonitoringFeatureDataType"]]] = rest_field(
@@ -18487,14 +21500,15 @@ class PrivateEndpointConnection(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: Private endpoint connection properties.
-    :vartype properties: ~arm_ml_service.models.PrivateEndpointConnectionProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.PrivateEndpointConnectionProperties
     :ivar identity: The managed service identities assigned to this resource.
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     :ivar sku: Optional. This field is required to be implemented by the RP because AML is
      supporting more than one tier.
-    :vartype sku: ~arm_ml_service.models.Sku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
     :ivar location: *Same as workspace location.
     :vartype location: str
     :ivar tags:
@@ -18562,14 +21576,15 @@ class PrivateEndpointConnectionProperties(_Model):
     """Private endpoint connection properties.
 
     :ivar private_endpoint:
-    :vartype private_endpoint: ~arm_ml_service.models.WorkspacePrivateEndpointResource
+    :vartype private_endpoint:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspacePrivateEndpointResource
     :ivar private_link_service_connection_state: The connection state.
     :vartype private_link_service_connection_state:
-     ~arm_ml_service.models.PrivateLinkServiceConnectionState
+     ~azure.ai.ml._restclient.arm_ml_service.models.PrivateLinkServiceConnectionState
     :ivar provisioning_state: The current provisioning state. Known values are: "Succeeded",
      "Creating", "Deleting", and "Failed".
     :vartype provisioning_state: str or
-     ~arm_ml_service.models.PrivateEndpointConnectionProvisioningState
+     ~azure.ai.ml._restclient.arm_ml_service.models.PrivateEndpointConnectionProvisioningState
     """
 
     private_endpoint: Optional["_models.WorkspacePrivateEndpointResource"] = rest_field(
@@ -18614,7 +21629,7 @@ class PrivateEndpointDestination(_Model):
     :vartype spark_enabled: bool
     :ivar spark_status: Type of a managed network Outbound Rule of a machine learning workspace.
      Known values are: "Inactive", "Active", "Provisioning", "Deleting", and "Failed".
-    :vartype spark_status: str or ~arm_ml_service.models.RuleStatus
+    :vartype spark_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.RuleStatus
     :ivar subresource_target:
     :vartype subresource_target: str
     """
@@ -18660,10 +21675,10 @@ class PrivateEndpointOutboundRule(OutboundRule, discriminator="PrivateEndpoint")
 
     :ivar category: Category of a managed network Outbound Rule of a machine learning workspace.
      Known values are: "Required", "Recommended", "UserDefined", and "Dependency".
-    :vartype category: str or ~arm_ml_service.models.RuleCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.RuleCategory
     :ivar status: Type of a managed network Outbound Rule of a machine learning workspace. Known
      values are: "Inactive", "Active", "Provisioning", "Deleting", and "Failed".
-    :vartype status: str or ~arm_ml_service.models.RuleStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.RuleStatus
     :ivar error_information: Error information about an outbound rule of a machine learning
      workspace if RuleStatus is failed.
     :vartype error_information: str
@@ -18671,12 +21686,12 @@ class PrivateEndpointOutboundRule(OutboundRule, discriminator="PrivateEndpoint")
     :vartype parent_rule_names: list[str]
     :ivar destination: Private Endpoint destination for a Private Endpoint Outbound Rule for the
      managed network of a machine learning workspace.
-    :vartype destination: ~arm_ml_service.models.PrivateEndpointDestination
+    :vartype destination: ~azure.ai.ml._restclient.arm_ml_service.models.PrivateEndpointDestination
     :ivar fqdns:
     :vartype fqdns: list[str]
     :ivar type: Type of a managed network Outbound Rule of a machine learning workspace. Required.
      PRIVATE_ENDPOINT.
-    :vartype type: str or ~arm_ml_service.models.PRIVATE_ENDPOINT
+    :vartype type: str or ~azure.ai.ml._restclient.arm_ml_service.models.PRIVATE_ENDPOINT
     """
 
     destination: Optional["_models.PrivateEndpointDestination"] = rest_field(
@@ -18756,16 +21771,17 @@ class PrivateLinkResource(Resource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar identity:
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     :ivar location: Same as workspace location.
     :vartype location: str
     :ivar properties: Properties of a private link resource.
-    :vartype properties: ~arm_ml_service.models.PrivateLinkResourceProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.PrivateLinkResourceProperties
     :ivar sku: Optional. This field is required to be implemented by the RP because AML is
      supporting more than one tier.
-    :vartype sku: ~arm_ml_service.models.Sku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
     :ivar tags:
     :vartype tags: dict[str, str]
     """
@@ -18886,7 +21902,8 @@ class PrivateLinkServiceConnectionState(_Model):
      re-initiates the connection request that was rejected)\\r\\nRejected -> Disconnected (Service
      provider deletes the connection). Known values are: "Approved", "Pending", "Rejected",
      "Disconnected", and "Timeout".
-    :vartype status: str or ~arm_ml_service.models.EndpointServiceConnectionStatus
+    :vartype status: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.EndpointServiceConnectionStatus
     """
 
     actions_required: Optional[str] = rest_field(
@@ -18981,6 +21998,103 @@ class ProbeSettings(_Model):
         super().__init__(*args, **kwargs)
 
 
+class PromptSettings(_Model):
+    """PromptSettings.
+
+    :ivar enable_chain_of_density:
+    :vartype enable_chain_of_density: bool
+    :ivar enable_chain_of_thought:
+    :vartype enable_chain_of_thought: bool
+    :ivar max_len_summary:
+    :vartype max_len_summary: int
+    """
+
+    enable_chain_of_density: Optional[bool] = rest_field(
+        name="enableChainOfDensity", visibility=["read", "create", "update", "delete", "query"]
+    )
+    enable_chain_of_thought: Optional[bool] = rest_field(
+        name="enableChainOfThought", visibility=["read", "create", "update", "delete", "query"]
+    )
+    max_len_summary: Optional[int] = rest_field(
+        name="maxLenSummary", visibility=["read", "create", "update", "delete", "query"]
+    )
+
+    @overload
+    def __init__(
+        self,
+        *,
+        enable_chain_of_density: Optional[bool] = None,
+        enable_chain_of_thought: Optional[bool] = None,
+        max_len_summary: Optional[int] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class PTUDeploymentUsage(_Model):
+    """PTUDeploymentUsage.
+
+    :ivar collection_quota_usage: Usage number from the collection level quota.
+    :vartype collection_quota_usage: int
+    :ivar deployment_name: Deployment name.
+    :vartype deployment_name: str
+    :ivar resource_group: Resource group name.
+    :vartype resource_group: str
+    :ivar usage: Usage number from subscription level quota.
+    :vartype usage: int
+    :ivar workspace_name: Workspace name.
+    :vartype workspace_name: str
+    """
+
+    collection_quota_usage: Optional[int] = rest_field(
+        name="collectionQuotaUsage", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Usage number from the collection level quota."""
+    deployment_name: Optional[str] = rest_field(
+        name="deploymentName", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Deployment name."""
+    resource_group: Optional[str] = rest_field(
+        name="resourceGroup", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Resource group name."""
+    usage: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Usage number from subscription level quota."""
+    workspace_name: Optional[str] = rest_field(
+        name="workspaceName", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Workspace name."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        collection_quota_usage: Optional[int] = None,
+        deployment_name: Optional[str] = None,
+        resource_group: Optional[str] = None,
+        usage: Optional[int] = None,
+        workspace_name: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class PyTorch(DistributionConfiguration, discriminator="PyTorch"):
     """PyTorch distribution configuration.
 
@@ -18988,7 +22102,7 @@ class PyTorch(DistributionConfiguration, discriminator="PyTorch"):
     :vartype process_count_per_instance: int
     :ivar distribution_type: [Required] Specifies the type of distribution framework. Required.
      PY_TORCH.
-    :vartype distribution_type: str or ~arm_ml_service.models.PY_TORCH
+    :vartype distribution_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.PY_TORCH
     """
 
     process_count_per_instance: Optional[int] = rest_field(
@@ -19022,7 +22136,7 @@ class QueueSettings(_Model):
 
     :ivar job_tier: Enum to determine the job tier. Known values are: "Null", "Spot", "Basic",
      "Standard", and "Premium".
-    :vartype job_tier: str or ~arm_ml_service.models.JobTier
+    :vartype job_tier: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobTier
     """
 
     job_tier: Optional[Union[str, "_models.JobTier"]] = rest_field(name="jobTier", visibility=["read", "create"])
@@ -19057,7 +22171,7 @@ class QuotaBaseProperties(_Model):
     :ivar limit: Limit.
     :vartype limit: int
     :ivar unit: An enum describing the unit of quota measurement. "Count"
-    :vartype unit: str or ~arm_ml_service.models.QuotaUnit
+    :vartype unit: str or ~azure.ai.ml._restclient.arm_ml_service.models.QuotaUnit
     """
 
     id: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -19096,7 +22210,7 @@ class QuotaUpdateParameters(_Model):
     """Quota update parameters.
 
     :ivar value: The list for update quota.
-    :vartype value: list[~arm_ml_service.models.QuotaBaseProperties]
+    :vartype value: list[~azure.ai.ml._restclient.arm_ml_service.models.QuotaBaseProperties]
     :ivar location: Region of workspace quota to be updated.
     :vartype location: str
     """
@@ -19127,16 +22241,388 @@ class QuotaUpdateParameters(_Model):
         super().__init__(*args, **kwargs)
 
 
+class RaiBlocklistConfig(_Model):
+    """Azure OpenAI blocklist config.
+
+    :ivar blocking: If blocking would occur.
+    :vartype blocking: bool
+    :ivar blocklist_name: Name of ContentFilter.
+    :vartype blocklist_name: str
+    """
+
+    blocking: Optional[bool] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """If blocking would occur."""
+    blocklist_name: Optional[str] = rest_field(
+        name="blocklistName", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Name of ContentFilter."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        blocking: Optional[bool] = None,
+        blocklist_name: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class RaiBlocklistItemBulkRequest(_Model):
+    """The Cognitive Services RaiBlocklist Item request body.
+
+    :ivar name:
+    :vartype name: str
+    :ivar properties: Properties of Cognitive Services RaiBlocklist Item.
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.RaiBlocklistItemProperties
+    """
+
+    name: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    properties: Optional["_models.RaiBlocklistItemProperties"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Properties of Cognitive Services RaiBlocklist Item."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        name: Optional[str] = None,
+        properties: Optional["_models.RaiBlocklistItemProperties"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class RaiBlocklistItemProperties(_Model):
+    """RAI Custom Blocklist Item properties.
+
+    :ivar is_regex: If the pattern is a regex pattern.
+    :vartype is_regex: bool
+    :ivar pattern: Pattern to match against.
+    :vartype pattern: str
+    """
+
+    is_regex: Optional[bool] = rest_field(name="isRegex", visibility=["read", "create", "update", "delete", "query"])
+    """If the pattern is a regex pattern."""
+    pattern: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Pattern to match against."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        is_regex: Optional[bool] = None,
+        pattern: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class RaiBlocklistItemPropertiesBasicResource(ProxyResource):
+    """RaiBlocklistItemPropertiesBasicResource is a preview-only resource.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
+     information.
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
+    :ivar properties: RAI Custom Blocklist Item properties. Required.
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.RaiBlocklistItemProperties
+    """
+
+    properties: "_models.RaiBlocklistItemProperties" = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """RAI Custom Blocklist Item properties. Required."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        properties: "_models.RaiBlocklistItemProperties",
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class RaiBlocklistProperties(_Model):
+    """RAI Custom Blocklist properties.
+
+    :ivar description: Description of the block list.
+    :vartype description: str
+    """
+
+    description: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Description of the block list."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        description: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class RaiBlocklistPropertiesBasicResource(ProxyResource):
+    """RaiBlocklistPropertiesBasicResource is a preview-only resource.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
+     information.
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
+    :ivar properties: RAI Custom Blocklist properties. Required.
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.RaiBlocklistProperties
+    """
+
+    properties: "_models.RaiBlocklistProperties" = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """RAI Custom Blocklist properties. Required."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        properties: "_models.RaiBlocklistProperties",
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class RaiPolicyContentFilter(_Model):
+    """Azure OpenAI Content Filter.
+
+    :ivar allowed_content_level: Level at which content is filtered. Known values are: "Low",
+     "Medium", and "High".
+    :vartype allowed_content_level: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.AllowedContentLevel
+    :ivar blocking: If blocking would occur.
+    :vartype blocking: bool
+    :ivar enabled: If the ContentFilter is enabled.
+    :vartype enabled: bool
+    :ivar name: Name of ContentFilter.
+    :vartype name: str
+    :ivar source: Content source to apply the Content Filters. Known values are: "Prompt" and
+     "Completion".
+    :vartype source: str or ~azure.ai.ml._restclient.arm_ml_service.models.RaiPolicyContentSource
+    """
+
+    allowed_content_level: Optional[Union[str, "_models.AllowedContentLevel"]] = rest_field(
+        name="allowedContentLevel", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Level at which content is filtered. Known values are: \"Low\", \"Medium\", and \"High\"."""
+    blocking: Optional[bool] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """If blocking would occur."""
+    enabled: Optional[bool] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """If the ContentFilter is enabled."""
+    name: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Name of ContentFilter."""
+    source: Optional[Union[str, "_models.RaiPolicyContentSource"]] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Content source to apply the Content Filters. Known values are: \"Prompt\" and \"Completion\"."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        allowed_content_level: Optional[Union[str, "_models.AllowedContentLevel"]] = None,
+        blocking: Optional[bool] = None,
+        enabled: Optional[bool] = None,
+        name: Optional[str] = None,
+        source: Optional[Union[str, "_models.RaiPolicyContentSource"]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class RaiPolicyProperties(_Model):
+    """Azure OpenAI Content Filters properties.
+
+    :ivar base_policy_name: Name of the base Content Filters.
+    :vartype base_policy_name: str
+    :ivar completion_blocklists:
+    :vartype completion_blocklists:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.RaiBlocklistConfig]
+    :ivar content_filters:
+    :vartype content_filters:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.RaiPolicyContentFilter]
+    :ivar mode: Content Filters mode. Known values are: "Default", "Deferred", and "Blocking".
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.RaiPolicyMode
+    :ivar prompt_blocklists:
+    :vartype prompt_blocklists:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.RaiBlocklistConfig]
+    :ivar type: Content Filters policy type. Known values are: "UserManaged" and "SystemManaged".
+    :vartype type: str or ~azure.ai.ml._restclient.arm_ml_service.models.RaiPolicyType
+    """
+
+    base_policy_name: Optional[str] = rest_field(
+        name="basePolicyName", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Name of the base Content Filters."""
+    completion_blocklists: Optional[list["_models.RaiBlocklistConfig"]] = rest_field(
+        name="completionBlocklists", visibility=["read", "create", "update", "delete", "query"]
+    )
+    content_filters: Optional[list["_models.RaiPolicyContentFilter"]] = rest_field(
+        name="contentFilters", visibility=["read", "create", "update", "delete", "query"]
+    )
+    mode: Optional[Union[str, "_models.RaiPolicyMode"]] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Content Filters mode. Known values are: \"Default\", \"Deferred\", and \"Blocking\"."""
+    prompt_blocklists: Optional[list["_models.RaiBlocklistConfig"]] = rest_field(
+        name="promptBlocklists", visibility=["read", "create", "update", "delete", "query"]
+    )
+    type: Optional[Union[str, "_models.RaiPolicyType"]] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Content Filters policy type. Known values are: \"UserManaged\" and \"SystemManaged\"."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        base_policy_name: Optional[str] = None,
+        completion_blocklists: Optional[list["_models.RaiBlocklistConfig"]] = None,
+        content_filters: Optional[list["_models.RaiPolicyContentFilter"]] = None,
+        mode: Optional[Union[str, "_models.RaiPolicyMode"]] = None,
+        prompt_blocklists: Optional[list["_models.RaiBlocklistConfig"]] = None,
+        type: Optional[Union[str, "_models.RaiPolicyType"]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class RaiPolicyPropertiesBasicResource(ProxyResource):
+    """Azure OpenAI Content Filters resource.
+
+    :ivar id: Fully qualified resource ID for the resource. Ex -
+     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+    :vartype id: str
+    :ivar name: The name of the resource.
+    :vartype name: str
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
+    :vartype type: str
+    :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
+     information.
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
+    :ivar properties: Azure OpenAI Content Filters properties. Required.
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.RaiPolicyProperties
+    """
+
+    properties: "_models.RaiPolicyProperties" = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Azure OpenAI Content Filters properties. Required."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        properties: "_models.RaiPolicyProperties",
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class RandomSamplingAlgorithm(SamplingAlgorithm, discriminator="Random"):
     """Defines a Sampling Algorithm that generates values randomly.
 
     :ivar rule: The specific type of random algorithm. Known values are: "Random" and "Sobol".
-    :vartype rule: str or ~arm_ml_service.models.RandomSamplingAlgorithmRule
+    :vartype rule: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.RandomSamplingAlgorithmRule
     :ivar seed: An optional integer to use as the seed for random number generation.
     :vartype seed: int
     :ivar sampling_algorithm_type: [Required] The algorithm used for generating hyperparameter
      values, along with configuration properties. Required. RANDOM.
-    :vartype sampling_algorithm_type: str or ~arm_ml_service.models.RANDOM
+    :vartype sampling_algorithm_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.RANDOM
     """
 
     rule: Optional[Union[str, "_models.RandomSamplingAlgorithmRule"]] = rest_field(
@@ -19169,12 +22655,81 @@ class RandomSamplingAlgorithm(SamplingAlgorithm, discriminator="Random"):
         self.sampling_algorithm_type = SamplingAlgorithmType.RANDOM  # type: ignore
 
 
+class Ray(DistributionConfiguration, discriminator="Ray"):
+    """Ray distribution configuration. A class for managing the configuration for a distributed Ray
+    job.
+
+    :ivar port: The port of the head ray process.
+    :vartype port: int
+    :ivar address: The address of Ray head node.
+    :vartype address: str
+    :ivar include_dashboard: Provide this argument to start the Ray dashboard GUI.
+    :vartype include_dashboard: bool
+    :ivar dashboard_port: The port to bind the dashboard server to.
+    :vartype dashboard_port: int
+    :ivar head_node_additional_args: Additional arguments passed to ray start in head node.
+    :vartype head_node_additional_args: str
+    :ivar worker_node_additional_args: Additional arguments passed to ray start in worker node.
+    :vartype worker_node_additional_args: str
+    :ivar distribution_type: [Required] Specifies the type of distribution framework. Required. Ray
+     distribution type.
+    :vartype distribution_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.RAY
+    """
+
+    port: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """The port of the head ray process."""
+    address: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """The address of Ray head node."""
+    include_dashboard: Optional[bool] = rest_field(
+        name="includeDashboard", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Provide this argument to start the Ray dashboard GUI."""
+    dashboard_port: Optional[int] = rest_field(
+        name="dashboardPort", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The port to bind the dashboard server to."""
+    head_node_additional_args: Optional[str] = rest_field(
+        name="headNodeAdditionalArgs", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Additional arguments passed to ray start in head node."""
+    worker_node_additional_args: Optional[str] = rest_field(
+        name="workerNodeAdditionalArgs", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Additional arguments passed to ray start in worker node."""
+    distribution_type: Literal[DistributionType.RAY] = rest_discriminator(name="distributionType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """[Required] Specifies the type of distribution framework. Required. Ray distribution type."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        port: Optional[int] = None,
+        address: Optional[str] = None,
+        include_dashboard: Optional[bool] = None,
+        dashboard_port: Optional[int] = None,
+        head_node_additional_args: Optional[str] = None,
+        worker_node_additional_args: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.distribution_type = DistributionType.RAY  # type: ignore
+
+
 class Recurrence(_Model):
     """The workflow trigger recurrence for ComputeStartStop schedule type.
 
     :ivar frequency: [Required] The frequency to trigger schedule. Known values are: "Minute",
      "Hour", "Day", "Week", and "Month".
-    :vartype frequency: str or ~arm_ml_service.models.ComputeRecurrenceFrequency
+    :vartype frequency: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ComputeRecurrenceFrequency
     :ivar interval: [Required] Specifies schedule interval in conjunction with frequency.
     :vartype interval: int
     :ivar start_time: The start time in yyyy-MM-ddTHH:mm:ss format.
@@ -19185,7 +22740,7 @@ class Recurrence(_Model):
      <https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-time-zones?view=windows-11>`_.
     :vartype time_zone: str
     :ivar schedule: [Required] The recurrence schedule.
-    :vartype schedule: ~arm_ml_service.models.ComputeRecurrenceSchedule
+    :vartype schedule: ~azure.ai.ml._restclient.arm_ml_service.models.ComputeRecurrenceSchedule
     """
 
     frequency: Optional[Union[str, "_models.ComputeRecurrenceFrequency"]] = rest_field(
@@ -19239,7 +22794,7 @@ class RecurrenceSchedule(_Model):
     :ivar month_days: List of month days for the schedule.
     :vartype month_days: list[int]
     :ivar week_days: List of days for the schedule.
-    :vartype week_days: list[str or ~arm_ml_service.models.WeekDay]
+    :vartype week_days: list[str or ~azure.ai.ml._restclient.arm_ml_service.models.WeekDay]
     """
 
     hours: list[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -19293,13 +22848,13 @@ class RecurrenceTrigger(TriggerBase, discriminator="Recurrence"):
     :vartype time_zone: str
     :ivar frequency: [Required] The frequency to trigger schedule. Required. Known values are:
      "Minute", "Hour", "Day", "Week", and "Month".
-    :vartype frequency: str or ~arm_ml_service.models.RecurrenceFrequency
+    :vartype frequency: str or ~azure.ai.ml._restclient.arm_ml_service.models.RecurrenceFrequency
     :ivar interval: [Required] Specifies schedule interval in conjunction with frequency. Required.
     :vartype interval: int
     :ivar schedule: The recurrence schedule.
-    :vartype schedule: ~arm_ml_service.models.RecurrenceSchedule
+    :vartype schedule: ~azure.ai.ml._restclient.arm_ml_service.models.RecurrenceSchedule
     :ivar trigger_type: [Required]. Required. RECURRENCE.
-    :vartype trigger_type: str or ~arm_ml_service.models.RECURRENCE
+    :vartype trigger_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.RECURRENCE
     """
 
     frequency: Union[str, "_models.RecurrenceFrequency"] = rest_field(
@@ -19345,7 +22900,7 @@ class RegenerateEndpointKeysRequest(_Model):
 
     :ivar key_type: [Required] Specification for which type of key to generate. Primary or
      Secondary. Required. Known values are: "Primary" and "Secondary".
-    :vartype key_type: str or ~arm_ml_service.models.KeyType
+    :vartype key_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.KeyType
     :ivar key_value: The value the key is set to.
     :vartype key_value: str
     """
@@ -19377,6 +22932,36 @@ class RegenerateEndpointKeysRequest(_Model):
         super().__init__(*args, **kwargs)
 
 
+class RegenerateServiceAccountKeyContent(_Model):
+    """RegenerateServiceAccountKeyContent.
+
+    :ivar key_name: Known values are: "Key1" and "Key2".
+    :vartype key_name: str or ~azure.ai.ml._restclient.arm_ml_service.models.ServiceAccountKeyName
+    """
+
+    key_name: Optional[Union[str, "_models.ServiceAccountKeyName"]] = rest_field(
+        name="keyName", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Known values are: \"Key1\" and \"Key2\"."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        key_name: Optional[Union[str, "_models.ServiceAccountKeyName"]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class Registry(TrackedResource):
     """Concrete tracked resource types can be created by aliasing this type using a specific property
     type.
@@ -19391,20 +22976,20 @@ class Registry(TrackedResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     :ivar location: The geo-location where the resource lives. Required.
     :vartype location: str
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.RegistryProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.RegistryProperties
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     :ivar kind: Metadata used by portal/tooling/etc to render different UX experiences for
      resources of the same type.
     :vartype kind: str
     :ivar sku: Sku details required for ARM contract for Autoscaling.
-    :vartype sku: ~arm_ml_service.models.Sku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
     """
 
     properties: "_models.RegistryProperties" = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -19477,7 +23062,7 @@ class RegistryListCredentialsResult(_Model):
     :ivar location: The location of the workspace ACR.
     :vartype location: str
     :ivar passwords:
-    :vartype passwords: list[~arm_ml_service.models.Password]
+    :vartype passwords: list[~azure.ai.ml._restclient.arm_ml_service.models.Password]
     :ivar username: The username of the workspace ACR.
     :vartype username: str
     """
@@ -19518,10 +23103,12 @@ class RegistryPartialManagedServiceIdentity(ManagedServiceIdentity):
      provided for a system assigned identity.
     :vartype tenant_id: str
     :ivar type: The type of managed identity assigned to this resource. Required. Known values are:
-     "None", "SystemAssigned", "UserAssigned", and "SystemAssigned,UserAssigned".
-    :vartype type: str or ~arm_ml_service.models.ManagedServiceIdentityType
+     "None", "SystemAssigned", "UserAssigned", "SystemAssigned,UserAssigned", and "SystemAssigned,
+     UserAssigned".
+    :vartype type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentityType
     :ivar user_assigned_identities: The identities assigned to this resource by the user.
-    :vartype user_assigned_identities: dict[str, ~arm_ml_service.models.UserAssignedIdentity]
+    :vartype user_assigned_identities: dict[str,
+     ~azure.ai.ml._restclient.arm_ml_service.models.UserAssignedIdentity]
     """
 
     @overload
@@ -19552,7 +23139,8 @@ class RegistryPrivateEndpointConnection(_Model):
     :ivar location: Same as workspace location.
     :vartype location: str
     :ivar properties: Properties of the Private Endpoint Connection.
-    :vartype properties: ~arm_ml_service.models.RegistryPrivateEndpointConnectionProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.RegistryPrivateEndpointConnectionProperties
     """
 
     id: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -19616,10 +23204,11 @@ class RegistryPrivateEndpointConnectionProperties(_Model):  # pylint: disable=na
     :ivar group_ids: The group ids.
     :vartype group_ids: list[str]
     :ivar private_endpoint: The PE network resource that is linked to this PE connection.
-    :vartype private_endpoint: ~arm_ml_service.models.PrivateEndpointResource
+    :vartype private_endpoint:
+     ~azure.ai.ml._restclient.arm_ml_service.models.PrivateEndpointResource
     :ivar registry_private_link_service_connection_state: The connection state.
     :vartype registry_private_link_service_connection_state:
-     ~arm_ml_service.models.RegistryPrivateLinkServiceConnectionState
+     ~azure.ai.ml._restclient.arm_ml_service.models.RegistryPrivateLinkServiceConnectionState
     :ivar provisioning_state: One of null, "Succeeded", "Provisioning", "Failed". While not
      approved, it's null.
     :vartype provisioning_state: str
@@ -19677,7 +23266,8 @@ class RegistryPrivateLinkServiceConnectionState(_Model):  # pylint: disable=name
     :vartype description: str
     :ivar status: Connection status of the service consumer with the service provider. Known values
      are: "Approved", "Pending", "Rejected", "Disconnected", and "Timeout".
-    :vartype status: str or ~arm_ml_service.models.EndpointServiceConnectionStatus
+    :vartype status: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.EndpointServiceConnectionStatus
     """
 
     actions_required: Optional[str] = rest_field(
@@ -19721,20 +23311,22 @@ class RegistryProperties(_Model):
     :vartype intellectual_property_publisher: str
     :ivar managed_resource_group: ResourceId of the managed RG if the registry has system created
      resources.
-    :vartype managed_resource_group: ~arm_ml_service.models.ArmResourceId
+    :vartype managed_resource_group: ~azure.ai.ml._restclient.arm_ml_service.models.ArmResourceId
     :ivar managed_resource_group_settings: Managed resource group specific settings.
-    :vartype managed_resource_group_settings: ~arm_ml_service.models.ManagedResourceGroupSettings
+    :vartype managed_resource_group_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedResourceGroupSettings
     :ivar ml_flow_registry_uri: MLFlow Registry URI for the Registry.
     :vartype ml_flow_registry_uri: str
     :ivar registry_private_endpoint_connections: Private endpoint connections info used for pending
      connections in private link portal.
     :vartype registry_private_endpoint_connections:
-     list[~arm_ml_service.models.RegistryPrivateEndpointConnection]
+     list[~azure.ai.ml._restclient.arm_ml_service.models.RegistryPrivateEndpointConnection]
     :ivar public_network_access: Is the Registry accessible from the internet? Possible values:
      "Enabled" or "Disabled".
     :vartype public_network_access: str
     :ivar region_details: Details of each region the registry is in.
-    :vartype region_details: list[~arm_ml_service.models.RegistryRegionArmDetails]
+    :vartype region_details:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.RegistryRegionArmDetails]
     """
 
     discovery_url: Optional[str] = rest_field(
@@ -19799,11 +23391,12 @@ class RegistryRegionArmDetails(_Model):
     """Details for each region the registry is in.
 
     :ivar acr_details: List of ACR accounts.
-    :vartype acr_details: list[~arm_ml_service.models.AcrDetails]
+    :vartype acr_details: list[~azure.ai.ml._restclient.arm_ml_service.models.AcrDetails]
     :ivar location: The location where the registry exists.
     :vartype location: str
     :ivar storage_account_details: List of storage accounts.
-    :vartype storage_account_details: list[~arm_ml_service.models.StorageAccountDetails]
+    :vartype storage_account_details:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.StorageAccountDetails]
     """
 
     acr_details: Optional[list["_models.AcrDetails"]] = rest_field(
@@ -19842,28 +23435,30 @@ class Regression(AutoMLVertical, discriminator="Regression"):
 
     :ivar log_verbosity: Enum for setting log verbosity. Known values are: "NotSet", "Debug",
      "Info", "Warning", "Error", and "Critical".
-    :vartype log_verbosity: str or ~arm_ml_service.models.LogVerbosity
+    :vartype log_verbosity: str or ~azure.ai.ml._restclient.arm_ml_service.models.LogVerbosity
     :ivar target_column_name: Target column name: This is prediction values column. Also known as
      label column name in context of classification tasks.
     :vartype target_column_name: str
     :ivar training_data: [Required] Training data input. Required.
-    :vartype training_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar cv_split_column_names: Columns to use for CVSplit data.
     :vartype cv_split_column_names: list[str]
     :ivar featurization_settings: Featurization inputs needed for AutoML job.
-    :vartype featurization_settings: ~arm_ml_service.models.TableVerticalFeaturizationSettings
+    :vartype featurization_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TableVerticalFeaturizationSettings
     :ivar limit_settings: Execution constraints for AutoMLJob.
-    :vartype limit_settings: ~arm_ml_service.models.TableVerticalLimitSettings
+    :vartype limit_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TableVerticalLimitSettings
     :ivar n_cross_validations: Number of cross validation folds to be applied on training dataset
      when validation dataset is not provided.
-    :vartype n_cross_validations: ~arm_ml_service.models.NCrossValidations
+    :vartype n_cross_validations: ~azure.ai.ml._restclient.arm_ml_service.models.NCrossValidations
     :ivar test_data: Test data input.
-    :vartype test_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype test_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar test_data_size: The fraction of test dataset that needs to be set aside for validation
      purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
     :vartype test_data_size: float
     :ivar validation_data: Validation data inputs.
-    :vartype validation_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar validation_data_size: The fraction of training dataset that needs to be set aside for
      validation purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
     :vartype validation_data_size: float
@@ -19873,12 +23468,14 @@ class Regression(AutoMLVertical, discriminator="Regression"):
     :ivar primary_metric: Primary metrics for Regression task. Known values are:
      "SpearmanCorrelation", "NormalizedRootMeanSquaredError", "R2Score", and
      "NormalizedMeanAbsoluteError".
-    :vartype primary_metric: str or ~arm_ml_service.models.RegressionPrimaryMetrics
+    :vartype primary_metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.RegressionPrimaryMetrics
     :ivar training_settings: Inputs for training phase for an AutoML Job.
-    :vartype training_settings: ~arm_ml_service.models.RegressionTrainingSettings
+    :vartype training_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.RegressionTrainingSettings
     :ivar task_type: [Required] Task type for AutoMLJob. Required. Regression means to predict the
      value using the input data. Regression models are used to predict a continuous value.
-    :vartype task_type: str or ~arm_ml_service.models.REGRESSION
+    :vartype task_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.REGRESSION
     """
 
     cv_split_column_names: Optional[list[str]] = rest_field(
@@ -19984,11 +23581,14 @@ class RegressionTrainingSettings(TrainingSettings):
      parameter with a higher value than 300 secs, if more time is needed.
     :vartype ensemble_model_download_timeout: ~datetime.timedelta
     :ivar stack_ensemble_settings: Stack ensemble settings for stack ensemble run.
-    :vartype stack_ensemble_settings: ~arm_ml_service.models.StackEnsembleSettings
+    :vartype stack_ensemble_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.StackEnsembleSettings
     :ivar allowed_training_algorithms: Allowed models for regression task.
-    :vartype allowed_training_algorithms: list[str or ~arm_ml_service.models.RegressionModels]
+    :vartype allowed_training_algorithms: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.RegressionModels]
     :ivar blocked_training_algorithms: Blocked models for regression task.
-    :vartype blocked_training_algorithms: list[str or ~arm_ml_service.models.RegressionModels]
+    :vartype blocked_training_algorithms: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.RegressionModels]
     """
 
     allowed_training_algorithms: Optional[list[Union[str, "_models.RegressionModels"]]] = rest_field(
@@ -20026,6 +23626,44 @@ class RegressionTrainingSettings(TrainingSettings):
         super().__init__(*args, **kwargs)
 
 
+class RequestConfiguration(_Model):
+    """Scoring requests configuration.
+
+    :ivar max_concurrent_requests_per_instance: The number of maximum concurrent requests per node
+     allowed per deployment. Defaults to 1.
+    :vartype max_concurrent_requests_per_instance: int
+    :ivar request_timeout: The scoring timeout in ISO 8601 format. Defaults to 5000ms.
+    :vartype request_timeout: ~datetime.timedelta
+    """
+
+    max_concurrent_requests_per_instance: Optional[int] = rest_field(
+        name="maxConcurrentRequestsPerInstance", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The number of maximum concurrent requests per node allowed per deployment. Defaults to 1."""
+    request_timeout: Optional[datetime.timedelta] = rest_field(
+        name="requestTimeout", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The scoring timeout in ISO 8601 format. Defaults to 5000ms."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        max_concurrent_requests_per_instance: Optional[int] = None,
+        request_timeout: Optional[datetime.timedelta] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class RequestLogging(_Model):
     """RequestLogging.
 
@@ -20047,6 +23685,36 @@ class RequestLogging(_Model):
         self,
         *,
         capture_headers: Optional[list[str]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class ResizeSchema(_Model):
+    """Schema for Compute Instance resize.
+
+    :ivar target_vm_size: The name of the virtual machine size.
+    :vartype target_vm_size: str
+    """
+
+    target_vm_size: Optional[str] = rest_field(
+        name="targetVMSize", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The name of the virtual machine size."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        target_vm_size: Optional[str] = None,
     ) -> None: ...
 
     @overload
@@ -20113,11 +23781,11 @@ class ResourceQuota(_Model):
     :ivar type: Specifies the resource type.
     :vartype type: str
     :ivar name: Name of the resource.
-    :vartype name: ~arm_ml_service.models.ResourceName
+    :vartype name: ~azure.ai.ml._restclient.arm_ml_service.models.ResourceName
     :ivar limit: Limit.
     :vartype limit: int
     :ivar unit: An enum describing the unit of quota measurement. "Count"
-    :vartype unit: str or ~arm_ml_service.models.QuotaUnit
+    :vartype unit: str or ~azure.ai.ml._restclient.arm_ml_service.models.QuotaUnit
     """
 
     id: Optional[str] = rest_field(visibility=["read"])
@@ -20144,7 +23812,7 @@ class RollingInputData(MonitoringInputDataBase, discriminator="Rolling"):
     :ivar job_input_type: [Required] Specifies the type of job. Required. Known values are:
      "literal", "uri_file", "uri_folder", "mltable", "custom_model", "mlflow_model", and
      "triton_model".
-    :vartype job_input_type: str or ~arm_ml_service.models.JobInputType
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobInputType
     :ivar uri: [Required] Input Asset URI. Required.
     :vartype uri: str
     :ivar preprocessing_component_id: Reference to the component asset used to preprocess the data.
@@ -20156,7 +23824,7 @@ class RollingInputData(MonitoringInputDataBase, discriminator="Rolling"):
     :vartype window_size: ~datetime.timedelta
     :ivar input_data_type: [Required] Specifies the type of signal to monitor. Required. An input
      data which rolls relatively to the monitor's current run time.
-    :vartype input_data_type: str or ~arm_ml_service.models.ROLLING
+    :vartype input_data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.ROLLING
     """
 
     preprocessing_component_id: Optional[str] = rest_field(
@@ -20255,7 +23923,7 @@ class SASAuthTypeWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, 
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -20264,15 +23932,16 @@ class SASAuthTypeWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, 
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -20280,9 +23949,10 @@ class SASAuthTypeWorkspaceConnectionProperties(WorkspaceConnectionPropertiesV2, 
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar credentials:
-    :vartype credentials: ~arm_ml_service.models.WorkspaceConnectionSharedAccessSignature
+    :vartype credentials:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceConnectionSharedAccessSignature
     :ivar auth_type: Authentication type of the connection target. Required. SAS.
-    :vartype auth_type: str or ~arm_ml_service.models.SAS
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SAS
     """
 
     credentials: Optional["_models.WorkspaceConnectionSharedAccessSignature"] = rest_field(
@@ -20327,7 +23997,7 @@ class SASCredential(DataReferenceCredential, discriminator="SAS"):
     :vartype sas_uri: str
     :ivar credential_type: [Required] Credential type used to authentication with storage.
      Required. SAS.
-    :vartype credential_type: str or ~arm_ml_service.models.SAS
+    :vartype credential_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SAS
     """
 
     sas_uri: Optional[str] = rest_field(name="sasUri", visibility=["read", "create", "update", "delete", "query"])
@@ -20361,7 +24031,7 @@ class SASCredentialDto(PendingUploadCredentialDto, discriminator="SAS"):
     :vartype sas_uri: str
     :ivar credential_type: [Required] Credential type used to authentication with storage.
      Required. SAS.
-    :vartype credential_type: str or ~arm_ml_service.models.SAS
+    :vartype credential_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SAS
     """
 
     sas_uri: Optional[str] = rest_field(name="sasUri", visibility=["read", "create", "update", "delete", "query"])
@@ -20392,10 +24062,10 @@ class SasDatastoreCredentials(DatastoreCredentials, discriminator="Sas"):
     """SAS datastore credentials configuration.
 
     :ivar secrets: [Required] Storage container secrets. Required.
-    :vartype secrets: ~arm_ml_service.models.SasDatastoreSecrets
+    :vartype secrets: ~azure.ai.ml._restclient.arm_ml_service.models.SasDatastoreSecrets
     :ivar credentials_type: [Required] Credential type used to authentication with storage.
      Required. SAS.
-    :vartype credentials_type: str or ~arm_ml_service.models.SAS
+    :vartype credentials_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SAS
     """
 
     secrets: "_models.SasDatastoreSecrets" = rest_field(visibility=["create", "update"])
@@ -20429,7 +24099,7 @@ class SasDatastoreSecrets(DatastoreSecrets, discriminator="Sas"):
     :vartype sas_token: str
     :ivar secrets_type: [Required] Credential type used to authentication with storage. Required.
      SAS.
-    :vartype secrets_type: str or ~arm_ml_service.models.SAS
+    :vartype secrets_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SAS
     """
 
     sas_token: Optional[str] = rest_field(name="sasToken", visibility=["read", "create", "update", "delete", "query"])
@@ -20503,7 +24173,7 @@ class ScaleSettingsInformation(_Model):
     """Desired scale settings for the amlCompute.
 
     :ivar scale_settings: Scale settings.
-    :vartype scale_settings: ~arm_ml_service.models.ScaleSettings
+    :vartype scale_settings: ~azure.ai.ml._restclient.arm_ml_service.models.ScaleSettings
     """
 
     scale_settings: Optional["_models.ScaleSettings"] = rest_field(
@@ -20516,6 +24186,42 @@ class ScaleSettingsInformation(_Model):
         self,
         *,
         scale_settings: Optional["_models.ScaleSettings"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class ScaleUnitConfiguration(_Model):
+    """Configuration for ScaleUnit pool.
+
+    :ivar disable_public_egress: Gets or sets a value indicating whether PublicEgress is disabled.
+    :vartype disable_public_egress: bool
+    :ivar registries: Gets or sets a list of Registry sources that will be used to confirm
+     identity, storage, ACR.
+    :vartype registries: list[str]
+    """
+
+    disable_public_egress: Optional[bool] = rest_field(
+        name="disablePublicEgress", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Gets or sets a value indicating whether PublicEgress is disabled."""
+    registries: Optional[list[str]] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Gets or sets a list of Registry sources that will be used to confirm identity, storage, ACR."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        disable_public_egress: Optional[bool] = None,
+        registries: Optional[list[str]] = None,
     ) -> None: ...
 
     @overload
@@ -20542,9 +24248,9 @@ class Schedule(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.ScheduleProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.ScheduleProperties
     """
 
     properties: "_models.ScheduleProperties" = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -20575,9 +24281,10 @@ class ScheduleBase(_Model):
     :vartype id: str
     :ivar provisioning_status: The current deployment state of schedule. Known values are:
      "Completed", "Provisioning", and "Failed".
-    :vartype provisioning_status: str or ~arm_ml_service.models.ScheduleProvisioningState
+    :vartype provisioning_status: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ScheduleProvisioningState
     :ivar status: Is the schedule enabled or disabled?. Known values are: "Enabled" and "Disabled".
-    :vartype status: str or ~arm_ml_service.models.ScheduleStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ScheduleStatus
     """
 
     id: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -20622,16 +24329,17 @@ class ScheduleProperties(ResourceBase):
     :ivar tags: Tag dictionary. Tags can be added, removed, and updated.
     :vartype tags: dict[str, str]
     :ivar action: [Required] Specifies the action of the schedule. Required.
-    :vartype action: ~arm_ml_service.models.ScheduleActionBase
+    :vartype action: ~azure.ai.ml._restclient.arm_ml_service.models.ScheduleActionBase
     :ivar display_name: Display name of schedule.
     :vartype display_name: str
     :ivar is_enabled: Is the schedule enabled?.
     :vartype is_enabled: bool
     :ivar provisioning_state: Provisioning state for the schedule. Known values are: "Creating",
      "Updating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ScheduleProvisioningStatus
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ScheduleProvisioningStatus
     :ivar trigger: [Required] Specifies the trigger details. Required.
-    :vartype trigger: ~arm_ml_service.models.TriggerBase
+    :vartype trigger: ~azure.ai.ml._restclient.arm_ml_service.models.TriggerBase
     """
 
     action: "_models.ScheduleActionBase" = rest_field(visibility=["read", "create", "update"])
@@ -20725,9 +24433,9 @@ class ScriptsToExecute(_Model):
     """Customized setup scripts.
 
     :ivar startup_script: Script that's run every time the machine starts.
-    :vartype startup_script: ~arm_ml_service.models.ScriptReference
+    :vartype startup_script: ~azure.ai.ml._restclient.arm_ml_service.models.ScriptReference
     :ivar creation_script: Script that's run only once during provision of the compute.
-    :vartype creation_script: ~arm_ml_service.models.ScriptReference
+    :vartype creation_script: ~azure.ai.ml._restclient.arm_ml_service.models.ScriptReference
     """
 
     startup_script: Optional["_models.ScriptReference"] = rest_field(
@@ -20850,20 +24558,21 @@ class ServerlessEndpoint(TrackedResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar tags: Resource tags.
     :vartype tags: dict[str, str]
     :ivar location: The geo-location where the resource lives. Required.
     :vartype location: str
     :ivar properties: [Required] Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.ServerlessEndpointProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessEndpointProperties
     :ivar identity: Managed service identity (system assigned and/or user assigned identities).
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     :ivar kind: Metadata used by portal/tooling/etc to render different UX experiences for
      resources of the same type.
     :vartype kind: str
     :ivar sku: Sku details required for ARM contract for Autoscaling.
-    :vartype sku: ~arm_ml_service.models.Sku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
     """
 
     properties: "_models.ServerlessEndpointProperties" = rest_field(
@@ -20903,31 +24612,146 @@ class ServerlessEndpoint(TrackedResource):
         super().__init__(*args, **kwargs)
 
 
+class ServerlessEndpointCapacityReservation(_Model):
+    """ServerlessEndpointCapacityReservation.
+
+    :ivar capacity_reservation_group_id: Required.
+    :vartype capacity_reservation_group_id: str
+    :ivar endpoint_reserved_capacity:
+    :vartype endpoint_reserved_capacity: int
+    """
+
+    capacity_reservation_group_id: str = rest_field(
+        name="capacityReservationGroupId", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Required."""
+    endpoint_reserved_capacity: Optional[int] = rest_field(
+        name="endpointReservedCapacity", visibility=["read", "create", "update", "delete", "query"]
+    )
+
+    @overload
+    def __init__(
+        self,
+        *,
+        capacity_reservation_group_id: str,
+        endpoint_reserved_capacity: Optional[int] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class ServerlessEndpointContentSafety(_Model):
+    """ServerlessEndpointContentSafety.
+
+    :ivar content_safety_status: Specifies the status of content safety. Required. Known values
+     are: "Enabled" and "Disabled".
+    :vartype content_safety_status: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ContentSafetyStatus
+    """
+
+    content_safety_status: Union[str, "_models.ContentSafetyStatus"] = rest_field(
+        name="contentSafetyStatus", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Specifies the status of content safety. Required. Known values are: \"Enabled\" and
+     \"Disabled\"."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        content_safety_status: Union[str, "_models.ContentSafetyStatus"],
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class ServerlessEndpointInferenceEndpoint(_Model):
+    """ServerlessEndpointInferenceEndpoint.
+
+    :ivar headers:
+    :vartype headers: dict[str, str]
+    :ivar uri: Required.
+    :vartype uri: str
+    """
+
+    headers: Optional[dict[str, str]] = rest_field(visibility=["read"])
+    uri: str = rest_field(visibility=["read"])
+    """Required."""
+
+
+class ServerlessEndpointModelSettings(_Model):
+    """ServerlessEndpointModelSettings.
+
+    :ivar model_id: Required.
+    :vartype model_id: str
+    """
+
+    model_id: str = rest_field(name="modelId", visibility=["read", "create", "update", "delete", "query"])
+    """Required."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        model_id: str,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class ServerlessEndpointProperties(_Model):
     """ServerlessEndpointProperties.
 
     :ivar auth_mode: [Required] Specifies the authentication mode for the Serverless endpoint.
      Required. Known values are: "Key", "AAD", and "KeyAndAAD".
-    :vartype auth_mode: str or ~arm_ml_service.models.ServerlessInferenceEndpointAuthMode
+    :vartype auth_mode: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessInferenceEndpointAuthMode
     :ivar content_safety: Specifies the content safety options. If omitted, the default content
      safety settings will be configured.
-    :vartype content_safety: ~arm_ml_service.models.ContentSafety
+    :vartype content_safety: ~azure.ai.ml._restclient.arm_ml_service.models.ContentSafety
     :ivar endpoint_state: The current state of the ServerlessEndpoint. Known values are: "Unknown",
      "Creating", "Deleting", "Suspending", "Reinstating", "Online", "Suspended", "CreationFailed",
      and "DeletionFailed".
-    :vartype endpoint_state: str or ~arm_ml_service.models.ServerlessEndpointState
+    :vartype endpoint_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessEndpointState
     :ivar inference_endpoint: The inference uri to target when making requests against the
      serverless endpoint.
-    :vartype inference_endpoint: ~arm_ml_service.models.ServerlessInferenceEndpoint
+    :vartype inference_endpoint:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessInferenceEndpoint
     :ivar marketplace_subscription_id: The MarketplaceSubscription Azure ID associated to this
      ServerlessEndpoint.
     :vartype marketplace_subscription_id: str
     :ivar model_settings: The model settings (model id) for the model being serviced on the
      ServerlessEndpoint.
-    :vartype model_settings: ~arm_ml_service.models.ModelSettings
+    :vartype model_settings: ~azure.ai.ml._restclient.arm_ml_service.models.ModelSettings
     :ivar provisioning_state: State of endpoint provisioning. Known values are: "Creating",
      "Deleting", "Succeeded", "Failed", "Updating", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.EndpointProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.EndpointProvisioningState
     """
 
     auth_mode: Union[str, "_models.ServerlessInferenceEndpointAuthMode"] = rest_field(
@@ -20982,6 +24806,129 @@ class ServerlessEndpointProperties(_Model):
         super().__init__(*args, **kwargs)
 
 
+class ServerlessEndpointResourceProperties(EndpointResourceProperties, discriminator="serverlessEndpoint"):
+    """ServerlessEndpointResourceProperties.
+
+    :ivar associated_resource_id: Byo resource id for creating the built-in model service
+     endpoints.
+    :vartype associated_resource_id: str
+    :ivar deployments: Deployments info.
+    :vartype deployments:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.EndpointDeploymentResourcePropertiesBasicResource]
+    :ivar endpoint_uri: Uri of the endpoint.
+    :vartype endpoint_uri: str
+    :ivar failure_reason: The failure reason if the creation failed.
+    :vartype failure_reason: str
+    :ivar location: Location of the endpoint. Since input dto and when parse endpoint resource
+     share the same contract this Location field is just for parse the endpoint resource info we
+     won't let customer specify the endpoint resource location since we will create it the same
+     location as workspace.
+    :vartype location: str
+    :ivar name: Name of the endpoint.
+    :vartype name: str
+    :ivar provisioning_state: Read-only provision state status property. Known values are:
+     "NotStarted", "Failed", "Creating", "Updating", "Succeeded", "Deleting", "Accepted",
+     "Canceled", "Scaling", and "Disabled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultResourceProvisioningState
+    :ivar should_create_ai_services_endpoint: Whether the proxy (non-byo) endpoint is a regular
+     endpoint or a OneKeyV2 AI services account endpoint.
+    :vartype should_create_ai_services_endpoint: bool
+    :ivar auth_mode: Known values are: "Key", "AAD", and "KeyAndAAD".
+    :vartype auth_mode: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessInferenceEndpointAuthMode
+    :ivar capacity_reservation:
+    :vartype capacity_reservation:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessEndpointCapacityReservation
+    :ivar content_safety:
+    :vartype content_safety:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessEndpointContentSafety
+    :ivar endpoint_state: State of the Serverless Endpoint. Known values are: "Unknown",
+     "Creating", "Deleting", "Suspending", "Reinstating", "Online", "Suspended", "CreationFailed",
+     and "DeletionFailed".
+    :vartype endpoint_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessEndpointState
+    :ivar inference_endpoint:
+    :vartype inference_endpoint:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessEndpointInferenceEndpoint
+    :ivar marketplace_subscription_id:
+    :vartype marketplace_subscription_id: str
+    :ivar metadata:
+    :vartype metadata: any
+    :ivar model_settings:
+    :vartype model_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessEndpointModelSettings
+    :ivar offer:
+    :vartype offer: ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessOffer
+    :ivar endpoint_type: Type of the endpoint. Required. SERVERLESS_ENDPOINT.
+    :vartype endpoint_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.SERVERLESS_ENDPOINT
+    """
+
+    auth_mode: Optional[Union[str, "_models.ServerlessInferenceEndpointAuthMode"]] = rest_field(
+        name="authMode", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Known values are: \"Key\", \"AAD\", and \"KeyAndAAD\"."""
+    capacity_reservation: Optional["_models.ServerlessEndpointCapacityReservation"] = rest_field(
+        name="capacityReservation", visibility=["read", "create", "update", "delete", "query"]
+    )
+    content_safety: Optional["_models.ServerlessEndpointContentSafety"] = rest_field(
+        name="contentSafety", visibility=["read", "create", "update", "delete", "query"]
+    )
+    endpoint_state: Optional[Union[str, "_models.ServerlessEndpointState"]] = rest_field(
+        name="endpointState", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """State of the Serverless Endpoint. Known values are: \"Unknown\", \"Creating\", \"Deleting\",
+     \"Suspending\", \"Reinstating\", \"Online\", \"Suspended\", \"CreationFailed\", and
+     \"DeletionFailed\"."""
+    inference_endpoint: Optional["_models.ServerlessEndpointInferenceEndpoint"] = rest_field(
+        name="inferenceEndpoint", visibility=["read", "create", "update", "delete", "query"]
+    )
+    marketplace_subscription_id: Optional[str] = rest_field(
+        name="marketplaceSubscriptionId", visibility=["read", "create", "update", "delete", "query"]
+    )
+    metadata: Optional[Any] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    model_settings: Optional["_models.ServerlessEndpointModelSettings"] = rest_field(
+        name="modelSettings", visibility=["read", "create", "update", "delete", "query"]
+    )
+    offer: Optional["_models.ServerlessOffer"] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    endpoint_type: Literal[EndpointType.SERVERLESS_ENDPOINT] = rest_discriminator(name="endpointType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """Type of the endpoint. Required. SERVERLESS_ENDPOINT."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        associated_resource_id: Optional[str] = None,
+        deployments: Optional[list["_models.EndpointDeploymentResourcePropertiesBasicResource"]] = None,
+        endpoint_uri: Optional[str] = None,
+        failure_reason: Optional[str] = None,
+        location: Optional[str] = None,
+        name: Optional[str] = None,
+        should_create_ai_services_endpoint: Optional[bool] = None,
+        auth_mode: Optional[Union[str, "_models.ServerlessInferenceEndpointAuthMode"]] = None,
+        capacity_reservation: Optional["_models.ServerlessEndpointCapacityReservation"] = None,
+        content_safety: Optional["_models.ServerlessEndpointContentSafety"] = None,
+        endpoint_state: Optional[Union[str, "_models.ServerlessEndpointState"]] = None,
+        inference_endpoint: Optional["_models.ServerlessEndpointInferenceEndpoint"] = None,
+        marketplace_subscription_id: Optional[str] = None,
+        metadata: Optional[Any] = None,
+        model_settings: Optional["_models.ServerlessEndpointModelSettings"] = None,
+        offer: Optional["_models.ServerlessOffer"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.endpoint_type = EndpointType.SERVERLESS_ENDPOINT  # type: ignore
+
+
 class ServerlessInferenceEndpoint(_Model):
     """ServerlessInferenceEndpoint.
 
@@ -20999,11 +24946,44 @@ class ServerlessInferenceEndpoint(_Model):
      Required."""
 
 
+class ServerlessOffer(_Model):
+    """ServerlessOffer.
+
+    :ivar offer_name: Required.
+    :vartype offer_name: str
+    :ivar publisher: Required.
+    :vartype publisher: str
+    """
+
+    offer_name: str = rest_field(name="offerName", visibility=["read", "create", "update", "delete", "query"])
+    """Required."""
+    publisher: str = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Required."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        offer_name: str,
+        publisher: str,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class ServiceManagedResourcesSettings(_Model):
     """ServiceManagedResourcesSettings.
 
     :ivar cosmos_db:
-    :vartype cosmos_db: ~arm_ml_service.models.CosmosDbSettings
+    :vartype cosmos_db: ~azure.ai.ml._restclient.arm_ml_service.models.CosmosDbSettings
     """
 
     cosmos_db: Optional["_models.CosmosDbSettings"] = rest_field(
@@ -21055,7 +25035,7 @@ class ServicePrincipalAuthTypeWorkspaceConnectionProperties(
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -21064,15 +25044,16 @@ class ServicePrincipalAuthTypeWorkspaceConnectionProperties(
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -21080,9 +25061,10 @@ class ServicePrincipalAuthTypeWorkspaceConnectionProperties(
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar credentials:
-    :vartype credentials: ~arm_ml_service.models.WorkspaceConnectionServicePrincipal
+    :vartype credentials:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceConnectionServicePrincipal
     :ivar auth_type: Authentication type of the connection target. Required. SERVICE_PRINCIPAL.
-    :vartype auth_type: str or ~arm_ml_service.models.SERVICE_PRINCIPAL
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SERVICE_PRINCIPAL
     """
 
     credentials: Optional["_models.WorkspaceConnectionServicePrincipal"] = rest_field(
@@ -21130,12 +25112,14 @@ class ServicePrincipalDatastoreCredentials(DatastoreCredentials, discriminator="
     :ivar resource_url: Resource the service principal has access to.
     :vartype resource_url: str
     :ivar secrets: [Required] Service principal secrets. Required.
-    :vartype secrets: ~arm_ml_service.models.ServicePrincipalDatastoreSecrets
+    :vartype secrets:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServicePrincipalDatastoreSecrets
     :ivar tenant_id: [Required] ID of the tenant to which the service principal belongs. Required.
     :vartype tenant_id: str
     :ivar credentials_type: [Required] Credential type used to authentication with storage.
      Required. SERVICE_PRINCIPAL.
-    :vartype credentials_type: str or ~arm_ml_service.models.SERVICE_PRINCIPAL
+    :vartype credentials_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.SERVICE_PRINCIPAL
     """
 
     authority_url: Optional[str] = rest_field(
@@ -21185,7 +25169,7 @@ class ServicePrincipalDatastoreSecrets(DatastoreSecrets, discriminator="ServiceP
     :vartype client_secret: str
     :ivar secrets_type: [Required] Credential type used to authentication with storage. Required.
      SERVICE_PRINCIPAL.
-    :vartype secrets_type: str or ~arm_ml_service.models.SERVICE_PRINCIPAL
+    :vartype secrets_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SERVICE_PRINCIPAL
     """
 
     client_secret: Optional[str] = rest_field(
@@ -21219,7 +25203,7 @@ class ServiceTagDestination(_Model):
     learning workspace.
 
     :ivar action: The action enum for networking rule. Known values are: "Allow" and "Deny".
-    :vartype action: str or ~arm_ml_service.models.RuleAction
+    :vartype action: str or ~azure.ai.ml._restclient.arm_ml_service.models.RuleAction
     :ivar address_prefixes: Optional, if provided, the ServiceTag property will be ignored.
     :vartype address_prefixes: list[str]
     :ivar port_ranges:
@@ -21273,10 +25257,10 @@ class ServiceTagOutboundRule(OutboundRule, discriminator="ServiceTag"):
 
     :ivar category: Category of a managed network Outbound Rule of a machine learning workspace.
      Known values are: "Required", "Recommended", "UserDefined", and "Dependency".
-    :vartype category: str or ~arm_ml_service.models.RuleCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.RuleCategory
     :ivar status: Type of a managed network Outbound Rule of a machine learning workspace. Known
      values are: "Inactive", "Active", "Provisioning", "Deleting", and "Failed".
-    :vartype status: str or ~arm_ml_service.models.RuleStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.RuleStatus
     :ivar error_information: Error information about an outbound rule of a machine learning
      workspace if RuleStatus is failed.
     :vartype error_information: str
@@ -21284,10 +25268,10 @@ class ServiceTagOutboundRule(OutboundRule, discriminator="ServiceTag"):
     :vartype parent_rule_names: list[str]
     :ivar destination: Service Tag destination for a Service Tag Outbound Rule for the managed
      network of a machine learning workspace.
-    :vartype destination: ~arm_ml_service.models.ServiceTagDestination
+    :vartype destination: ~azure.ai.ml._restclient.arm_ml_service.models.ServiceTagDestination
     :ivar type: Type of a managed network Outbound Rule of a machine learning workspace. Required.
      SERVICE_TAG.
-    :vartype type: str or ~arm_ml_service.models.SERVICE_TAG
+    :vartype type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SERVICE_TAG
     """
 
     destination: Optional["_models.ServiceTagDestination"] = rest_field(
@@ -21323,7 +25307,7 @@ class SetupScripts(_Model):
     """Details of customized scripts to execute for setting up the cluster.
 
     :ivar scripts: Customized setup scripts.
-    :vartype scripts: ~arm_ml_service.models.ScriptsToExecute
+    :vartype scripts: ~azure.ai.ml._restclient.arm_ml_service.models.ScriptsToExecute
     """
 
     scripts: Optional["_models.ScriptsToExecute"] = rest_field(
@@ -21355,7 +25339,8 @@ class SharedPrivateLinkResource(_Model):
     :ivar name: Unique name of the private link.
     :vartype name: str
     :ivar properties: Properties of a shared private link resource.
-    :vartype properties: ~arm_ml_service.models.SharedPrivateLinkResourceProperty
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.SharedPrivateLinkResourceProperty
     """
 
     name: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -21422,7 +25407,8 @@ class SharedPrivateLinkResourceProperty(_Model):
      re-initiates the connection request that was rejected)\\r\\nRejected -> Disconnected (Service
      provider deletes the connection). Known values are: "Approved", "Pending", "Rejected",
      "Disconnected", and "Timeout".
-    :vartype status: str or ~arm_ml_service.models.EndpointServiceConnectionStatus
+    :vartype status: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.EndpointServiceConnectionStatus
     """
 
     group_id: Optional[str] = rest_field(name="groupId", visibility=["read", "create", "update", "delete", "query"])
@@ -21476,7 +25462,7 @@ class Sku(_Model):
     :ivar tier: This field is required to be implemented by the Resource Provider if the service
      has more than one tier, but is not required on a PUT. Known values are: "Free", "Basic",
      "Standard", and "Premium".
-    :vartype tier: str or ~arm_ml_service.models.SkuTier
+    :vartype tier: str or ~azure.ai.ml._restclient.arm_ml_service.models.SkuTier
     :ivar size: The SKU size. When the name field is the combination of tier and some other value,
      this would be the standalone code.
     :vartype size: str
@@ -21539,7 +25525,7 @@ class SkuCapacity(_Model):
     :vartype minimum: int
     :ivar scale_type: Node scaling setting for the compute sku. Known values are: "Automatic",
      "Manual", and "None".
-    :vartype scale_type: str or ~arm_ml_service.models.SkuScaleType
+    :vartype scale_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SkuScaleType
     """
 
     default: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -21579,11 +25565,11 @@ class SkuResource(_Model):
     """Fulfills ARM Contract requirement to list all available SKUS for a resource.
 
     :ivar capacity: Gets or sets the Sku Capacity.
-    :vartype capacity: ~arm_ml_service.models.SkuCapacity
+    :vartype capacity: ~azure.ai.ml._restclient.arm_ml_service.models.SkuCapacity
     :ivar resource_type: The resource type name.
     :vartype resource_type: str
     :ivar sku: Gets or sets the Sku.
-    :vartype sku: ~arm_ml_service.models.SkuSetting
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.SkuSetting
     """
 
     capacity: Optional["_models.SkuCapacity"] = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -21621,7 +25607,7 @@ class SkuSetting(_Model):
     :ivar tier: This field is required to be implemented by the Resource Provider if the service
      has more than one tier, but is not required on a PUT. Known values are: "Free", "Basic",
      "Standard", and "Premium".
-    :vartype tier: str or ~arm_ml_service.models.SkuTier
+    :vartype tier: str or ~azure.ai.ml._restclient.arm_ml_service.models.SkuTier
     """
 
     name: str = rest_field(visibility=["read", "create", "update", "delete", "query"])
@@ -21672,18 +25658,21 @@ class SparkJob(JobBaseProperties, discriminator="Spark"):
     :vartype experiment_name: str
     :ivar identity: Identity configuration. If set, this should be one of AmlToken,
      ManagedIdentity, UserIdentity or null. Defaults to AmlToken if null.
-    :vartype identity: ~arm_ml_service.models.IdentityConfiguration
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.IdentityConfiguration
     :ivar is_archived: Is the asset archived?.
     :vartype is_archived: bool
     :ivar notification_setting: Notification setting for the job.
-    :vartype notification_setting: ~arm_ml_service.models.NotificationSetting
+    :vartype notification_setting:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NotificationSetting
+    :ivar parent_job_name: Parent job name.
+    :vartype parent_job_name: str
     :ivar services: List of JobEndpoints. For local jobs, a job endpoint will have an endpoint
      value of FileStreamObject.
-    :vartype services: dict[str, ~arm_ml_service.models.JobService]
+    :vartype services: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobService]
     :ivar status: Status of the job. Known values are: "NotStarted", "Starting", "Provisioning",
      "Preparing", "Queued", "Running", "Finalizing", "CancelRequested", "Completed", "Failed",
      "Canceled", "NotResponding", "Paused", and "Unknown".
-    :vartype status: str or ~arm_ml_service.models.JobStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobStatus
     :ivar archives: Archive files used in the job.
     :vartype archives: list[str]
     :ivar args: Arguments for the job.
@@ -21693,7 +25682,7 @@ class SparkJob(JobBaseProperties, discriminator="Spark"):
     :ivar conf: Spark configured properties.
     :vartype conf: dict[str, str]
     :ivar entry: [Required] The entry to execute on startup of the job. Required.
-    :vartype entry: ~arm_ml_service.models.SparkJobEntry
+    :vartype entry: ~azure.ai.ml._restclient.arm_ml_service.models.SparkJobEntry
     :ivar environment_id: The ARM resource ID of the Environment specification for the job.
     :vartype environment_id: str
     :ivar environment_variables: Environment variables included in the job.
@@ -21701,19 +25690,19 @@ class SparkJob(JobBaseProperties, discriminator="Spark"):
     :ivar files: Files used in the job.
     :vartype files: list[str]
     :ivar inputs: Mapping of input data bindings used in the job.
-    :vartype inputs: dict[str, ~arm_ml_service.models.JobInput]
+    :vartype inputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobInput]
     :ivar jars: Jar files used in the job.
     :vartype jars: list[str]
     :ivar outputs: Mapping of output data bindings used in the job.
-    :vartype outputs: dict[str, ~arm_ml_service.models.JobOutput]
+    :vartype outputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobOutput]
     :ivar py_files: Python files used in the job.
     :vartype py_files: list[str]
     :ivar queue_settings: Queue settings for the job.
-    :vartype queue_settings: ~arm_ml_service.models.QueueSettings
+    :vartype queue_settings: ~azure.ai.ml._restclient.arm_ml_service.models.QueueSettings
     :ivar resources: Compute Resource configuration for the job.
-    :vartype resources: ~arm_ml_service.models.SparkResourceConfiguration
+    :vartype resources: ~azure.ai.ml._restclient.arm_ml_service.models.SparkResourceConfiguration
     :ivar job_type: [Required] Specifies the type of job. Required. SPARK.
-    :vartype job_type: str or ~arm_ml_service.models.SPARK
+    :vartype job_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SPARK
     """
 
     archives: Optional[list[str]] = rest_field(visibility=["read", "create"])
@@ -21765,6 +25754,7 @@ class SparkJob(JobBaseProperties, discriminator="Spark"):
         identity: Optional["_models.IdentityConfiguration"] = None,
         is_archived: Optional[bool] = None,
         notification_setting: Optional["_models.NotificationSetting"] = None,
+        parent_job_name: Optional[str] = None,
         services: Optional[dict[str, "_models.JobService"]] = None,
         archives: Optional[list[str]] = None,
         args: Optional[str] = None,
@@ -21800,7 +25790,8 @@ class SparkJobEntry(_Model):
 
     :ivar spark_job_entry_type: [Required] Type of the job's entry point. Required. Known values
      are: "SparkJobPythonEntry" and "SparkJobScalaEntry".
-    :vartype spark_job_entry_type: str or ~arm_ml_service.models.SparkJobEntryType
+    :vartype spark_job_entry_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.SparkJobEntryType
     """
 
     __mapping__: dict[str, _Model] = {}
@@ -21833,7 +25824,8 @@ class SparkJobPythonEntry(SparkJobEntry, discriminator="SparkJobPythonEntry"):
     :vartype file: str
     :ivar spark_job_entry_type: [Required] Type of the job's entry point. Required.
      SPARK_JOB_PYTHON_ENTRY.
-    :vartype spark_job_entry_type: str or ~arm_ml_service.models.SPARK_JOB_PYTHON_ENTRY
+    :vartype spark_job_entry_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.SPARK_JOB_PYTHON_ENTRY
     """
 
     file: str = rest_field(visibility=["read", "create"])
@@ -21867,7 +25859,8 @@ class SparkJobScalaEntry(SparkJobEntry, discriminator="SparkJobScalaEntry"):
     :vartype class_name: str
     :ivar spark_job_entry_type: [Required] Type of the job's entry point. Required.
      SPARK_JOB_SCALA_ENTRY.
-    :vartype spark_job_entry_type: str or ~arm_ml_service.models.SPARK_JOB_SCALA_ENTRY
+    :vartype spark_job_entry_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.SPARK_JOB_SCALA_ENTRY
     """
 
     class_name: str = rest_field(name="className", visibility=["read", "create"])
@@ -21927,12 +25920,138 @@ class SparkResourceConfiguration(_Model):
         super().__init__(*args, **kwargs)
 
 
+class SpeechEndpointDeploymentResourceProperties(
+    EndpointDeploymentResourceProperties, discriminator="Azure.Speech"
+):  # pylint: disable=name-too-long
+    """SpeechEndpointDeploymentResourceProperties.
+
+    :ivar failure_reason: The failure reason if the creation failed.
+    :vartype failure_reason: str
+    :ivar provisioning_state: Read-only provision state status property. Known values are:
+     "NotStarted", "Failed", "Creating", "Updating", "Succeeded", "Deleting", "Accepted",
+     "Canceled", "Scaling", and "Disabled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultResourceProvisioningState
+    :ivar model: Model used for the endpoint deployment. Required.
+    :vartype model: ~azure.ai.ml._restclient.arm_ml_service.models.EndpointDeploymentModel
+    :ivar rai_policy_name: The name of RAI policy.
+    :vartype rai_policy_name: str
+    :ivar sku:
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.CognitiveServicesSku
+    :ivar version_upgrade_option: Deployment model version upgrade option. Known values are:
+     "OnceNewDefaultVersionAvailable", "OnceCurrentVersionExpired", and "NoAutoUpgrade".
+    :vartype version_upgrade_option: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DeploymentModelVersionUpgradeOption
+    :ivar type: Kind of the deployment. Required. Default value is "Azure.Speech".
+    :vartype type: str
+    """
+
+    model: "_models.EndpointDeploymentModel" = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Model used for the endpoint deployment. Required."""
+    rai_policy_name: Optional[str] = rest_field(
+        name="raiPolicyName", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The name of RAI policy."""
+    sku: Optional["_models.CognitiveServicesSku"] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    version_upgrade_option: Optional[Union[str, "_models.DeploymentModelVersionUpgradeOption"]] = rest_field(
+        name="versionUpgradeOption", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Deployment model version upgrade option. Known values are: \"OnceNewDefaultVersionAvailable\",
+     \"OnceCurrentVersionExpired\", and \"NoAutoUpgrade\"."""
+    type: Literal["Azure.Speech"] = rest_discriminator(name="type", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """Kind of the deployment. Required. Default value is \"Azure.Speech\"."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        model: "_models.EndpointDeploymentModel",
+        failure_reason: Optional[str] = None,
+        rai_policy_name: Optional[str] = None,
+        sku: Optional["_models.CognitiveServicesSku"] = None,
+        version_upgrade_option: Optional[Union[str, "_models.DeploymentModelVersionUpgradeOption"]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.type = "Azure.Speech"  # type: ignore
+
+
+class SpeechEndpointResourceProperties(EndpointResourceProperties, discriminator="Azure.Speech"):
+    """SpeechEndpointResourceProperties.
+
+    :ivar associated_resource_id: Byo resource id for creating the built-in model service
+     endpoints.
+    :vartype associated_resource_id: str
+    :ivar deployments: Deployments info.
+    :vartype deployments:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.EndpointDeploymentResourcePropertiesBasicResource]
+    :ivar endpoint_uri: Uri of the endpoint.
+    :vartype endpoint_uri: str
+    :ivar failure_reason: The failure reason if the creation failed.
+    :vartype failure_reason: str
+    :ivar location: Location of the endpoint. Since input dto and when parse endpoint resource
+     share the same contract this Location field is just for parse the endpoint resource info we
+     won't let customer specify the endpoint resource location since we will create it the same
+     location as workspace.
+    :vartype location: str
+    :ivar name: Name of the endpoint.
+    :vartype name: str
+    :ivar provisioning_state: Read-only provision state status property. Known values are:
+     "NotStarted", "Failed", "Creating", "Updating", "Succeeded", "Deleting", "Accepted",
+     "Canceled", "Scaling", and "Disabled".
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.DefaultResourceProvisioningState
+    :ivar should_create_ai_services_endpoint: Whether the proxy (non-byo) endpoint is a regular
+     endpoint or a OneKeyV2 AI services account endpoint.
+    :vartype should_create_ai_services_endpoint: bool
+    :ivar endpoint_type: Type of the endpoint. Required. AZURE_SPEECH.
+    :vartype endpoint_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.AZURE_SPEECH
+    """
+
+    endpoint_type: Literal[EndpointType.AZURE_SPEECH] = rest_discriminator(name="endpointType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
+    """Type of the endpoint. Required. AZURE_SPEECH."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        associated_resource_id: Optional[str] = None,
+        deployments: Optional[list["_models.EndpointDeploymentResourcePropertiesBasicResource"]] = None,
+        endpoint_uri: Optional[str] = None,
+        failure_reason: Optional[str] = None,
+        location: Optional[str] = None,
+        name: Optional[str] = None,
+        should_create_ai_services_endpoint: Optional[bool] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.endpoint_type = EndpointType.AZURE_SPEECH  # type: ignore
+
+
 class SslConfiguration(_Model):
     """The ssl configuration for scoring.
 
     :ivar status: Enable or disable ssl for scoring. Known values are: "Disabled", "Enabled", and
      "Auto".
-    :vartype status: str or ~arm_ml_service.models.SslConfigStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.SslConfigStatus
     :ivar cert: Cert data.
     :vartype cert: str
     :ivar key: Key data.
@@ -22005,7 +26124,8 @@ class StackEnsembleSettings(_Model):
      LightGBMClassifier, ElasticNet, ElasticNetCV, LightGBMRegressor, or LinearRegression. Known
      values are: "None", "LogisticRegression", "LogisticRegressionCV", "LightGBMClassifier",
      "ElasticNet", "ElasticNetCV", "LightGBMRegressor", and "LinearRegression".
-    :vartype stack_meta_learner_type: str or ~arm_ml_service.models.StackMetaLearnerType
+    :vartype stack_meta_learner_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.StackMetaLearnerType
     """
 
     stack_meta_learner_k_wargs: Optional[Any] = rest_field(
@@ -22059,7 +26179,7 @@ class StaticInputData(MonitoringInputDataBase, discriminator="Static"):
     :ivar job_input_type: [Required] Specifies the type of job. Required. Known values are:
      "literal", "uri_file", "uri_folder", "mltable", "custom_model", "mlflow_model", and
      "triton_model".
-    :vartype job_input_type: str or ~arm_ml_service.models.JobInputType
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobInputType
     :ivar uri: [Required] Input Asset URI. Required.
     :vartype uri: str
     :ivar preprocessing_component_id: Reference to the component asset used to preprocess the data.
@@ -22070,7 +26190,7 @@ class StaticInputData(MonitoringInputDataBase, discriminator="Static"):
     :vartype window_start: ~datetime.datetime
     :ivar input_data_type: [Required] Specifies the type of signal to monitor. Required. An input
      data with a fixed window size.
-    :vartype input_data_type: str or ~arm_ml_service.models.STATIC
+    :vartype input_data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.STATIC
     """
 
     preprocessing_component_id: Optional[str] = rest_field(
@@ -22115,7 +26235,8 @@ class StorageAccountDetails(_Model):
 
     :ivar system_created_storage_account: Details of system created storage account to be used for
      the registry.
-    :vartype system_created_storage_account: ~arm_ml_service.models.SystemCreatedStorageAccount
+    :vartype system_created_storage_account:
+     ~azure.ai.ml._restclient.arm_ml_service.models.SystemCreatedStorageAccount
     """
 
     system_created_storage_account: Optional["_models.SystemCreatedStorageAccount"] = rest_field(
@@ -22128,6 +26249,37 @@ class StorageAccountDetails(_Model):
         self,
         *,
         system_created_storage_account: Optional["_models.SystemCreatedStorageAccount"] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class StringStringKeyValuePair(_Model):
+    """StringStringKeyValuePair.
+
+    :ivar key:
+    :vartype key: str
+    :ivar value:
+    :vartype value: str
+    """
+
+    key: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    value: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+
+    @overload
+    def __init__(
+        self,
+        *,
+        key: Optional[str] = None,
+        value: Optional[str] = None,
     ) -> None: ...
 
     @overload
@@ -22161,40 +26313,44 @@ class SweepJob(JobBaseProperties, discriminator="Sweep"):
     :vartype experiment_name: str
     :ivar identity: Identity configuration. If set, this should be one of AmlToken,
      ManagedIdentity, UserIdentity or null. Defaults to AmlToken if null.
-    :vartype identity: ~arm_ml_service.models.IdentityConfiguration
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.IdentityConfiguration
     :ivar is_archived: Is the asset archived?.
     :vartype is_archived: bool
     :ivar notification_setting: Notification setting for the job.
-    :vartype notification_setting: ~arm_ml_service.models.NotificationSetting
+    :vartype notification_setting:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NotificationSetting
+    :ivar parent_job_name: Parent job name.
+    :vartype parent_job_name: str
     :ivar services: List of JobEndpoints. For local jobs, a job endpoint will have an endpoint
      value of FileStreamObject.
-    :vartype services: dict[str, ~arm_ml_service.models.JobService]
+    :vartype services: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobService]
     :ivar status: Status of the job. Known values are: "NotStarted", "Starting", "Provisioning",
      "Preparing", "Queued", "Running", "Finalizing", "CancelRequested", "Completed", "Failed",
      "Canceled", "NotResponding", "Paused", and "Unknown".
-    :vartype status: str or ~arm_ml_service.models.JobStatus
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.JobStatus
     :ivar early_termination: Early termination policies enable canceling poor-performing runs
      before they complete.
-    :vartype early_termination: ~arm_ml_service.models.EarlyTerminationPolicy
+    :vartype early_termination:
+     ~azure.ai.ml._restclient.arm_ml_service.models.EarlyTerminationPolicy
     :ivar inputs: Mapping of input data bindings used in the job.
-    :vartype inputs: dict[str, ~arm_ml_service.models.JobInput]
+    :vartype inputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobInput]
     :ivar limits: Sweep Job limit.
-    :vartype limits: ~arm_ml_service.models.SweepJobLimits
+    :vartype limits: ~azure.ai.ml._restclient.arm_ml_service.models.SweepJobLimits
     :ivar objective: [Required] Optimization objective. Required.
-    :vartype objective: ~arm_ml_service.models.Objective
+    :vartype objective: ~azure.ai.ml._restclient.arm_ml_service.models.Objective
     :ivar outputs: Mapping of output data bindings used in the job.
-    :vartype outputs: dict[str, ~arm_ml_service.models.JobOutput]
+    :vartype outputs: dict[str, ~azure.ai.ml._restclient.arm_ml_service.models.JobOutput]
     :ivar queue_settings: Queue settings for the job.
-    :vartype queue_settings: ~arm_ml_service.models.QueueSettings
+    :vartype queue_settings: ~azure.ai.ml._restclient.arm_ml_service.models.QueueSettings
     :ivar sampling_algorithm: [Required] The hyperparameter sampling algorithm. Required.
-    :vartype sampling_algorithm: ~arm_ml_service.models.SamplingAlgorithm
+    :vartype sampling_algorithm: ~azure.ai.ml._restclient.arm_ml_service.models.SamplingAlgorithm
     :ivar search_space: [Required] A dictionary containing each parameter and its distribution. The
      dictionary key is the name of the parameter. Required.
     :vartype search_space: any
     :ivar trial: [Required] Trial component definition. Required.
-    :vartype trial: ~arm_ml_service.models.TrialComponent
+    :vartype trial: ~azure.ai.ml._restclient.arm_ml_service.models.TrialComponent
     :ivar job_type: [Required] Specifies the type of job. Required. SWEEP.
-    :vartype job_type: str or ~arm_ml_service.models.SWEEP
+    :vartype job_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SWEEP
     """
 
     early_termination: Optional["_models.EarlyTerminationPolicy"] = rest_field(
@@ -22241,6 +26397,7 @@ class SweepJob(JobBaseProperties, discriminator="Sweep"):
         identity: Optional["_models.IdentityConfiguration"] = None,
         is_archived: Optional[bool] = None,
         notification_setting: Optional["_models.NotificationSetting"] = None,
+        parent_job_name: Optional[str] = None,
         services: Optional[dict[str, "_models.JobService"]] = None,
         early_termination: Optional["_models.EarlyTerminationPolicy"] = None,
         inputs: Optional[dict[str, "_models.JobInput"]] = None,
@@ -22274,7 +26431,7 @@ class SweepJobLimits(JobLimits, discriminator="Sweep"):
     :ivar trial_timeout: Sweep Job Trial timeout value.
     :vartype trial_timeout: ~datetime.timedelta
     :ivar job_limits_type: [Required] JobLimit type. Required. SWEEP.
-    :vartype job_limits_type: str or ~arm_ml_service.models.SWEEP
+    :vartype job_limits_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SWEEP
     """
 
     max_concurrent_trials: Optional[int] = rest_field(
@@ -22322,7 +26479,8 @@ class SynapseSpark(Compute, discriminator="SynapseSpark"):
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Known values are: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar description: The description of the Machine Learning compute.
     :vartype description: str
     :ivar created_on: The time at which the compute was created.
@@ -22332,7 +26490,8 @@ class SynapseSpark(Compute, discriminator="SynapseSpark"):
     :ivar resource_id: ARM resource id of the underlying compute.
     :vartype resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
-    :vartype provisioning_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype provisioning_errors:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -22340,9 +26499,9 @@ class SynapseSpark(Compute, discriminator="SynapseSpark"):
      and AAD exclusively for authentication.
     :vartype disable_local_auth: bool
     :ivar properties:
-    :vartype properties: ~arm_ml_service.models.SynapseSparkProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.SynapseSparkProperties
     :ivar compute_type: The type of compute. Required. SYNAPSE_SPARK.
-    :vartype compute_type: str or ~arm_ml_service.models.SYNAPSE_SPARK
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.SYNAPSE_SPARK
     """
 
     properties: Optional["_models.SynapseSparkProperties"] = rest_field(
@@ -22378,9 +26537,11 @@ class SynapseSparkProperties(_Model):
     """SynapseSparkProperties.
 
     :ivar auto_scale_properties: Auto scale properties.
-    :vartype auto_scale_properties: ~arm_ml_service.models.AutoScaleProperties
+    :vartype auto_scale_properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.AutoScaleProperties
     :ivar auto_pause_properties: Auto pause properties.
-    :vartype auto_pause_properties: ~arm_ml_service.models.AutoPauseProperties
+    :vartype auto_pause_properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.AutoPauseProperties
     :ivar spark_version: Spark version.
     :vartype spark_version: str
     :ivar node_count: The number of compute nodes currently assigned to the compute.
@@ -22469,7 +26630,7 @@ class SystemCreatedAcrAccount(_Model):
     :ivar acr_account_sku: SKU of the ACR account.
     :vartype acr_account_sku: str
     :ivar arm_resource_id: This is populated once the ACR account is created.
-    :vartype arm_resource_id: ~arm_ml_service.models.ArmResourceId
+    :vartype arm_resource_id: ~azure.ai.ml._restclient.arm_ml_service.models.ArmResourceId
     """
 
     acr_account_name: Optional[str] = rest_field(
@@ -22511,7 +26672,7 @@ class SystemCreatedStorageAccount(_Model):
     :ivar allow_blob_public_access: Public blob access allowed.
     :vartype allow_blob_public_access: bool
     :ivar arm_resource_id: This is populated once the storage account is created.
-    :vartype arm_resource_id: ~arm_ml_service.models.ArmResourceId
+    :vartype arm_resource_id: ~azure.ai.ml._restclient.arm_ml_service.models.ArmResourceId
     :ivar storage_account_hns_enabled: HNS enabled for storage account.
     :vartype storage_account_hns_enabled: bool
     :ivar storage_account_name: Name of the storage account.
@@ -22572,14 +26733,15 @@ class SystemData(_Model):
     :vartype created_by: str
     :ivar created_by_type: The type of identity that created the resource. Known values are:
      "User", "Application", "ManagedIdentity", and "Key".
-    :vartype created_by_type: str or ~arm_ml_service.models.CreatedByType
+    :vartype created_by_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.CreatedByType
     :ivar created_at: The timestamp of resource creation (UTC).
     :vartype created_at: ~datetime.datetime
     :ivar last_modified_by: The identity that last modified the resource.
     :vartype last_modified_by: str
     :ivar last_modified_by_type: The type of identity that last modified the resource. Known values
      are: "User", "Application", "ManagedIdentity", and "Key".
-    :vartype last_modified_by_type: str or ~arm_ml_service.models.CreatedByType
+    :vartype last_modified_by_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.CreatedByType
     :ivar last_modified_at: The timestamp of resource last modification (UTC).
     :vartype last_modified_at: ~datetime.datetime
     """
@@ -22657,7 +26819,8 @@ class TableVerticalFeaturizationSettings(FeaturizationSettings):
     :ivar dataset_language: Dataset language, useful for the text data.
     :vartype dataset_language: str
     :ivar blocked_transformers: These transformers shall not be used in featurization.
-    :vartype blocked_transformers: list[str or ~arm_ml_service.models.BlockedTransformers]
+    :vartype blocked_transformers: list[str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.BlockedTransformers]
     :ivar column_name_and_types: Dictionary of column name and its type (int, float, string,
      datetime etc).
     :vartype column_name_and_types: dict[str, str]
@@ -22668,10 +26831,11 @@ class TableVerticalFeaturizationSettings(FeaturizationSettings):
      care of necessary transformation of the data in featurization phase. If 'Off' is selected then
      no featurization is done. If 'Custom' is selected then user can specify additional inputs to
      customize how featurization is done. Known values are: "Auto", "Custom", and "Off".
-    :vartype mode: str or ~arm_ml_service.models.FeaturizationMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.FeaturizationMode
     :ivar transformer_params: User can specify additional transformers to be used along with the
      columns to which it would be applied and parameters for the transformer constructor.
-    :vartype transformer_params: dict[str, list[~arm_ml_service.models.ColumnTransformer]]
+    :vartype transformer_params: dict[str,
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ColumnTransformer]]
     """
 
     blocked_transformers: Optional[list[Union[str, "_models.BlockedTransformers"]]] = rest_field(
@@ -22807,7 +26971,7 @@ class TargetUtilizationScaleSettings(OnlineScaleSettings, discriminator="TargetU
     :vartype target_utilization_percentage: int
     :ivar scale_type: [Required] Type of deployment scaling algorithm. Required.
      TARGET_UTILIZATION.
-    :vartype scale_type: str or ~arm_ml_service.models.TARGET_UTILIZATION
+    :vartype scale_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.TARGET_UTILIZATION
     """
 
     max_instances: Optional[int] = rest_field(
@@ -22853,6 +27017,108 @@ class TargetUtilizationScaleSettings(OnlineScaleSettings, discriminator="TargetU
         self.scale_type = ScaleType.TARGET_UTILIZATION  # type: ignore
 
 
+class TeacherModelEndpoint(_Model):
+    """TeacherModelEndpoint.
+
+    :ivar endpoint_name:
+    :vartype endpoint_name: str
+    """
+
+    endpoint_name: Optional[str] = rest_field(
+        name="endpointName", visibility=["read", "create", "update", "delete", "query"]
+    )
+
+    @overload
+    def __init__(
+        self,
+        *,
+        endpoint_name: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class TeacherModelEndpointRequestSettings(_Model):
+    """TeacherModelEndpointRequestSettings.
+
+    :ivar min_endpoint_success_ratio:
+    :vartype min_endpoint_success_ratio: float
+    :ivar request_batch_size:
+    :vartype request_batch_size: int
+    """
+
+    min_endpoint_success_ratio: Optional[float] = rest_field(
+        name="minEndpointSuccessRatio", visibility=["read", "create", "update", "delete", "query"]
+    )
+    request_batch_size: Optional[int] = rest_field(
+        name="requestBatchSize", visibility=["read", "create", "update", "delete", "query"]
+    )
+
+    @overload
+    def __init__(
+        self,
+        *,
+        min_endpoint_success_ratio: Optional[float] = None,
+        request_batch_size: Optional[int] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class TeacherModelSettings(_Model):
+    """TeacherModelSettings.
+
+    :ivar teacher_model_endpoint_request_settings: Teacher Model Request Settings.
+    :vartype teacher_model_endpoint_request_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.TeacherModelEndpointRequestSettings
+    :ivar teacher_model_inference_parameters: Teacher Model Inference Settings.
+    :vartype teacher_model_inference_parameters: dict[str, str]
+    """
+
+    teacher_model_endpoint_request_settings: Optional["_models.TeacherModelEndpointRequestSettings"] = rest_field(
+        name="teacherModelEndpointRequestSettings", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Teacher Model Request Settings."""
+    teacher_model_inference_parameters: Optional[dict[str, str]] = rest_field(
+        name="teacherModelInferenceParameters", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Teacher Model Inference Settings."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        teacher_model_endpoint_request_settings: Optional["_models.TeacherModelEndpointRequestSettings"] = None,
+        teacher_model_inference_parameters: Optional[dict[str, str]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class TensorFlow(DistributionConfiguration, discriminator="TensorFlow"):
     """TensorFlow distribution configuration.
 
@@ -22862,7 +27128,7 @@ class TensorFlow(DistributionConfiguration, discriminator="TensorFlow"):
     :vartype worker_count: int
     :ivar distribution_type: [Required] Specifies the type of distribution framework. Required.
      TENSOR_FLOW.
-    :vartype distribution_type: str or ~arm_ml_service.models.TENSOR_FLOW
+    :vartype distribution_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.TENSOR_FLOW
     """
 
     parameter_server_count: Optional[int] = rest_field(name="parameterServerCount", visibility=["read", "create"])
@@ -22897,26 +27163,29 @@ class TextClassification(AutoMLVertical, discriminator="TextClassification"):
 
     :ivar log_verbosity: Enum for setting log verbosity. Known values are: "NotSet", "Debug",
      "Info", "Warning", "Error", and "Critical".
-    :vartype log_verbosity: str or ~arm_ml_service.models.LogVerbosity
+    :vartype log_verbosity: str or ~azure.ai.ml._restclient.arm_ml_service.models.LogVerbosity
     :ivar target_column_name: Target column name: This is prediction values column. Also known as
      label column name in context of classification tasks.
     :vartype target_column_name: str
     :ivar training_data: [Required] Training data input. Required.
-    :vartype training_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar featurization_settings: Featurization inputs needed for AutoML job.
-    :vartype featurization_settings: ~arm_ml_service.models.NlpVerticalFeaturizationSettings
+    :vartype featurization_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NlpVerticalFeaturizationSettings
     :ivar limit_settings: Execution constraints for AutoMLJob.
-    :vartype limit_settings: ~arm_ml_service.models.NlpVerticalLimitSettings
+    :vartype limit_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NlpVerticalLimitSettings
     :ivar validation_data: Validation data inputs.
-    :vartype validation_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar primary_metric: Primary metrics for classification tasks. Known values are:
      "AUCWeighted", "Accuracy", "NormMacroRecall", "AveragePrecisionScoreWeighted", and
      "PrecisionScoreWeighted".
-    :vartype primary_metric: str or ~arm_ml_service.models.ClassificationPrimaryMetrics
+    :vartype primary_metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ClassificationPrimaryMetrics
     :ivar task_type: [Required] Task type for AutoMLJob. Required. Text classification (also known
      as text tagging or text categorization) is the process of sorting texts into categories.
      Categories are mutually exclusive.
-    :vartype task_type: str or ~arm_ml_service.models.TEXT_CLASSIFICATION
+    :vartype task_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.TEXT_CLASSIFICATION
     """
 
     featurization_settings: Optional["_models.NlpVerticalFeaturizationSettings"] = rest_field(
@@ -22971,26 +27240,30 @@ class TextClassificationMultilabel(AutoMLVertical, discriminator="TextClassifica
 
     :ivar log_verbosity: Enum for setting log verbosity. Known values are: "NotSet", "Debug",
      "Info", "Warning", "Error", and "Critical".
-    :vartype log_verbosity: str or ~arm_ml_service.models.LogVerbosity
+    :vartype log_verbosity: str or ~azure.ai.ml._restclient.arm_ml_service.models.LogVerbosity
     :ivar target_column_name: Target column name: This is prediction values column. Also known as
      label column name in context of classification tasks.
     :vartype target_column_name: str
     :ivar training_data: [Required] Training data input. Required.
-    :vartype training_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar featurization_settings: Featurization inputs needed for AutoML job.
-    :vartype featurization_settings: ~arm_ml_service.models.NlpVerticalFeaturizationSettings
+    :vartype featurization_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NlpVerticalFeaturizationSettings
     :ivar limit_settings: Execution constraints for AutoMLJob.
-    :vartype limit_settings: ~arm_ml_service.models.NlpVerticalLimitSettings
+    :vartype limit_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NlpVerticalLimitSettings
     :ivar validation_data: Validation data inputs.
-    :vartype validation_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar primary_metric: Primary metric for Text-Classification-Multilabel task. Currently only
      Accuracy is supported as primary metric, hence user need not set it explicitly. Known values
      are: "AUCWeighted", "Accuracy", "NormMacroRecall", "AveragePrecisionScoreWeighted",
      "PrecisionScoreWeighted", and "IOU".
-    :vartype primary_metric: str or ~arm_ml_service.models.ClassificationMultilabelPrimaryMetrics
+    :vartype primary_metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ClassificationMultilabelPrimaryMetrics
     :ivar task_type: [Required] Task type for AutoMLJob. Required. Multilabel classification task
      assigns each sample to a group (zero or more) of target labels.
-    :vartype task_type: str or ~arm_ml_service.models.TEXT_CLASSIFICATION_MULTILABEL
+    :vartype task_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.TEXT_CLASSIFICATION_MULTILABEL
     """
 
     featurization_settings: Optional["_models.NlpVerticalFeaturizationSettings"] = rest_field(
@@ -23046,26 +27319,29 @@ class TextNer(AutoMLVertical, discriminator="TextNER"):
 
     :ivar log_verbosity: Enum for setting log verbosity. Known values are: "NotSet", "Debug",
      "Info", "Warning", "Error", and "Critical".
-    :vartype log_verbosity: str or ~arm_ml_service.models.LogVerbosity
+    :vartype log_verbosity: str or ~azure.ai.ml._restclient.arm_ml_service.models.LogVerbosity
     :ivar target_column_name: Target column name: This is prediction values column. Also known as
      label column name in context of classification tasks.
     :vartype target_column_name: str
     :ivar training_data: [Required] Training data input. Required.
-    :vartype training_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype training_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar featurization_settings: Featurization inputs needed for AutoML job.
-    :vartype featurization_settings: ~arm_ml_service.models.NlpVerticalFeaturizationSettings
+    :vartype featurization_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NlpVerticalFeaturizationSettings
     :ivar limit_settings: Execution constraints for AutoMLJob.
-    :vartype limit_settings: ~arm_ml_service.models.NlpVerticalLimitSettings
+    :vartype limit_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.NlpVerticalLimitSettings
     :ivar validation_data: Validation data inputs.
-    :vartype validation_data: ~arm_ml_service.models.MLTableJobInput
+    :vartype validation_data: ~azure.ai.ml._restclient.arm_ml_service.models.MLTableJobInput
     :ivar primary_metric: Primary metric for Text-NER task. Only 'Accuracy' is supported for
      Text-NER, so user need not set this explicitly. Known values are: "AUCWeighted", "Accuracy",
      "NormMacroRecall", "AveragePrecisionScoreWeighted", and "PrecisionScoreWeighted".
-    :vartype primary_metric: str or ~arm_ml_service.models.ClassificationPrimaryMetrics
+    :vartype primary_metric: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ClassificationPrimaryMetrics
     :ivar task_type: [Required] Task type for AutoMLJob. Required. Text Named Entity Recognition
      a.k.a. TextNER. Named Entity Recognition (NER) is the ability to take free-form text and
      identify the occurrences of entities such as people, locations, organizations, and more.
-    :vartype task_type: str or ~arm_ml_service.models.TEXT_NER
+    :vartype task_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.TEXT_NER
     """
 
     featurization_settings: Optional["_models.NlpVerticalFeaturizationSettings"] = rest_field(
@@ -23151,7 +27427,8 @@ class TopNFeaturesByAttribution(MonitoringFeatureFilterBase, discriminator="TopN
     :ivar filter_type: [Required] Specifies the feature filter to leverage when selecting features
      to calculate metrics over. Required. Only includes the top contributing features, measured by
      feature attribution.
-    :vartype filter_type: str or ~arm_ml_service.models.TOP_N_BY_ATTRIBUTION
+    :vartype filter_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.TOP_N_BY_ATTRIBUTION
     """
 
     top: Optional[int] = rest_field(visibility=["read", "create"])
@@ -23190,14 +27467,14 @@ class TrialComponent(_Model):
     :vartype command: str
     :ivar distribution: Distribution configuration of the job. If set, this should be one of Mpi,
      Tensorflow, PyTorch, or null.
-    :vartype distribution: ~arm_ml_service.models.DistributionConfiguration
+    :vartype distribution: ~azure.ai.ml._restclient.arm_ml_service.models.DistributionConfiguration
     :ivar environment_id: [Required] The ARM resource ID of the Environment specification for the
      job. Required.
     :vartype environment_id: str
     :ivar environment_variables: Environment variables included in the job.
     :vartype environment_variables: dict[str, str]
     :ivar resources: Compute Resource configuration for the job.
-    :vartype resources: ~arm_ml_service.models.JobResourceConfiguration
+    :vartype resources: ~azure.ai.ml._restclient.arm_ml_service.models.JobResourceConfiguration
     """
 
     code_id: Optional[str] = rest_field(name="codeId", visibility=["read", "create"])
@@ -23246,11 +27523,11 @@ class TritonModelJobInput(JobInput, discriminator="triton_model"):
     :vartype description: str
     :ivar mode: Enum to determine the input data delivery mode. Known values are: "ReadOnlyMount",
      "ReadWriteMount", "Download", "Direct", "EvalMount", and "EvalDownload".
-    :vartype mode: str or ~arm_ml_service.models.InputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.InputDeliveryMode
     :ivar uri: [Required] Input Asset URI. Required.
     :vartype uri: str
     :ivar job_input_type: [Required] Specifies the type of job. Required. TRITON_MODEL.
-    :vartype job_input_type: str or ~arm_ml_service.models.TRITON_MODEL
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.TRITON_MODEL
     """
 
     mode: Optional[Union[str, "_models.InputDeliveryMode"]] = rest_field(visibility=["read", "create"])
@@ -23291,11 +27568,11 @@ class TritonModelJobOutput(JobOutput, discriminator="triton_model"):
     :vartype asset_name: str
     :ivar mode: Output data delivery mode enums. Known values are: "ReadWriteMount", "Upload", and
      "Direct".
-    :vartype mode: str or ~arm_ml_service.models.OutputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.OutputDeliveryMode
     :ivar uri: Output Asset URI.
     :vartype uri: str
     :ivar job_output_type: [Required] Specifies the type of job. Required. TRITON_MODEL.
-    :vartype job_output_type: str or ~arm_ml_service.models.TRITON_MODEL
+    :vartype job_output_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.TRITON_MODEL
     """
 
     asset_name: Optional[str] = rest_field(name="assetName", visibility=["read", "create", "update", "delete", "query"])
@@ -23341,7 +27618,8 @@ class TruncationSelectionPolicy(EarlyTerminationPolicy, discriminator="Truncatio
     :ivar truncation_percentage: The percentage of runs to cancel at each evaluation interval.
     :vartype truncation_percentage: int
     :ivar policy_type: [Required] Name of policy configuration. Required. TRUNCATION_SELECTION.
-    :vartype policy_type: str or ~arm_ml_service.models.TRUNCATION_SELECTION
+    :vartype policy_type: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.TRUNCATION_SELECTION
     """
 
     truncation_percentage: Optional[int] = rest_field(
@@ -23382,11 +27660,11 @@ class UpdateWorkspaceQuotas(_Model):
     :ivar limit: Limit.
     :vartype limit: int
     :ivar unit: An enum describing the unit of quota measurement. "Count"
-    :vartype unit: str or ~arm_ml_service.models.QuotaUnit
+    :vartype unit: str or ~azure.ai.ml._restclient.arm_ml_service.models.QuotaUnit
     :ivar status: Update Workspace Quota Status. Known values are: "Undefined", "Success",
      "Failure", "InvalidQuotaBelowClusterMinimum", "InvalidQuotaExceedsSubscriptionLimit",
      "InvalidVMFamilyName", "OperationNotSupportedForSku", and "OperationNotEnabledForRegion".
-    :vartype status: str or ~arm_ml_service.models.Status
+    :vartype status: str or ~azure.ai.ml._restclient.arm_ml_service.models.Status
     """
 
     id: Optional[str] = rest_field(visibility=["read"])
@@ -23424,7 +27702,7 @@ class UpdateWorkspaceQuotasResult(_Model):
     """The result of update workspace quota.
 
     :ivar value: The list of workspace quota update result.
-    :vartype value: list[~arm_ml_service.models.UpdateWorkspaceQuotas]
+    :vartype value: list[~azure.ai.ml._restclient.arm_ml_service.models.UpdateWorkspaceQuotas]
     :ivar next_link: The URI to fetch the next page of workspace quota update result. Call
      ListNext() with this to fetch the next page of Workspace Quota update result.
     :vartype next_link: str
@@ -23455,7 +27733,7 @@ class UriFileDataVersion(DataVersionBaseProperties, discriminator="uri_file"):
      <https://go.microsoft.com/fwlink/?linkid=2202330>`_. Required.
     :vartype data_uri: str
     :ivar data_type: [Required] Specifies the type of data. Required. URI_FILE.
-    :vartype data_type: str or ~arm_ml_service.models.URI_FILE
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.URI_FILE
     """
 
     data_type: Literal[DataType.URI_FILE] = rest_discriminator(name="dataType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -23492,11 +27770,11 @@ class UriFileJobInput(JobInput, discriminator="uri_file"):
     :vartype description: str
     :ivar mode: Enum to determine the input data delivery mode. Known values are: "ReadOnlyMount",
      "ReadWriteMount", "Download", "Direct", "EvalMount", and "EvalDownload".
-    :vartype mode: str or ~arm_ml_service.models.InputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.InputDeliveryMode
     :ivar uri: [Required] Input Asset URI. Required.
     :vartype uri: str
     :ivar job_input_type: [Required] Specifies the type of job. Required. URI_FILE.
-    :vartype job_input_type: str or ~arm_ml_service.models.URI_FILE
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.URI_FILE
     """
 
     mode: Optional[Union[str, "_models.InputDeliveryMode"]] = rest_field(visibility=["read", "create"])
@@ -23537,11 +27815,11 @@ class UriFileJobOutput(JobOutput, discriminator="uri_file"):
     :vartype asset_name: str
     :ivar mode: Output data delivery mode enums. Known values are: "ReadWriteMount", "Upload", and
      "Direct".
-    :vartype mode: str or ~arm_ml_service.models.OutputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.OutputDeliveryMode
     :ivar uri: Output Asset URI.
     :vartype uri: str
     :ivar job_output_type: [Required] Specifies the type of job. Required. URI_FILE.
-    :vartype job_output_type: str or ~arm_ml_service.models.URI_FILE
+    :vartype job_output_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.URI_FILE
     """
 
     asset_name: Optional[str] = rest_field(name="assetName", visibility=["read", "create", "update", "delete", "query"])
@@ -23594,7 +27872,7 @@ class UriFolderDataVersion(DataVersionBaseProperties, discriminator="uri_folder"
      <https://go.microsoft.com/fwlink/?linkid=2202330>`_. Required.
     :vartype data_uri: str
     :ivar data_type: [Required] Specifies the type of data. Required. URI_FOLDER.
-    :vartype data_type: str or ~arm_ml_service.models.URI_FOLDER
+    :vartype data_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.URI_FOLDER
     """
 
     data_type: Literal[DataType.URI_FOLDER] = rest_discriminator(name="dataType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -23631,11 +27909,11 @@ class UriFolderJobInput(JobInput, discriminator="uri_folder"):
     :vartype description: str
     :ivar mode: Enum to determine the input data delivery mode. Known values are: "ReadOnlyMount",
      "ReadWriteMount", "Download", "Direct", "EvalMount", and "EvalDownload".
-    :vartype mode: str or ~arm_ml_service.models.InputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.InputDeliveryMode
     :ivar uri: [Required] Input Asset URI. Required.
     :vartype uri: str
     :ivar job_input_type: [Required] Specifies the type of job. Required. URI_FOLDER.
-    :vartype job_input_type: str or ~arm_ml_service.models.URI_FOLDER
+    :vartype job_input_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.URI_FOLDER
     """
 
     mode: Optional[Union[str, "_models.InputDeliveryMode"]] = rest_field(visibility=["read", "create"])
@@ -23676,11 +27954,11 @@ class UriFolderJobOutput(JobOutput, discriminator="uri_folder"):
     :vartype asset_name: str
     :ivar mode: Output data delivery mode enums. Known values are: "ReadWriteMount", "Upload", and
      "Direct".
-    :vartype mode: str or ~arm_ml_service.models.OutputDeliveryMode
+    :vartype mode: str or ~azure.ai.ml._restclient.arm_ml_service.models.OutputDeliveryMode
     :ivar uri: Output Asset URI.
     :vartype uri: str
     :ivar job_output_type: [Required] Specifies the type of job. Required. URI_FOLDER.
-    :vartype job_output_type: str or ~arm_ml_service.models.URI_FOLDER
+    :vartype job_output_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.URI_FOLDER
     """
 
     asset_name: Optional[str] = rest_field(name="assetName", visibility=["read", "create", "update", "delete", "query"])
@@ -23725,13 +28003,13 @@ class Usage(_Model):
     :ivar type: Specifies the resource type.
     :vartype type: str
     :ivar unit: An enum describing the unit of usage measurement. "Count"
-    :vartype unit: str or ~arm_ml_service.models.UsageUnit
+    :vartype unit: str or ~azure.ai.ml._restclient.arm_ml_service.models.UsageUnit
     :ivar current_value: The current usage of the resource.
     :vartype current_value: int
     :ivar limit: The maximum permitted usage of the resource.
     :vartype limit: int
     :ivar name: The name of the type of usage.
-    :vartype name: ~arm_ml_service.models.UsageName
+    :vartype name: ~azure.ai.ml._restclient.arm_ml_service.models.UsageName
     """
 
     id: Optional[str] = rest_field(visibility=["read"])
@@ -23748,6 +28026,48 @@ class Usage(_Model):
     """The maximum permitted usage of the resource."""
     name: Optional["_models.UsageName"] = rest_field(visibility=["read"])
     """The name of the type of usage."""
+
+
+class UsageAndQuotaDetails(_Model):
+    """UsageAndQuotaDetails.
+
+    :ivar model_collection: Model collection name.
+    :vartype model_collection: str
+    :ivar quota: The total number of quota.
+    :vartype quota: int
+    :ivar usage_details: Usage details for each deployment.
+    :vartype usage_details: list[~azure.ai.ml._restclient.arm_ml_service.models.PTUDeploymentUsage]
+    """
+
+    model_collection: Optional[str] = rest_field(
+        name="modelCollection", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Model collection name."""
+    quota: Optional[int] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """The total number of quota."""
+    usage_details: Optional[list["_models.PTUDeploymentUsage"]] = rest_field(
+        name="usageDetails", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Usage details for each deployment."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        model_collection: Optional[str] = None,
+        quota: Optional[int] = None,
+        usage_details: Optional[list["_models.PTUDeploymentUsage"]] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
 
 
 class UsageName(_Model):
@@ -23827,7 +28147,7 @@ class UserIdentity(IdentityConfiguration, discriminator="UserIdentity"):
 
     :ivar identity_type: [Required] Specifies the type of identity framework. Required.
      USER_IDENTITY.
-    :vartype identity_type: str or ~arm_ml_service.models.USER_IDENTITY
+    :vartype identity_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.USER_IDENTITY
     """
 
     identity_type: Literal[IdentityConfigurationType.USER_IDENTITY] = rest_discriminator(name="identityType", visibility=["read", "create", "update", "delete", "query"])  # type: ignore
@@ -23877,7 +28197,7 @@ class UsernamePasswordAuthTypeWorkspaceConnectionProperties(
      "BingLLMSearch", "Serverless", "ManagedOnlineEndpoint", "ApiManagement", "ModelGateway",
      "GroundingWithBingSearch", "GroundingWithCustomSearch", "Sharepoint", "MicrosoftFabric",
      "PowerPlatformEnvironment", and "RemoteA2A".
-    :vartype category: str or ~arm_ml_service.models.ConnectionCategory
+    :vartype category: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionCategory
     :ivar created_by_workspace_arm_id:
     :vartype created_by_workspace_arm_id: str
     :ivar error:
@@ -23886,15 +28206,16 @@ class UsernamePasswordAuthTypeWorkspaceConnectionProperties(
     :vartype expiry_time: ~datetime.datetime
     :ivar group: Group based on connection category. Known values are: "Azure", "AzureAI",
      "Database", "NoSQL", "File", "GenericProtocol", and "ServicesAndApps".
-    :vartype group: str or ~arm_ml_service.models.ConnectionGroup
+    :vartype group: str or ~azure.ai.ml._restclient.arm_ml_service.models.ConnectionGroup
     :ivar is_shared_to_all:
     :vartype is_shared_to_all: bool
     :ivar metadata: Store user metadata for this connection.
     :vartype metadata: dict[str, str]
     :ivar pe_requirement: Known values are: "Required", "NotRequired", and "NotApplicable".
-    :vartype pe_requirement: str or ~arm_ml_service.models.ManagedPERequirement
+    :vartype pe_requirement: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPERequirement
     :ivar pe_status: Known values are: "Inactive", "Active", and "NotApplicable".
-    :vartype pe_status: str or ~arm_ml_service.models.ManagedPEStatus
+    :vartype pe_status: str or ~azure.ai.ml._restclient.arm_ml_service.models.ManagedPEStatus
     :ivar shared_user_list:
     :vartype shared_user_list: list[str]
     :ivar target:
@@ -23902,9 +28223,10 @@ class UsernamePasswordAuthTypeWorkspaceConnectionProperties(
     :ivar use_workspace_managed_identity:
     :vartype use_workspace_managed_identity: bool
     :ivar credentials:
-    :vartype credentials: ~arm_ml_service.models.WorkspaceConnectionUsernamePassword
+    :vartype credentials:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceConnectionUsernamePassword
     :ivar auth_type: Authentication type of the connection target. Required. USERNAME_PASSWORD.
-    :vartype auth_type: str or ~arm_ml_service.models.USERNAME_PASSWORD
+    :vartype auth_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.USERNAME_PASSWORD
     """
 
     credentials: Optional["_models.WorkspaceConnectionUsernamePassword"] = rest_field(
@@ -23950,7 +28272,8 @@ class VirtualMachine(Compute, discriminator="VirtualMachine"):
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Known values are: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar description: The description of the Machine Learning compute.
     :vartype description: str
     :ivar created_on: The time at which the compute was created.
@@ -23960,7 +28283,8 @@ class VirtualMachine(Compute, discriminator="VirtualMachine"):
     :ivar resource_id: ARM resource id of the underlying compute.
     :vartype resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
-    :vartype provisioning_errors: list[~arm_ml_service.models.ErrorResponse]
+    :vartype provisioning_errors:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.ErrorResponse]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -23968,9 +28292,10 @@ class VirtualMachine(Compute, discriminator="VirtualMachine"):
      and AAD exclusively for authentication.
     :vartype disable_local_auth: bool
     :ivar properties:
-    :vartype properties: ~arm_ml_service.models.VirtualMachineSchemaProperties
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.VirtualMachineSchemaProperties
     :ivar compute_type: The type of compute. Required. VIRTUAL_MACHINE.
-    :vartype compute_type: str or ~arm_ml_service.models.VIRTUAL_MACHINE
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.VIRTUAL_MACHINE
     """
 
     properties: Optional["_models.VirtualMachineSchemaProperties"] = rest_field(
@@ -24042,7 +28367,8 @@ class VirtualMachineSchemaProperties(_Model):
     :ivar address: Public IP address of the virtual machine.
     :vartype address: str
     :ivar administrator_account: Admin credentials for virtual machine.
-    :vartype administrator_account: ~arm_ml_service.models.VirtualMachineSshCredentials
+    :vartype administrator_account:
+     ~azure.ai.ml._restclient.arm_ml_service.models.VirtualMachineSshCredentials
     :ivar is_notebook_instance_compute: Indicates whether this compute will be used for running
      notebooks.
     :vartype is_notebook_instance_compute: bool
@@ -24096,9 +28422,10 @@ class VirtualMachineSecrets(ComputeSecrets, discriminator="VirtualMachine"):
     """Secrets related to a Machine Learning compute based on AKS.
 
     :ivar administrator_account: Admin credentials for virtual machine.
-    :vartype administrator_account: ~arm_ml_service.models.VirtualMachineSshCredentials
+    :vartype administrator_account:
+     ~azure.ai.ml._restclient.arm_ml_service.models.VirtualMachineSshCredentials
     :ivar compute_type: The type of compute. Required. VIRTUAL_MACHINE.
-    :vartype compute_type: str or ~arm_ml_service.models.VIRTUAL_MACHINE
+    :vartype compute_type: str or ~azure.ai.ml._restclient.arm_ml_service.models.VIRTUAL_MACHINE
     """
 
     administrator_account: Optional["_models.VirtualMachineSshCredentials"] = rest_field(
@@ -24149,7 +28476,7 @@ class VirtualMachineSize(_Model):
     :ivar premium_io: Premium IO supported.
     :vartype premium_io: bool
     :ivar estimated_vm_prices: Estimated VM prices.
-    :vartype estimated_vm_prices: ~arm_ml_service.models.EstimatedVMPrices
+    :vartype estimated_vm_prices: ~azure.ai.ml._restclient.arm_ml_service.models.EstimatedVMPrices
     :ivar supported_compute_types: Supported Compute Types.
     :vartype supported_compute_types: list[str]
     """
@@ -24204,7 +28531,7 @@ class VirtualMachineSizeListResult(_Model):
     """The List Virtual Machine size operation response.
 
     :ivar value: The list of virtual machine sizes supported by AmlCompute.
-    :vartype value: list[~arm_ml_service.models.VirtualMachineSize]
+    :vartype value: list[~azure.ai.ml._restclient.arm_ml_service.models.VirtualMachineSize]
     """
 
     value: Optional[list["_models.VirtualMachineSize"]] = rest_field(
@@ -24282,7 +28609,7 @@ class VolumeDefinition(_Model):
 
     :ivar type: Type of Volume Definition. Known values are: "bind", "volume", "tmpfs", and
      "npipe".
-    :vartype type: str or ~arm_ml_service.models.VolumeDefinitionType
+    :vartype type: str or ~azure.ai.ml._restclient.arm_ml_service.models.VolumeDefinitionType
     :ivar read_only: Indicate whether to mount volume as readOnly. Default value for this is false.
     :vartype read_only: bool
     :ivar source: Source of the mount. For bind mounts this is the host path.
@@ -24292,11 +28619,11 @@ class VolumeDefinition(_Model):
     :ivar consistency: Consistency of the volume.
     :vartype consistency: str
     :ivar bind: Bind Options of the mount.
-    :vartype bind: ~arm_ml_service.models.BindOptions
+    :vartype bind: ~azure.ai.ml._restclient.arm_ml_service.models.BindOptions
     :ivar volume: Volume Options of the mount.
-    :vartype volume: ~arm_ml_service.models.VolumeOptions
+    :vartype volume: ~azure.ai.ml._restclient.arm_ml_service.models.VolumeOptions
     :ivar tmpfs: tmpfs option of the mount.
-    :vartype tmpfs: ~arm_ml_service.models.TmpfsOptions
+    :vartype tmpfs: ~azure.ai.ml._restclient.arm_ml_service.models.TmpfsOptions
     """
 
     type: Optional[Union[str, "_models.VolumeDefinitionType"]] = rest_field(
@@ -24371,6 +28698,176 @@ class VolumeOptions(_Model):
         super().__init__(*args, **kwargs)
 
 
+class VulnerabilityDetails(_Model):
+    """VulnerabilityDetails.
+
+    :ivar cve: CVE id.
+    :vartype cve: str
+    :ivar cve_url: CVE url.
+    :vartype cve_url: str
+    :ivar due_date: DueDate for vulnerability. Provider data or PublishDate + 30 days.
+    :vartype due_date: ~datetime.datetime
+    :ivar id: Vulnerability ID.
+    :vartype id: str
+    :ivar package_details: Dependency details.
+    :vartype package_details: list[~azure.ai.ml._restclient.arm_ml_service.models.PackageDetails]
+    :ivar patchable: Indicates if there is a known patch for vulnerability.
+    :vartype patchable: bool
+    :ivar provider_id: Vulnerability ID from provider.
+    :vartype provider_id: str
+    :ivar publish_date: Vulnerability publish date.
+    :vartype publish_date: ~datetime.datetime
+    :ivar risk: Vulnerability Risk value. Known values are: "UNKNOWN", "CRITICAL", "HIGH",
+     "MEDIUM", and "LOW".
+    :vartype risk: str or ~azure.ai.ml._restclient.arm_ml_service.models.VulnerabilityRisk
+    :ivar solution: Vulnerability description.
+    :vartype solution: str
+    :ivar title: Vulnerability name.
+    :vartype title: str
+    :ivar vendor_id: Vendor vulnerability ID (USN, GH Advisory, etc).
+    :vartype vendor_id: str
+    :ivar vendor_url: Vendor vulnerability url.
+    :vartype vendor_url: str
+    """
+
+    cve: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """CVE id."""
+    cve_url: Optional[str] = rest_field(name="cveUrl", visibility=["read", "create", "update", "delete", "query"])
+    """CVE url."""
+    due_date: Optional[datetime.datetime] = rest_field(
+        name="dueDate", visibility=["read", "create", "update", "delete", "query"], format="rfc3339"
+    )
+    """DueDate for vulnerability. Provider data or PublishDate + 30 days."""
+    id: Optional[str] = rest_field(visibility=["read"])
+    """Vulnerability ID."""
+    package_details: Optional[list["_models.PackageDetails"]] = rest_field(
+        name="packageDetails", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Dependency details."""
+    patchable: Optional[bool] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Indicates if there is a known patch for vulnerability."""
+    provider_id: Optional[str] = rest_field(
+        name="providerId", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Vulnerability ID from provider."""
+    publish_date: Optional[datetime.datetime] = rest_field(
+        name="publishDate", visibility=["read", "create", "update", "delete", "query"], format="rfc3339"
+    )
+    """Vulnerability publish date."""
+    risk: Optional[Union[str, "_models.VulnerabilityRisk"]] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Vulnerability Risk value. Known values are: \"UNKNOWN\", \"CRITICAL\", \"HIGH\", \"MEDIUM\",
+     and \"LOW\"."""
+    solution: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Vulnerability description."""
+    title: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Vulnerability name."""
+    vendor_id: Optional[str] = rest_field(name="vendorId", visibility=["read", "create", "update", "delete", "query"])
+    """Vendor vulnerability ID (USN, GH Advisory, etc)."""
+    vendor_url: Optional[str] = rest_field(name="vendorUrl", visibility=["read", "create", "update", "delete", "query"])
+    """Vendor vulnerability url."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        cve: Optional[str] = None,
+        cve_url: Optional[str] = None,
+        due_date: Optional[datetime.datetime] = None,
+        package_details: Optional[list["_models.PackageDetails"]] = None,
+        patchable: Optional[bool] = None,
+        provider_id: Optional[str] = None,
+        publish_date: Optional[datetime.datetime] = None,
+        risk: Optional[Union[str, "_models.VulnerabilityRisk"]] = None,
+        solution: Optional[str] = None,
+        title: Optional[str] = None,
+        vendor_id: Optional[str] = None,
+        vendor_url: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
+class VulnerabilityFindings(_Model):
+    """VulnerabilityFindings.
+
+    :ivar asset_id: AssetId (Image digest).
+    :vartype asset_id: str
+    :ivar critical_findings_count: Number of critical findings.
+    :vartype critical_findings_count: int
+    :ivar data: List of vulnerability findings.
+    :vartype data: list[~azure.ai.ml._restclient.arm_ml_service.models.VulnerabilityDetails]
+    :ivar generated_time: Time the report was generated.
+    :vartype generated_time: ~datetime.datetime
+    :ivar high_findings_count: Number of high findings.
+    :vartype high_findings_count: int
+    :ivar last_scan_date: Scan result date.
+    :vartype last_scan_date: ~datetime.datetime
+    :ivar scanner: Vulnerability scanner name.
+    :vartype scanner: str
+    :ivar source: Data source (internal).
+    :vartype source: str
+    :ivar total_findings_count: Total findings count.
+    :vartype total_findings_count: int
+    """
+
+    asset_id: Optional[str] = rest_field(name="assetId", visibility=["read", "create", "update", "delete", "query"])
+    """AssetId (Image digest)."""
+    critical_findings_count: Optional[int] = rest_field(name="criticalFindingsCount", visibility=["read"])
+    """Number of critical findings."""
+    data: Optional[list["_models.VulnerabilityDetails"]] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
+    """List of vulnerability findings."""
+    generated_time: Optional[datetime.datetime] = rest_field(
+        name="generatedTime", visibility=["read", "create", "update", "delete", "query"], format="rfc3339"
+    )
+    """Time the report was generated."""
+    high_findings_count: Optional[int] = rest_field(name="highFindingsCount", visibility=["read"])
+    """Number of high findings."""
+    last_scan_date: Optional[datetime.datetime] = rest_field(
+        name="lastScanDate", visibility=["read", "create", "update", "delete", "query"], format="rfc3339"
+    )
+    """Scan result date."""
+    scanner: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Vulnerability scanner name."""
+    source: Optional[str] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    """Data source (internal)."""
+    total_findings_count: Optional[int] = rest_field(name="totalFindingsCount", visibility=["read"])
+    """Total findings count."""
+
+    @overload
+    def __init__(
+        self,
+        *,
+        asset_id: Optional[str] = None,
+        data: Optional[list["_models.VulnerabilityDetails"]] = None,
+        generated_time: Optional[datetime.datetime] = None,
+        last_scan_date: Optional[datetime.datetime] = None,
+        scanner: Optional[str] = None,
+        source: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(self, mapping: Mapping[str, Any]) -> None:
+        """
+        :param mapping: raw JSON to initialize the model.
+        :type mapping: Mapping[str, Any]
+        """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+
 class Workspace(ProxyResource):
     """An object that represents a machine learning workspace.
 
@@ -24384,18 +28881,18 @@ class Workspace(ProxyResource):
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: Additional attributes of the entity. Required.
-    :vartype properties: ~arm_ml_service.models.WorkspaceProperties
+    :vartype properties: ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceProperties
     :ivar identity: The managed service identities assigned to this resource.
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     :ivar kind:
     :vartype kind: str
     :ivar location:
     :vartype location: str
     :ivar sku: Optional. This field is required to be implemented by the RP because AML is
      supporting more than one tier.
-    :vartype sku: ~arm_ml_service.models.Sku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
     :ivar tags:
     :vartype tags: dict[str, str]
     """
@@ -24414,23 +28911,32 @@ class Workspace(ProxyResource):
     tags: Optional[dict[str, str]] = rest_field(visibility=["read", "create", "update", "delete", "query"])
 
     __flattened_items = [
+        "agents_endpoint_uri",
         "allow_public_access_when_behind_vnet",
+        "allow_role_assignment_on_rg",
         "application_insights",
         "associated_workspaces",
+        "container_registries",
         "container_registry",
         "description",
         "discovery_url",
         "enable_data_isolation",
         "enable_service_side_cmk_encryption",
+        "enable_simplified_cmk",
+        "enable_software_bill_of_materials",
         "encryption",
+        "existing_workspaces",
         "feature_store_settings",
         "friendly_name",
         "hbi_workspace",
         "hub_resource_id",
         "image_build_compute",
+        "ip_allowlist",
         "key_vault",
+        "key_vaults",
         "managed_network",
         "ml_flow_tracking_uri",
+        "network_acls",
         "notebook_info",
         "primary_user_assigned_identity",
         "private_endpoint_connections",
@@ -24442,7 +28948,9 @@ class Workspace(ProxyResource):
         "service_managed_resources_settings",
         "service_provisioned_resource_group",
         "shared_private_link_resources",
+        "soft_delete_retention_in_days",
         "storage_account",
+        "storage_accounts",
         "storage_hns_enabled",
         "system_datastores_auth_mode",
         "tenant_id",
@@ -24727,9 +29235,10 @@ class WorkspaceConnectionPropertiesV2BasicResource(ProxyResource):  # pylint: di
     :vartype type: str
     :ivar system_data: Azure Resource Manager metadata containing createdBy and modifiedBy
      information.
-    :vartype system_data: ~arm_ml_service.models.SystemData
+    :vartype system_data: ~azure.ai.ml._restclient.arm_ml_service.models.SystemData
     :ivar properties: Required.
-    :vartype properties: ~arm_ml_service.models.WorkspaceConnectionPropertiesV2
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceConnectionPropertiesV2
     """
 
     properties: "_models.WorkspaceConnectionPropertiesV2" = rest_field(
@@ -24824,7 +29333,8 @@ class WorkspaceConnectionUpdateParameter(_Model):
 
     :ivar properties: The properties that the machine learning workspace connection will be updated
      with.
-    :vartype properties: ~arm_ml_service.models.WorkspaceConnectionPropertiesV2
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceConnectionPropertiesV2
     """
 
     properties: Optional["_models.WorkspaceConnectionPropertiesV2"] = rest_field(
@@ -24945,13 +29455,20 @@ class WorkspacePrivateEndpointResource(_Model):
 class WorkspaceProperties(_Model):
     """The properties of a machine learning workspace.
 
+    :ivar agents_endpoint_uri: The URI of agents endpoint associated with this workspace.
+    :vartype agents_endpoint_uri: str
     :ivar allow_public_access_when_behind_vnet: The flag to indicate whether to allow public access
      when behind VNet.
     :vartype allow_public_access_when_behind_vnet: bool
+    :ivar allow_role_assignment_on_rg: The flag to indicate whether we will do role assignment for
+     the workspace MSI on resource group level.
+    :vartype allow_role_assignment_on_rg: bool
     :ivar application_insights: ARM id of the application insights associated with this workspace.
     :vartype application_insights: str
     :ivar associated_workspaces:
     :vartype associated_workspaces: list[str]
+    :ivar container_registries:
+    :vartype container_registries: list[str]
     :ivar container_registry: ARM id of the container registry associated with this workspace.
     :vartype container_registry: str
     :ivar description: The description of this workspace.
@@ -24963,10 +29480,19 @@ class WorkspaceProperties(_Model):
     :vartype enable_data_isolation: bool
     :ivar enable_service_side_cmk_encryption:
     :vartype enable_service_side_cmk_encryption: bool
+    :ivar enable_simplified_cmk: Flag to tell if simplified CMK should be enabled for this
+     workspace.
+    :vartype enable_simplified_cmk: bool
+    :ivar enable_software_bill_of_materials: Flag to tell if SoftwareBillOfMaterials should be
+     enabled for this workspace.
+    :vartype enable_software_bill_of_materials: bool
     :ivar encryption:
-    :vartype encryption: ~arm_ml_service.models.EncryptionProperty
+    :vartype encryption: ~azure.ai.ml._restclient.arm_ml_service.models.EncryptionProperty
+    :ivar existing_workspaces:
+    :vartype existing_workspaces: list[str]
     :ivar feature_store_settings: Settings for feature store type workspace.
-    :vartype feature_store_settings: ~arm_ml_service.models.FeatureStoreSettings
+    :vartype feature_store_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.FeatureStoreSettings
     :ivar friendly_name: The friendly name for this workspace. This name in mutable.
     :vartype friendly_name: str
     :ivar hbi_workspace: The flag to signal HBI data in the workspace and reduce diagnostic data
@@ -24976,21 +29502,28 @@ class WorkspaceProperties(_Model):
     :vartype hub_resource_id: str
     :ivar image_build_compute: The compute name for image build.
     :vartype image_build_compute: str
+    :ivar ip_allowlist: The list of IPv4  addresses that are allowed to access the workspace.
+    :vartype ip_allowlist: list[str]
     :ivar key_vault: ARM id of the key vault associated with this workspace. This cannot be changed
      once the workspace has been created.
     :vartype key_vault: str
+    :ivar key_vaults:
+    :vartype key_vaults: list[str]
     :ivar managed_network:
-    :vartype managed_network: ~arm_ml_service.models.ManagedNetworkSettings
+    :vartype managed_network: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedNetworkSettings
     :ivar ml_flow_tracking_uri: The URI associated with this workspace that machine learning flow
      must point at to set up tracking.
     :vartype ml_flow_tracking_uri: str
+    :ivar network_acls: A set of rules governing the network accessibility of the workspace.
+    :vartype network_acls: ~azure.ai.ml._restclient.arm_ml_service.models.NetworkAcls
     :ivar notebook_info: The notebook info of Azure ML workspace.
-    :vartype notebook_info: ~arm_ml_service.models.NotebookResourceInfo
+    :vartype notebook_info: ~azure.ai.ml._restclient.arm_ml_service.models.NotebookResourceInfo
     :ivar primary_user_assigned_identity: The user assigned identity resource id that represents
      the workspace identity.
     :vartype primary_user_assigned_identity: str
     :ivar private_endpoint_connections: The list of private endpoint connections in the workspace.
-    :vartype private_endpoint_connections: list[~arm_ml_service.models.PrivateEndpointConnection]
+    :vartype private_endpoint_connections:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.PrivateEndpointConnection]
     :ivar private_link_count: Count of private connections in the workspace.
     :vartype private_link_count: int
     :ivar provision_network_now: Set to trigger the provisioning of the managed VNet with the
@@ -25000,51 +29533,71 @@ class WorkspaceProperties(_Model):
     :ivar provisioning_state: The current deployment state of workspace resource. The
      provisioningState is to indicate states for resource provisioning. Known values are: "Unknown",
      "Updating", "Creating", "Deleting", "Succeeded", "Failed", and "Canceled".
-    :vartype provisioning_state: str or ~arm_ml_service.models.ProvisioningState
+    :vartype provisioning_state: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.ProvisioningState
     :ivar public_network_access: Whether requests from Public Network are allowed. Known values
      are: "Enabled" and "Disabled".
-    :vartype public_network_access: str or ~arm_ml_service.models.PublicNetworkAccessType
+    :vartype public_network_access: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.PublicNetworkAccessType
     :ivar serverless_compute_settings: Settings for serverless compute in a workspace.
-    :vartype serverless_compute_settings: ~arm_ml_service.models.ServerlessComputeSettings
+    :vartype serverless_compute_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessComputeSettings
     :ivar service_managed_resources_settings: The service managed resource settings.
     :vartype service_managed_resources_settings:
-     ~arm_ml_service.models.ServiceManagedResourcesSettings
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServiceManagedResourcesSettings
     :ivar service_provisioned_resource_group: The name of the managed resource group created by
      workspace RP in customer subscription if the workspace is CMK workspace.
     :vartype service_provisioned_resource_group: str
     :ivar shared_private_link_resources: The list of shared private link resources in this
      workspace.
-    :vartype shared_private_link_resources: list[~arm_ml_service.models.SharedPrivateLinkResource]
+    :vartype shared_private_link_resources:
+     list[~azure.ai.ml._restclient.arm_ml_service.models.SharedPrivateLinkResource]
+    :ivar soft_delete_retention_in_days: Retention time in days after workspace get soft deleted.
+    :vartype soft_delete_retention_in_days: int
     :ivar storage_account: ARM id of the storage account associated with this workspace. This
      cannot be changed once the workspace has been created.
     :vartype storage_account: str
+    :ivar storage_accounts:
+    :vartype storage_accounts: list[str]
     :ivar storage_hns_enabled: If the storage associated with the workspace has hierarchical
      namespace(HNS) enabled.
     :vartype storage_hns_enabled: bool
     :ivar system_datastores_auth_mode: The auth mode used for accessing the system datastores of
      the workspace. Known values are: "AccessKey", "Identity", and "UserDelegationSAS".
-    :vartype system_datastores_auth_mode: str or ~arm_ml_service.models.SystemDatastoresAuthMode
+    :vartype system_datastores_auth_mode: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.SystemDatastoresAuthMode
     :ivar tenant_id: The tenant id associated with this workspace.
     :vartype tenant_id: str
     :ivar v1_legacy_mode: Enabling v1_legacy_mode may prevent you from using features provided by
      the v2 API.
     :vartype v1_legacy_mode: bool
     :ivar workspace_hub_config: WorkspaceHub's configuration object.
-    :vartype workspace_hub_config: ~arm_ml_service.models.WorkspaceHubConfig
+    :vartype workspace_hub_config:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspaceHubConfig
     :ivar workspace_id: The immutable id associated with this workspace.
     :vartype workspace_id: str
     """
 
+    agents_endpoint_uri: Optional[str] = rest_field(name="agentsEndpointUri", visibility=["read"])
+    """The URI of agents endpoint associated with this workspace."""
     allow_public_access_when_behind_vnet: Optional[bool] = rest_field(
         name="allowPublicAccessWhenBehindVnet", visibility=["read", "create", "update", "delete", "query"]
     )
     """The flag to indicate whether to allow public access when behind VNet."""
+    allow_role_assignment_on_rg: Optional[bool] = rest_field(
+        name="allowRoleAssignmentOnRG", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The flag to indicate whether we will do role assignment for the workspace MSI on resource group
+     level."""
     application_insights: Optional[str] = rest_field(
         name="applicationInsights", visibility=["read", "create", "update", "delete", "query"]
     )
     """ARM id of the application insights associated with this workspace."""
     associated_workspaces: Optional[list[str]] = rest_field(
         name="associatedWorkspaces", visibility=["read", "create", "update", "delete", "query"]
+    )
+    container_registries: Optional[list[str]] = rest_field(
+        name="containerRegistries", visibility=["read", "create", "update", "delete", "query"]
     )
     container_registry: Optional[str] = rest_field(
         name="containerRegistry", visibility=["read", "create", "update", "delete", "query"]
@@ -25063,8 +29616,19 @@ class WorkspaceProperties(_Model):
     enable_service_side_cmk_encryption: Optional[bool] = rest_field(
         name="enableServiceSideCMKEncryption", visibility=["read", "create", "update", "delete", "query"]
     )
+    enable_simplified_cmk: Optional[bool] = rest_field(
+        name="enableSimplifiedCmk", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Flag to tell if simplified CMK should be enabled for this workspace."""
+    enable_software_bill_of_materials: Optional[bool] = rest_field(
+        name="enableSoftwareBillOfMaterials", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Flag to tell if SoftwareBillOfMaterials should be enabled for this workspace."""
     encryption: Optional["_models.EncryptionProperty"] = rest_field(
         visibility=["read", "create", "update", "delete", "query"]
+    )
+    existing_workspaces: Optional[list[str]] = rest_field(
+        name="existingWorkspaces", visibility=["read", "create", "update", "delete", "query"]
     )
     feature_store_settings: Optional["_models.FeatureStoreSettings"] = rest_field(
         name="featureStoreSettings", visibility=["read", "create", "update", "delete", "query"]
@@ -25086,15 +29650,26 @@ class WorkspaceProperties(_Model):
         name="imageBuildCompute", visibility=["read", "create", "update", "delete", "query"]
     )
     """The compute name for image build."""
+    ip_allowlist: Optional[list[str]] = rest_field(
+        name="ipAllowlist", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The list of IPv4  addresses that are allowed to access the workspace."""
     key_vault: Optional[str] = rest_field(name="keyVault", visibility=["read", "create", "update", "delete", "query"])
     """ARM id of the key vault associated with this workspace. This cannot be changed once the
      workspace has been created."""
+    key_vaults: Optional[list[str]] = rest_field(
+        name="keyVaults", visibility=["read", "create", "update", "delete", "query"]
+    )
     managed_network: Optional["_models.ManagedNetworkSettings"] = rest_field(
         name="managedNetwork", visibility=["read", "create", "update", "delete", "query"]
     )
     ml_flow_tracking_uri: Optional[str] = rest_field(name="mlFlowTrackingUri", visibility=["read"])
     """The URI associated with this workspace that machine learning flow must point at to set up
      tracking."""
+    network_acls: Optional["_models.NetworkAcls"] = rest_field(
+        name="networkAcls", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """A set of rules governing the network accessibility of the workspace."""
     notebook_info: Optional["_models.NotebookResourceInfo"] = rest_field(name="notebookInfo", visibility=["read"])
     """The notebook info of Azure ML workspace."""
     primary_user_assigned_identity: Optional[str] = rest_field(
@@ -25140,11 +29715,18 @@ class WorkspaceProperties(_Model):
         name="sharedPrivateLinkResources", visibility=["read", "create", "update", "delete", "query"]
     )
     """The list of shared private link resources in this workspace."""
+    soft_delete_retention_in_days: Optional[int] = rest_field(
+        name="softDeleteRetentionInDays", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Retention time in days after workspace get soft deleted."""
     storage_account: Optional[str] = rest_field(
         name="storageAccount", visibility=["read", "create", "update", "delete", "query"]
     )
     """ARM id of the storage account associated with this workspace. This cannot be changed once the
      workspace has been created."""
+    storage_accounts: Optional[list[str]] = rest_field(
+        name="storageAccounts", visibility=["read", "create", "update", "delete", "query"]
+    )
     storage_hns_enabled: Optional[bool] = rest_field(name="storageHnsEnabled", visibility=["read"])
     """If the storage associated with the workspace has hierarchical namespace(HNS) enabled."""
     system_datastores_auth_mode: Optional[Union[str, "_models.SystemDatastoresAuthMode"]] = rest_field(
@@ -25170,28 +29752,38 @@ class WorkspaceProperties(_Model):
         self,
         *,
         allow_public_access_when_behind_vnet: Optional[bool] = None,
+        allow_role_assignment_on_rg: Optional[bool] = None,
         application_insights: Optional[str] = None,
         associated_workspaces: Optional[list[str]] = None,
+        container_registries: Optional[list[str]] = None,
         container_registry: Optional[str] = None,
         description: Optional[str] = None,
         discovery_url: Optional[str] = None,
         enable_data_isolation: Optional[bool] = None,
         enable_service_side_cmk_encryption: Optional[bool] = None,
+        enable_simplified_cmk: Optional[bool] = None,
+        enable_software_bill_of_materials: Optional[bool] = None,
         encryption: Optional["_models.EncryptionProperty"] = None,
+        existing_workspaces: Optional[list[str]] = None,
         feature_store_settings: Optional["_models.FeatureStoreSettings"] = None,
         friendly_name: Optional[str] = None,
         hbi_workspace: Optional[bool] = None,
         hub_resource_id: Optional[str] = None,
         image_build_compute: Optional[str] = None,
+        ip_allowlist: Optional[list[str]] = None,
         key_vault: Optional[str] = None,
+        key_vaults: Optional[list[str]] = None,
         managed_network: Optional["_models.ManagedNetworkSettings"] = None,
+        network_acls: Optional["_models.NetworkAcls"] = None,
         primary_user_assigned_identity: Optional[str] = None,
         provision_network_now: Optional[bool] = None,
         public_network_access: Optional[Union[str, "_models.PublicNetworkAccessType"]] = None,
         serverless_compute_settings: Optional["_models.ServerlessComputeSettings"] = None,
         service_managed_resources_settings: Optional["_models.ServiceManagedResourcesSettings"] = None,
         shared_private_link_resources: Optional[list["_models.SharedPrivateLinkResource"]] = None,
+        soft_delete_retention_in_days: Optional[int] = None,
         storage_account: Optional[str] = None,
+        storage_accounts: Optional[list[str]] = None,
         system_datastores_auth_mode: Optional[Union[str, "_models.SystemDatastoresAuthMode"]] = None,
         v1_legacy_mode: Optional[bool] = None,
         workspace_hub_config: Optional["_models.WorkspaceHubConfig"] = None,
@@ -25211,6 +29803,8 @@ class WorkspaceProperties(_Model):
 class WorkspacePropertiesUpdateParameters(_Model):
     """The parameters for updating a machine learning workspace.
 
+    :ivar allow_role_assignment_on_rg:
+    :vartype allow_role_assignment_on_rg: bool
     :ivar application_insights: ARM id of the application insights associated with this workspace.
     :vartype application_insights: str
     :ivar container_registry: ARM id of the container registry associated with this workspace.
@@ -25219,35 +29813,51 @@ class WorkspacePropertiesUpdateParameters(_Model):
     :vartype description: str
     :ivar enable_data_isolation:
     :vartype enable_data_isolation: bool
+    :ivar enable_software_bill_of_materials: Flag to tell if SoftwareBillOfMaterials should be
+     enabled for this workspace.
+    :vartype enable_software_bill_of_materials: bool
     :ivar encryption:
-    :vartype encryption: ~arm_ml_service.models.EncryptionUpdateProperties
+    :vartype encryption: ~azure.ai.ml._restclient.arm_ml_service.models.EncryptionUpdateProperties
     :ivar feature_store_settings: Settings for feature store type workspace.
-    :vartype feature_store_settings: ~arm_ml_service.models.FeatureStoreSettings
+    :vartype feature_store_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.FeatureStoreSettings
     :ivar friendly_name: The friendly name for this workspace. This name in mutable.
     :vartype friendly_name: str
     :ivar image_build_compute: The compute name for image build.
     :vartype image_build_compute: str
+    :ivar ip_allowlist: The list of IPv4 addresses that are allowed to access the workspace.
+    :vartype ip_allowlist: list[str]
     :ivar managed_network:
-    :vartype managed_network: ~arm_ml_service.models.ManagedNetworkSettings
+    :vartype managed_network: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedNetworkSettings
+    :ivar network_acls: A set of rules governing the network accessibility of the workspace.
+    :vartype network_acls: ~azure.ai.ml._restclient.arm_ml_service.models.NetworkAcls
     :ivar primary_user_assigned_identity: The user assigned identity resource id that represents
      the workspace identity.
     :vartype primary_user_assigned_identity: str
     :ivar public_network_access: Whether requests from Public Network are allowed. Known values
      are: "Enabled" and "Disabled".
-    :vartype public_network_access: str or ~arm_ml_service.models.PublicNetworkAccessType
+    :vartype public_network_access: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.PublicNetworkAccessType
     :ivar serverless_compute_settings: Settings for serverless compute in a workspace.
-    :vartype serverless_compute_settings: ~arm_ml_service.models.ServerlessComputeSettings
+    :vartype serverless_compute_settings:
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServerlessComputeSettings
     :ivar service_managed_resources_settings: The service managed resource settings.
     :vartype service_managed_resources_settings:
-     ~arm_ml_service.models.ServiceManagedResourcesSettings
+     ~azure.ai.ml._restclient.arm_ml_service.models.ServiceManagedResourcesSettings
+    :ivar soft_delete_retention_in_days: Retention time in days after workspace get soft deleted.
+    :vartype soft_delete_retention_in_days: int
     :ivar system_datastores_auth_mode: The auth mode used for accessing the system datastores of
      the workspace. Known values are: "AccessKey", "Identity", and "UserDelegationSAS".
-    :vartype system_datastores_auth_mode: str or ~arm_ml_service.models.SystemDatastoresAuthMode
+    :vartype system_datastores_auth_mode: str or
+     ~azure.ai.ml._restclient.arm_ml_service.models.SystemDatastoresAuthMode
     :ivar v1_legacy_mode: Enabling v1_legacy_mode may prevent you from using features provided by
      the v2 API.
     :vartype v1_legacy_mode: bool
     """
 
+    allow_role_assignment_on_rg: Optional[bool] = rest_field(
+        name="allowRoleAssignmentOnRG", visibility=["read", "create", "update", "delete", "query"]
+    )
     application_insights: Optional[str] = rest_field(
         name="applicationInsights", visibility=["read", "create", "update", "delete", "query"]
     )
@@ -25261,6 +29871,10 @@ class WorkspacePropertiesUpdateParameters(_Model):
     enable_data_isolation: Optional[bool] = rest_field(
         name="enableDataIsolation", visibility=["read", "create", "update", "delete", "query"]
     )
+    enable_software_bill_of_materials: Optional[bool] = rest_field(
+        name="enableSoftwareBillOfMaterials", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Flag to tell if SoftwareBillOfMaterials should be enabled for this workspace."""
     encryption: Optional["_models.EncryptionUpdateProperties"] = rest_field(
         visibility=["read", "create", "update", "delete", "query"]
     )
@@ -25276,9 +29890,17 @@ class WorkspacePropertiesUpdateParameters(_Model):
         name="imageBuildCompute", visibility=["read", "create", "update", "delete", "query"]
     )
     """The compute name for image build."""
+    ip_allowlist: Optional[list[str]] = rest_field(
+        name="ipAllowlist", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """The list of IPv4 addresses that are allowed to access the workspace."""
     managed_network: Optional["_models.ManagedNetworkSettings"] = rest_field(
         name="managedNetwork", visibility=["read", "create", "update", "delete", "query"]
     )
+    network_acls: Optional["_models.NetworkAcls"] = rest_field(
+        name="networkAcls", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """A set of rules governing the network accessibility of the workspace."""
     primary_user_assigned_identity: Optional[str] = rest_field(
         name="primaryUserAssignedIdentity", visibility=["read", "create", "update", "delete", "query"]
     )
@@ -25296,6 +29918,10 @@ class WorkspacePropertiesUpdateParameters(_Model):
         name="serviceManagedResourcesSettings", visibility=["read", "create", "update", "delete", "query"]
     )
     """The service managed resource settings."""
+    soft_delete_retention_in_days: Optional[int] = rest_field(
+        name="softDeleteRetentionInDays", visibility=["read", "create", "update", "delete", "query"]
+    )
+    """Retention time in days after workspace get soft deleted."""
     system_datastores_auth_mode: Optional[Union[str, "_models.SystemDatastoresAuthMode"]] = rest_field(
         name="systemDatastoresAuthMode", visibility=["read", "create", "update", "delete", "query"]
     )
@@ -25310,19 +29936,24 @@ class WorkspacePropertiesUpdateParameters(_Model):
     def __init__(
         self,
         *,
+        allow_role_assignment_on_rg: Optional[bool] = None,
         application_insights: Optional[str] = None,
         container_registry: Optional[str] = None,
         description: Optional[str] = None,
         enable_data_isolation: Optional[bool] = None,
+        enable_software_bill_of_materials: Optional[bool] = None,
         encryption: Optional["_models.EncryptionUpdateProperties"] = None,
         feature_store_settings: Optional["_models.FeatureStoreSettings"] = None,
         friendly_name: Optional[str] = None,
         image_build_compute: Optional[str] = None,
+        ip_allowlist: Optional[list[str]] = None,
         managed_network: Optional["_models.ManagedNetworkSettings"] = None,
+        network_acls: Optional["_models.NetworkAcls"] = None,
         primary_user_assigned_identity: Optional[str] = None,
         public_network_access: Optional[Union[str, "_models.PublicNetworkAccessType"]] = None,
         serverless_compute_settings: Optional["_models.ServerlessComputeSettings"] = None,
         service_managed_resources_settings: Optional["_models.ServiceManagedResourcesSettings"] = None,
+        soft_delete_retention_in_days: Optional[int] = None,
         system_datastores_auth_mode: Optional[Union[str, "_models.SystemDatastoresAuthMode"]] = None,
         v1_legacy_mode: Optional[bool] = None,
     ) -> None: ...
@@ -25342,12 +29973,13 @@ class WorkspaceUpdateParameters(_Model):
     """The parameters for updating a machine learning workspace.
 
     :ivar identity:
-    :vartype identity: ~arm_ml_service.models.ManagedServiceIdentity
+    :vartype identity: ~azure.ai.ml._restclient.arm_ml_service.models.ManagedServiceIdentity
     :ivar properties: The properties that the machine learning workspace will be updated with.
-    :vartype properties: ~arm_ml_service.models.WorkspacePropertiesUpdateParameters
+    :vartype properties:
+     ~azure.ai.ml._restclient.arm_ml_service.models.WorkspacePropertiesUpdateParameters
     :ivar sku: Optional. This field is required to be implemented by the RP because AML is
      supporting more than one tier.
-    :vartype sku: ~arm_ml_service.models.Sku
+    :vartype sku: ~azure.ai.ml._restclient.arm_ml_service.models.Sku
     :ivar tags: The resource tags for the machine learning workspace.
     :vartype tags: dict[str, str]
     """
@@ -25366,19 +29998,24 @@ class WorkspaceUpdateParameters(_Model):
     """The resource tags for the machine learning workspace."""
 
     __flattened_items = [
+        "allow_role_assignment_on_rg",
         "application_insights",
         "container_registry",
         "description",
         "enable_data_isolation",
+        "enable_software_bill_of_materials",
         "encryption",
         "feature_store_settings",
         "friendly_name",
         "image_build_compute",
+        "ip_allowlist",
         "managed_network",
+        "network_acls",
         "primary_user_assigned_identity",
         "public_network_access",
         "serverless_compute_settings",
         "service_managed_resources_settings",
+        "soft_delete_retention_in_days",
         "system_datastores_auth_mode",
         "v1_legacy_mode",
     ]

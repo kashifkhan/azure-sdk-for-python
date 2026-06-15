@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from ._patch import *  # pylint: disable=unused-wildcard-import
 
 from ._operations import Operations  # type: ignore
+from ._operations import EndpointDeploymentOperations  # type: ignore
 from ._operations import WorkspacesOperations  # type: ignore
 from ._operations import CodeContainersOperations  # type: ignore
 from ._operations import RegistriesOperations  # type: ignore
@@ -34,14 +35,19 @@ from ._operations import FeaturesOperations  # type: ignore
 from ._operations import FeaturesetVersionsOperations  # type: ignore
 from ._operations import FeaturestoreEntityContainersOperations  # type: ignore
 from ._operations import FeaturestoreEntityVersionsOperations  # type: ignore
+from ._operations import InferencePoolsOperations  # type: ignore
+from ._operations import InferenceEndpointsOperations  # type: ignore
+from ._operations import InferenceGroupsOperations  # type: ignore
 from ._operations import MarketplaceSubscriptionsOperations  # type: ignore
 from ._operations import OnlineEndpointsOperations  # type: ignore
 from ._operations import OnlineDeploymentsOperations  # type: ignore
 from ._operations import SchedulesOperations  # type: ignore
 from ._operations import ServerlessEndpointsOperations  # type: ignore
+from ._operations import RaiPolicyOperations  # type: ignore
 from ._operations import PrivateEndpointConnectionsOperations  # type: ignore
 from ._operations import ComputeOperations  # type: ignore
 from ._operations import WorkspaceFeaturesOperations  # type: ignore
+from ._operations import ConnectionOperations  # type: ignore
 from ._operations import PrivateLinkResourcesOperations  # type: ignore
 from ._operations import ManagedNetworkProvisionsOperations  # type: ignore
 from ._operations import RegistryCodeContainersOperations  # type: ignore
@@ -57,10 +63,22 @@ from ._operations import RegistryModelContainersOperations  # type: ignore
 from ._operations import RegistryModelVersionsOperations  # type: ignore
 from ._operations import JobsOperations  # type: ignore
 from ._operations import WorkspaceConnectionsOperations  # type: ignore
+from ._operations import ConnectionRaiBlocklistOperations  # type: ignore
+from ._operations import ConnectionRaiBlocklistsOperations  # type: ignore
+from ._operations import ConnectionRaiBlocklistItemOperations  # type: ignore
+from ._operations import ConnectionRaiBlocklistItemsOperations  # type: ignore
+from ._operations import ConnectionRaiPolicyOperations  # type: ignore
+from ._operations import ConnectionRaiPoliciesOperations  # type: ignore
+from ._operations import RaiPoliciesOperations  # type: ignore
+from ._operations import EndpointOperations  # type: ignore
 from ._operations import ManagedNetworkSettingsRuleOperations  # type: ignore
+from ._operations import OutboundRuleOperations  # type: ignore
+from ._operations import ManagedNetworkSettingsOperations  # type: ignore
+from ._operations import OutboundRulesOperations  # type: ignore
 from ._operations import UsagesOperations  # type: ignore
 from ._operations import VirtualMachineSizesOperations  # type: ignore
 from ._operations import QuotasOperations  # type: ignore
+from ._operations import PTUQuotaOperations  # type: ignore
 
 from ._patch import __all__ as _patch_all
 from ._patch import *
@@ -68,6 +86,7 @@ from ._patch import patch_sdk as _patch_sdk
 
 __all__ = [
     "Operations",
+    "EndpointDeploymentOperations",
     "WorkspacesOperations",
     "CodeContainersOperations",
     "RegistriesOperations",
@@ -89,14 +108,19 @@ __all__ = [
     "FeaturesetVersionsOperations",
     "FeaturestoreEntityContainersOperations",
     "FeaturestoreEntityVersionsOperations",
+    "InferencePoolsOperations",
+    "InferenceEndpointsOperations",
+    "InferenceGroupsOperations",
     "MarketplaceSubscriptionsOperations",
     "OnlineEndpointsOperations",
     "OnlineDeploymentsOperations",
     "SchedulesOperations",
     "ServerlessEndpointsOperations",
+    "RaiPolicyOperations",
     "PrivateEndpointConnectionsOperations",
     "ComputeOperations",
     "WorkspaceFeaturesOperations",
+    "ConnectionOperations",
     "PrivateLinkResourcesOperations",
     "ManagedNetworkProvisionsOperations",
     "RegistryCodeContainersOperations",
@@ -112,10 +136,22 @@ __all__ = [
     "RegistryModelVersionsOperations",
     "JobsOperations",
     "WorkspaceConnectionsOperations",
+    "ConnectionRaiBlocklistOperations",
+    "ConnectionRaiBlocklistsOperations",
+    "ConnectionRaiBlocklistItemOperations",
+    "ConnectionRaiBlocklistItemsOperations",
+    "ConnectionRaiPolicyOperations",
+    "ConnectionRaiPoliciesOperations",
+    "RaiPoliciesOperations",
+    "EndpointOperations",
     "ManagedNetworkSettingsRuleOperations",
+    "OutboundRuleOperations",
+    "ManagedNetworkSettingsOperations",
+    "OutboundRulesOperations",
     "UsagesOperations",
     "VirtualMachineSizesOperations",
     "QuotasOperations",
+    "PTUQuotaOperations",
 ]
 __all__.extend([p for p in _patch_all if p not in __all__])  # pyright: ignore
 _patch_sdk()

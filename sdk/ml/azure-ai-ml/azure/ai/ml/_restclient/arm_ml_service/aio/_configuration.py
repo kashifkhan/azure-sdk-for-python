@@ -33,9 +33,10 @@ class MachineLearningServicesMgmtClientConfiguration:  # pylint: disable=too-man
     :param cloud_setting: The cloud setting for which to get the ARM endpoint. Default value is
      None.
     :type cloud_setting: ~azure.core.AzureClouds
-    :keyword api_version: The API version to use for this operation. Known values are "2025-12-01"
-     and None. Default value is "2025-12-01". Note that overriding this default value may result in
-     unsupported behavior.
+    :keyword api_version: The API version to use for this operation. Known values are
+     "2026-03-15-preview" and None. Default value is None. If not set, the operation's default API
+     version will be used. Note that overriding this default value may result in unsupported
+     behavior.
     :paramtype api_version: str
     """
 
@@ -47,7 +48,7 @@ class MachineLearningServicesMgmtClientConfiguration:  # pylint: disable=too-man
         cloud_setting: Optional["AzureClouds"] = None,
         **kwargs: Any
     ) -> None:
-        api_version: str = kwargs.pop("api_version", "2025-12-01")
+        api_version: str = kwargs.pop("api_version", "2026-03-15-preview")
 
         if credential is None:
             raise ValueError("Parameter 'credential' must not be None.")
@@ -60,7 +61,7 @@ class MachineLearningServicesMgmtClientConfiguration:  # pylint: disable=too-man
         self.cloud_setting = cloud_setting
         self.api_version = api_version
         self.credential_scopes = kwargs.pop("credential_scopes", ["https://management.azure.com/.default"])
-        kwargs.setdefault("sdk_moniker", "arm_ml_service/{}".format(VERSION))
+        kwargs.setdefault("sdk_moniker", "ai-ml-_restclient-arm_ml_service/{}".format(VERSION))
         self.polling_interval = kwargs.get("polling_interval", 30)
         self._configure(**kwargs)
 
