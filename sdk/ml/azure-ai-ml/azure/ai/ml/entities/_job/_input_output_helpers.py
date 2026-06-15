@@ -62,6 +62,33 @@ from azure.ai.ml.exceptions import (
     ValidationException,
 )
 
+
+def to_rest_dict(value: Any) -> Any:
+    """Convert an autorest (legacy) model instance into its REST-format dict so a
+    TSP hybrid model constructor can consume it.
+
+    TSP hybrid model constructors accept dicts in nested fields and auto-dispatch
+    to the correct discriminated subclass based on the discriminator key
+    (per ``doc/dev/mgmt/hybrid_model_migration.md``). This helper lets us pass
+    legacy autorest model instances (which expose ``.serialize()`` producing a
+    camelCase REST dict) into a TSP container without monkey patching the TSP
+    JSON encoder or changing public APIs.
+
+    Recurses through ``dict`` and ``list`` containers. Returns the value
+    unchanged if it is not an autorest model.
+    """
+    if value is None:
+        return value
+    # autorest convention: instances expose ``_attribute_map`` and ``.serialize()``.
+    # TSP hybrid models do not have ``_attribute_map``.
+    if hasattr(value, "_attribute_map") and callable(getattr(value, "serialize", None)):
+        return value.serialize()
+    if isinstance(value, dict):
+        return {k: to_rest_dict(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [to_rest_dict(v) for v in value]
+    return value
+
 INPUT_MOUNT_MAPPING_FROM_REST = {
     InputDeliveryMode.READ_WRITE_MOUNT: InputOutputModes.RW_MOUNT,
     InputDeliveryMode.READ_ONLY_MOUNT: InputOutputModes.RO_MOUNT,

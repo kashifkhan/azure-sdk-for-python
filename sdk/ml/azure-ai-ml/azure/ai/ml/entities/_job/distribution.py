@@ -63,9 +63,22 @@ class DistributionConfiguration(RestTranslatableMixin):
         if isinstance(obj, dict):
             data = obj
         else:
-            data = obj.as_dict()
+            # TSP hybrid model .as_dict() returns camelCase REST keys; autorest
+            # .as_dict() returns snake_case. Normalize via as_attribute_dict for
+            # hybrid models so the rest of this function can use snake_case keys.
+            from azure.core.serialization import as_attribute_dict, is_generated_model
 
-        type_str = data.pop("distribution_type", None) or data.pop("type", None)
+            if is_generated_model(obj) and not hasattr(obj, "_attribute_map"):
+                data = as_attribute_dict(obj)
+            else:
+                data = obj.as_dict()
+
+        # Accept both snake_case (autorest) and camelCase (TSP hybrid) discriminator keys.
+        type_str = (
+            data.pop("distribution_type", None)
+            or data.pop("distributionType", None)
+            or data.pop("type", None)
+        )
         klass = DISTRIBUTION_TYPE_MAP[type_str.lower()]
         res: DistributionConfiguration = klass(**data)
         return res

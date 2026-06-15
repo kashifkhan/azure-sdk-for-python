@@ -11,6 +11,7 @@ from typing import IO, Any, AnyStr, Dict, List, Optional, Tuple, Union
 from typing_extensions import Literal
 
 from azure.ai.ml._restclient.v2023_06_01_preview.models import JobBase as RestJobBase
+from azure.ai.ml._restclient.v2023_06_01_preview.models import JobBaseProperties as RestJobBaseProperties
 from azure.ai.ml._restclient.v2023_06_01_preview.models import JobScheduleAction
 from azure.ai.ml._restclient.v2023_06_01_preview.models import PipelineJob as RestPipelineJob
 from azure.ai.ml._restclient.v2023_06_01_preview.models import Schedule as RestSchedule
@@ -422,12 +423,26 @@ class JobSchedule(RestTranslatableMixin, Schedule, TelemetryMixin):
         if isinstance(self.create_job, BaseNode):
             self.create_job = self.create_job._to_job()
         private_enabled = is_private_preview_enabled()
+
+        def _to_autorest_job_definition(rest_obj: Any) -> Any:
+            """Bridge a TSP hybrid rest object into an autorest one.
+
+            JobScheduleAction is autorest and its serializer requires _attribute_map
+            (autorest convention) which TSP hybrid models don't expose. Per the hybrid
+            model migration guide, convert hybrid -> camelCase REST dict via .as_dict()
+            and let autorest's .deserialize() auto-dispatch to the right subclass via
+            the jobType discriminator.
+            """
+            if rest_obj is None or hasattr(rest_obj, "_attribute_map"):
+                return rest_obj
+            return RestJobBaseProperties.deserialize(rest_obj.as_dict())
+
         if isinstance(self.create_job, PipelineJob):
-            job_definition = self.create_job._to_rest_object().properties
+            job_definition = _to_autorest_job_definition(self.create_job._to_rest_object().properties)
             # Set the source job id, as it is used only for schedule scenario.
             job_definition.source_job_id = self.create_job.id
         elif private_enabled and isinstance(self.create_job, (CommandJob, SparkJob)):
-            job_definition = self.create_job._to_rest_object().properties
+            job_definition = _to_autorest_job_definition(self.create_job._to_rest_object().properties)
             # TODO: Merge this branch with PipelineJob after source job id move to JobBaseProperties
             # job_definition.source_job_id = self.create_job.id
         elif isinstance(self.create_job, str):  # arm id reference

@@ -7,8 +7,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Optional
 
-from azure.ai.ml._restclient.v2022_02_01_preview.models import CommandJob as RestCommandJob
-from azure.ai.ml._restclient.v2022_02_01_preview.models import JobBaseData
+from azure.ai.ml._restclient.arm_ml_service.models import CommandJob as RestCommandJob
+from azure.ai.ml._restclient.arm_ml_service.models import JobBase as JobBaseData
 from azure.ai.ml._schema.job.import_job import ImportJobSchema
 from azure.ai.ml._utils.utils import is_private_preview_enabled
 from azure.ai.ml.constants import JobType
@@ -19,6 +19,7 @@ from azure.ai.ml.entities._job._input_output_helpers import (
     from_rest_inputs_to_dataset_literal,
     to_rest_data_outputs,
     to_rest_dataset_literal_inputs,
+    to_rest_dict,
 )
 from azure.ai.ml.entities._job.job_io_mixin import JobIOMixin
 from azure.ai.ml.entities._util import load_from_dict
@@ -193,8 +194,11 @@ class ImportJob(Job, JobIOMixin):
             description=self.description,
             compute_id=self.compute,
             experiment_name=self.experiment_name,
-            inputs=to_rest_dataset_literal_inputs(_inputs, job_type=self.type),
-            outputs=to_rest_data_outputs({"output": self.output}),
+            # Boundary conversion: helpers return legacy autorest model instances;
+            # convert to REST-format dicts so the TSP hybrid CommandJob can auto-dispatch
+            # to its discriminated subclasses (see hybrid model migration guide).
+            inputs=to_rest_dict(to_rest_dataset_literal_inputs(_inputs, job_type=self.type)),
+            outputs=to_rest_dict(to_rest_data_outputs({"output": self.output})),
             # TODO: Remove in PuP with native import job/component type support in MFE/Designer
             # No longer applicable once new import job type is ready on MFE in PuP
             # command and environment are required as we use command type for import

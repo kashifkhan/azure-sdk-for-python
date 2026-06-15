@@ -7,7 +7,7 @@ import logging
 from typing import Any, Dict, List, Optional, Union, cast
 
 from azure.ai.ml._restclient.v2023_04_01_preview.models import JobResourceConfiguration as RestJobResourceConfiguration
-from azure.ai.ml._restclient.v2025_01_01_preview.models import (
+from azure.ai.ml._restclient.arm_ml_service.models import (
     JobResourceConfiguration as RestJobResourceConfiguration202501,
 )
 from azure.ai.ml.constants._job.job import JobComputePropertyFields
@@ -165,14 +165,18 @@ class JobResourceConfiguration(RestTranslatableMixin, DictMixin):
 
     def _to_rest_object(self) -> Union[RestJobResourceConfiguration, RestJobResourceConfiguration202501]:
         if self.docker_args and isinstance(self.docker_args, list):
-            return RestJobResourceConfiguration202501(
+            config = RestJobResourceConfiguration202501(
                 instance_count=self.instance_count,
                 instance_type=self.instance_type,
-                max_instance_count=self.max_instance_count,
                 properties=self.properties.as_dict() if isinstance(self.properties, Properties) else None,
                 docker_args_list=self.docker_args,
                 shm_size=self.shm_size,
             )
+            # Hybrid TSP model dropped max_instance_count from typed constructor;
+            # preserve it via additional-property dict syntax.
+            if self.max_instance_count is not None:
+                config["maxInstanceCount"] = self.max_instance_count
+            return config
         return RestJobResourceConfiguration(
             locations=self.locations,
             instance_count=self.instance_count,
@@ -191,13 +195,29 @@ class JobResourceConfiguration(RestTranslatableMixin, DictMixin):
             return None
         if isinstance(obj, dict):
             return cls(**obj)
+        # TSP hybrid JobResourceConfiguration stores `locations` / `max_instance_count`
+        # as additional properties (dict-accessible) rather than typed attributes;
+        # autorest exposes them as attributes. Read via either path.
+        def _read(name: str, key: Optional[str] = None) -> Any:
+            if hasattr(obj, name):
+                return getattr(obj, name)
+            if hasattr(obj, "get"):
+                return obj.get(key or name)
+            return None
+
         return JobResourceConfiguration(
-            locations=obj.locations if hasattr(obj, "locations") else None,
+            locations=_read("locations"),
             instance_count=obj.instance_count,
             instance_type=obj.instance_type,
-            max_instance_count=obj.max_instance_count if hasattr(obj, "max_instance_count") else None,
+            max_instance_count=_read("max_instance_count", "maxInstanceCount"),
             properties=obj.properties,
-            docker_args=obj.docker_args_list if hasattr(obj, "docker_args_list") else obj.docker_args,
+            # TSP hybrid JobResourceConfiguration types BOTH docker_args (str) and
+            # docker_args_list (list). Prefer the list form when populated; fall back
+            # to the string form. autorest objects expose only docker_args.
+            docker_args=(
+                getattr(obj, "docker_args_list", None)
+                or getattr(obj, "docker_args", None)
+            ),
             shm_size=obj.shm_size,
             deserialize_properties=True,
         )

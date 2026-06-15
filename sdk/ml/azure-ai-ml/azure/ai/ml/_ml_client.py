@@ -25,7 +25,6 @@ from azure.ai.ml._restclient.arm_ml_service import MachineLearningServicesMgmtCl
 from azure.ai.ml._restclient.v2020_09_01_dataplanepreview import (
     AzureMachineLearningWorkspaces as ServiceClient092020DataplanePreview,
 )
-from azure.ai.ml._restclient.v2022_02_01_preview import AzureMachineLearningWorkspaces as ServiceClient022022Preview
 from azure.ai.ml._restclient.v2022_10_01_preview import AzureMachineLearningWorkspaces as ServiceClient102022Preview
 from azure.ai.ml._restclient.v2023_02_01_preview import AzureMachineLearningWorkspaces as ServiceClient022023Preview
 from azure.ai.ml._restclient.v2023_04_01_preview import AzureMachineLearningWorkspaces as ServiceClient042023Preview
@@ -33,10 +32,6 @@ from azure.ai.ml._restclient.v2023_06_01_preview import AzureMachineLearningWork
 from azure.ai.ml._restclient.v2023_08_01_preview import AzureMachineLearningWorkspaces as ServiceClient082023Preview
 from azure.ai.ml._restclient.v2024_01_01_preview import AzureMachineLearningWorkspaces as ServiceClient012024Preview
 from azure.ai.ml._restclient.v2024_04_01_preview import AzureMachineLearningWorkspaces as ServiceClient042024Preview
-from azure.ai.ml._restclient.v2024_10_01_preview_tsp import (
-    MachineLearningServicesMgmtClient as ServiceClient102024PreviewTsp,
-)
-from azure.ai.ml._restclient.v2025_01_01_preview import AzureMachineLearningWorkspaces as ServiceClient012025Preview
 from azure.ai.ml._restclient.workspace_dataplane import WorkspaceDataplaneClient as ServiceClientWorkspaceDataplane
 from azure.ai.ml._scope_dependent_operations import OperationConfig, OperationsContainer, OperationScope
 from azure.ai.ml._telemetry.logging_handler import configure_appinsights_logging
@@ -109,6 +104,10 @@ ServiceClient052022 = partial(MachineLearningServicesMgmtClient, api_version="20
 ServiceClient102022 = partial(MachineLearningServicesMgmtClient, api_version="2022-10-01")
 ServiceClient042023 = partial(MachineLearningServicesMgmtClient, api_version="2023-04-01")
 ServiceClient102023 = partial(MachineLearningServicesMgmtClient, api_version="2023-10-01")
+ServiceClient022022Preview = partial(MachineLearningServicesMgmtClient, api_version="2022-02-01-preview")
+ServiceClient072024Preview = partial(MachineLearningServicesMgmtClient, api_version="2024-07-01-preview")
+ServiceClient102024Preview = partial(MachineLearningServicesMgmtClient, api_version="2024-10-01-preview")
+ServiceClient012025Preview = partial(MachineLearningServicesMgmtClient, api_version="2025-01-01-preview")
 
 module_logger = logging.getLogger(__name__)
 
@@ -378,7 +377,7 @@ class MLClient:
             **kwargs,
         )
 
-        self._service_client_10_2024_preview_tsp = ServiceClient102024PreviewTsp(
+        self._service_client_10_2024_preview = ServiceClient102024Preview(
             credential=self._credential,
             subscription_id=(
                 self._ws_operation_scope._subscription_id
@@ -497,7 +496,7 @@ class MLClient:
 
         self._workspaces = WorkspaceOperations(
             self._ws_operation_scope if registry_reference else self._operation_scope,
-            self._service_client_10_2024_preview_tsp,
+            self._service_client_10_2024_preview,
             self._operation_container,
             self._credential,
             requests_pipeline=self._requests_pipeline,
@@ -507,7 +506,7 @@ class MLClient:
 
         self._workspace_outbound_rules = WorkspaceOutboundRuleOperations(
             self._operation_scope,
-            self._service_client_10_2024_preview_tsp,
+            self._service_client_10_2024_preview,
             self._operation_container,
             self._credential,
             **kwargs,
@@ -555,7 +554,7 @@ class MLClient:
         self._datastores = DatastoreOperations(
             operation_scope=self._operation_scope,
             operation_config=self._operation_config,
-            serviceclient_2024_10_01_preview=self._service_client_10_2024_preview_tsp,
+            serviceclient_2024_10_01_preview=self._service_client_10_2024_preview,
             serviceclient_2024_01_01_preview=self._service_client_01_2024_preview,
             **ops_kwargs,  # type: ignore[arg-type]
         )
@@ -696,7 +695,7 @@ class MLClient:
             _service_client_kwargs=kwargs,
             requests_pipeline=self._requests_pipeline,
             service_client_01_2024_preview=self._service_client_01_2024_preview,
-            service_client_10_2024_preview=self._service_client_10_2024_preview_tsp,
+            service_client_10_2024_preview=self._service_client_10_2024_preview,
             service_client_01_2025_preview=self._service_client_01_2025_preview,
             **ops_kwargs,
         )
@@ -743,7 +742,7 @@ class MLClient:
 
         self._featurestores = FeatureStoreOperations(
             self._operation_scope,
-            self._service_client_10_2024_preview_tsp,
+            self._service_client_10_2024_preview,
             self._operation_container,
             self._credential,
         )

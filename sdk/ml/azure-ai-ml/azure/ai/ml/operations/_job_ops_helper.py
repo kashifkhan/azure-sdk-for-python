@@ -15,9 +15,8 @@ from typing import Any, Dict, Iterable, List, Optional, TextIO, Union
 
 from azure.ai.ml._artifacts._artifact_utilities import get_datastore_info, list_logs_in_datastore
 from azure.ai.ml._restclient.runhistory.models import Run, RunDetails, TypedAssetReference
-from azure.ai.ml._restclient.v2022_02_01_preview.models import DataType
-from azure.ai.ml._restclient.v2022_02_01_preview.models import JobType as RestJobType
-from azure.ai.ml._restclient.v2022_02_01_preview.models import ModelType
+from azure.ai.ml._restclient.arm_ml_service.models import DataType
+from azure.ai.ml._restclient.arm_ml_service.models import JobType as RestJobType
 from azure.ai.ml._restclient.arm_ml_service.models import JobBase
 from azure.ai.ml._utils._http_utils import HttpPipeline
 from azure.ai.ml._utils.utils import create_requests_pipeline_with_retry, download_text_from_url
@@ -246,7 +245,8 @@ def stream_logs_until_completion(
         default_output = (
             job_resource.properties.outputs.get("default", None) if job_resource.properties.outputs else None
         )
-        is_uri_folder = default_output and default_output.job_output_type == DataType.URI_FOLDER
+        # Accept both arm_ml_service snake_case and legacy v2022_02_01_preview camelCase values.
+        is_uri_folder = default_output and default_output.job_output_type in (DataType.URI_FOLDER, "UriFolder")
         if is_uri_folder:
             output_uri = default_output.uri  # type: ignore
             # Parse the uri format
@@ -492,18 +492,24 @@ def get_job_output_uris_from_dataplane(
             output_names = [output_names]
         output_names = [o for o in output_names if o in run_outputs]
 
+    # Asset-type values accepted from the run history service. Includes both the
+    # legacy v2022_02_01_preview camelCase values and the modern snake_case values
+    # used by arm_ml_service (where ModelType no longer exists as a typed enum).
+    _DATA_TYPE_VALUES = {v.value for v in DataType} | {"UriFile", "UriFolder", "MLTable"}
+    _MODEL_TYPE_VALUES = {"custom_model", "mlflow_model", "triton_model", "CustomModel", "MLFlowModel", "TritonModel"}
+
     # Collect all output ids that correspond to data assets
     dataset_ids = [
         run_outputs[output_name].asset_id
         for output_name in output_names
-        if run_outputs[output_name].type in [o.value for o in DataType]
+        if run_outputs[output_name].type in _DATA_TYPE_VALUES
     ]
 
     # Collect all output ids that correspond to models
     model_ids = [
         run_outputs[output_name].asset_id
         for output_name in output_names
-        if run_outputs[output_name].type in [o.value for o in ModelType]
+        if run_outputs[output_name].type in _MODEL_TYPE_VALUES
     ]
 
     output_name_to_dataset_uri = {}

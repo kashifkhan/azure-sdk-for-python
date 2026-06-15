@@ -29,9 +29,10 @@ from azure.ai.ml._restclient.runhistory import RunHistoryClient as ServiceClient
 from azure.ai.ml._restclient.runhistory.models import Run
 from azure.ai.ml._restclient.v2023_04_01_preview import AzureMachineLearningWorkspaces as ServiceClient022023Preview
 from azure.ai.ml._restclient.v2023_04_01_preview.models import JobBase, ListViewType, UserIdentity
+from azure.ai.ml._restclient.arm_ml_service.models import UserIdentity as UserIdentityTsp
 from azure.ai.ml._restclient.v2023_08_01_preview.models import JobType as RestJobType
 from azure.ai.ml._restclient.v2024_01_01_preview.models import JobBase as JobBase_2401
-from azure.ai.ml._restclient.v2024_10_01_preview_tsp.models import JobType as RestJobType_20241001Preview
+from azure.ai.ml._restclient.arm_ml_service.models import JobType as RestJobType_20241001Preview
 from azure.ai.ml._scope_dependent_operations import (
     OperationConfig,
     OperationsContainer,
@@ -704,9 +705,11 @@ class JobOperations(_ScopeDependentOperations):
         # Make a copy of self._kwargs instead of contaminate the original one
         kwargs = {**self._kwargs}
         # set headers with user aml token if job is a pipeline or has a user identity setting
+        # The identity may come from either the legacy autorest UserIdentity or the TSP
+        # hybrid UserIdentity (auto-dispatched when a dict is passed into the TSP CommandJob).
         if (rest_job_resource.properties.job_type == RestJobType.PIPELINE) or (
             hasattr(rest_job_resource.properties, "identity")
-            and (isinstance(rest_job_resource.properties.identity, UserIdentity))
+            and isinstance(rest_job_resource.properties.identity, (UserIdentity, UserIdentityTsp))
         ):
             self._set_headers_with_user_aml_token(kwargs)
 

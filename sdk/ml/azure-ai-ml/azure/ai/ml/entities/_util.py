@@ -12,9 +12,7 @@ from unittest import mock
 import msrest
 from marshmallow.exceptions import ValidationError
 
-from .._restclient.v2022_02_01_preview.models import JobInputType as JobInputType02
 from .._restclient.v2023_04_01_preview.models import JobInput as RestJobInput
-from .._restclient.v2023_04_01_preview.models import JobInputType as JobInputType10
 from .._restclient.v2023_04_01_preview.models import JobOutput as RestJobOutput
 from .._schema._datastore import AzureBlobSchema, AzureDataLakeGen1Schema, AzureDataLakeGen2Schema, AzureFileSchema
 from .._schema._deployment.batch.batch_deployment import BatchDeploymentSchema
@@ -552,14 +550,17 @@ def normalize_job_input_output_type(input_output_value: Union[RestJobOutput, Res
 
     """
 
+    # Mapping from the legacy v2022_02_01_preview (Feb) camelCase JobInputType / JobOutputType
+    # values to the modern snake_case values used by v2023_04_01_preview and arm_ml_service.
+    # Inlined as string literals so we can drop the v2022_02_01_preview dependency.
     FEB_JUN_JOB_INPUT_OUTPUT_TYPE_MAPPING = {
-        JobInputType02.CUSTOM_MODEL: JobInputType10.CUSTOM_MODEL,
-        JobInputType02.LITERAL: JobInputType10.LITERAL,
-        JobInputType02.ML_FLOW_MODEL: JobInputType10.MLFLOW_MODEL,
-        JobInputType02.ML_TABLE: JobInputType10.MLTABLE,
-        JobInputType02.TRITON_MODEL: JobInputType10.TRITON_MODEL,
-        JobInputType02.URI_FILE: JobInputType10.URI_FILE,
-        JobInputType02.URI_FOLDER: JobInputType10.URI_FOLDER,
+        "CustomModel": "custom_model",
+        "Literal": "literal",
+        "MLFlowModel": "mlflow_model",
+        "MLTable": "mltable",
+        "TritonModel": "triton_model",
+        "UriFile": "uri_file",
+        "UriFolder": "uri_folder",
     }
     if (
         hasattr(input_output_value, "job_input_type")

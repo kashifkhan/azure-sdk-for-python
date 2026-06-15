@@ -9,8 +9,8 @@ import logging
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
-from azure.ai.ml._restclient.v2025_01_01_preview.models import CommandJob as RestCommandJob
-from azure.ai.ml._restclient.v2025_01_01_preview.models import JobBase
+from azure.ai.ml._restclient.arm_ml_service.models import CommandJob as RestCommandJob
+from azure.ai.ml._restclient.arm_ml_service.models import JobBase
 from azure.ai.ml._schema.job.command_job import CommandJobSchema
 from azure.ai.ml._utils.utils import map_single_brackets_and_warn
 from azure.ai.ml.constants import JobType
@@ -28,6 +28,7 @@ from azure.ai.ml.entities._job._input_output_helpers import (
     from_rest_inputs_to_dataset_literal,
     to_rest_data_outputs,
     to_rest_dataset_literal_inputs,
+    to_rest_dict,
     validate_inputs_for_command,
 )
 from azure.ai.ml.entities._job.distribution import DistributionConfiguration
@@ -158,23 +159,28 @@ class CommandJob(Job, ParameterizedCommand, JobIOMixin):
             compute_id=compute,
             properties=modified_properties,
             experiment_name=self.experiment_name,
-            inputs=to_rest_dataset_literal_inputs(self.inputs, job_type=self.type),
-            outputs=to_rest_data_outputs(self.outputs),
+            # Boundary conversion: helpers below return legacy autorest model instances;
+            # convert to REST-format dicts so the TSP hybrid CommandJob can auto-dispatch
+            # to its discriminated subclasses (see hybrid model migration guide).
+            inputs=to_rest_dict(to_rest_dataset_literal_inputs(self.inputs, job_type=self.type)),
+            outputs=to_rest_dict(to_rest_data_outputs(self.outputs)),
             environment_id=self.environment,
-            distribution=(
+            distribution=to_rest_dict(
                 self.distribution._to_rest_object()
                 if self.distribution and not isinstance(self.distribution, Dict)
                 else None
             ),
             tags=self.tags,
-            identity=(
+            identity=to_rest_dict(
                 self.identity._to_job_rest_object() if self.identity and not isinstance(self.identity, Dict) else None
             ),
             environment_variables=self.environment_variables,
-            resources=resources._to_rest_object() if resources and not isinstance(resources, Dict) else None,
-            limits=self.limits._to_rest_object() if self.limits else None,
-            services=JobServiceBase._to_rest_job_services(self.services),
-            queue_settings=self.queue_settings._to_rest_object() if self.queue_settings else None,
+            resources=to_rest_dict(
+                resources._to_rest_object() if resources and not isinstance(resources, Dict) else None
+            ),
+            limits=to_rest_dict(self.limits._to_rest_object() if self.limits else None),
+            services=to_rest_dict(JobServiceBase._to_rest_job_services(self.services)),
+            queue_settings=to_rest_dict(self.queue_settings._to_rest_object() if self.queue_settings else None),
             parent_job_name=self.parent_job_name,
         )
         result = JobBase(properties=properties)
