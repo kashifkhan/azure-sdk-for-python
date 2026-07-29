@@ -3,7 +3,7 @@
 # Licensed under the MIT License. See LICENSE.txt in the project root for
 # license information.
 # -------------------------------------------------------------------------
-from typing import Any, NamedTuple, Optional, TypedDict, Union, ContextManager
+from typing import Any, Mapping, NamedTuple, Optional, TypedDict, Union, ContextManager
 from typing_extensions import Protocol, runtime_checkable
 
 
@@ -26,6 +26,9 @@ class AccessTokenInfo:
     :keyword str token_type: The type of access token. Defaults to 'Bearer'.
     :keyword int refresh_on: Specifies the time, in Unix time, when the cached token should be proactively
         refreshed. Optional.
+    :keyword Mapping[str, Any] transport_options: Transport options to apply for requests authorized with this
+        token, for example a client certificate (``connection_cert``) to present for mTLS token binding. The
+        options are merged into the per-request transport options by the authentication policy. Optional.
     """
 
     token: str
@@ -36,6 +39,8 @@ class AccessTokenInfo:
     """The type of access token."""
     refresh_on: Optional[int]
     """Specifies the time, in Unix time, when the cached token should be proactively refreshed. Optional."""
+    transport_options: Optional[Mapping[str, Any]]
+    """Transport options to apply for requests authorized with this token. Optional."""
 
     def __init__(
         self,
@@ -44,15 +49,20 @@ class AccessTokenInfo:
         *,
         token_type: str = "Bearer",
         refresh_on: Optional[int] = None,
+        transport_options: Optional[Mapping[str, Any]] = None,
     ) -> None:
         self.token = token
         self.expires_on = expires_on
         self.token_type = token_type
         self.refresh_on = refresh_on
+        self.transport_options = dict(transport_options) if transport_options else None
 
     def __repr__(self) -> str:
-        return "AccessTokenInfo(token='{}', expires_on={}, token_type='{}', refresh_on={})".format(
-            self.token, self.expires_on, self.token_type, self.refresh_on
+        return (
+            "AccessTokenInfo(token='{}', expires_on={}, token_type='{}', refresh_on={}, "
+            "transport_options={})".format(
+                self.token, self.expires_on, self.token_type, self.refresh_on, self.transport_options
+            )
         )
 
 

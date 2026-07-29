@@ -17,6 +17,7 @@ from azure.core.credentials import (
     AccessTokenInfo,
 )
 from azure.core.exceptions import ServiceRequestError, HttpResponseError, ClientAuthenticationError
+from azure.core.configuration import ConnectionConfiguration
 from azure.core.pipeline import Pipeline, PipelineRequest, PipelineContext, PipelineResponse
 from azure.core.pipeline.transport import HttpTransport, HttpRequest
 from azure.core.pipeline.policies import (
@@ -211,6 +212,161 @@ def test_bearer_policy_access_token_info_caching(http_request):
 
     pipeline.run(http_request("GET", "https://spam.eggs"))
     assert credential.get_token_info.call_count == 2  # token refresh-on time has passed, call again
+
+
+@pytest.mark.parametrize("http_request", HTTP_REQUESTS)
+def test_bearer_policy_applies_token_transport_options(http_request):
+    """A token's transport_options (e.g. a bound client cert) should be applied to the request per call,
+    and follow the token as it rotates (mTLS proof-of-possession token binding)."""
+
+    class MockTransport(HttpTransport):
+        def __init__(self):
+            self.connection_config = ConnectionConfiguration()
+            self.certs = []
+
+        def __exit__(self, *args):
+            pass
+
+        def close(self):
+            pass
+
+        def open(self):
+            pass
+
+        def send(self, request, **kwargs):
+            response = Response()
+            response.status_code = 200
+            self.certs.append(kwargs.get("connection_cert"))
+            return response
+
+    tokens = iter(
+        [
+            AccessTokenInfo(
+                "token-a",
+                int(time.time()) - 1,  # already refreshable so each request rebinds
+                transport_options={"connection_cert": ("a-cert.pem", "a-key.pem")},
+            ),
+            AccessTokenInfo(
+                "token-b",
+                int(time.time()) - 1,
+                transport_options={"connection_cert": ("b-cert.pem", "b-key.pem")},
+            ),
+        ]
+    )
+    credential = Mock(get_token=Mock(), get_token_info=Mock(side_effect=lambda *_, **__: next(tokens)))
+    transport = MockTransport()
+    pipeline = Pipeline(transport=transport, policies=[BearerTokenCredentialPolicy(credential, "scope")])
+
+    pipeline.run(http_request("GET", "https://spam.eggs"))
+    pipeline.run(http_request("GET", "https://spam.eggs"))
+
+    assert credential.get_token_info.call_count == 2
+    assert transport.certs == [("a-cert.pem", "a-key.pem"), ("b-cert.pem", "b-key.pem")]
+
+
+@pytest.mark.parametrize("http_request", HTTP_REQUESTS)
+def test_bearer_policy_without_transport_options(http_request):
+    """A token without transport_options should not inject connection_cert (backwards compatible)."""
+
+    class MockTransport(HttpTransport):
+        def __init__(self):
+            self.connection_config = ConnectionConfiguration()
+            self.saw_connection_cert = "unset"
+
+        def __exit__(self, *args):
+            pass
+
+        def close(self):
+            pass
+
+        def open(self):
+            pass
+
+        def send(self, request, **kwargs):
+            response = Response()
+            response.status_code = 200
+            self.saw_connection_cert = kwargs.get("connection_cert", "unset")
+            return response
+
+    credential = Mock(
+        get_token=Mock(),
+        get_token_info=Mock(return_value=AccessTokenInfo("token", int(time.time()) + 3600)),
+    )
+    transport = MockTransport()
+    pipeline = Pipeline(transport=transport, policies=[BearerTokenCredentialPolicy(credential, "scope")])
+    pipeline.run(http_request("GET", "https://spam.eggs"))
+
+    assert transport.saw_connection_cert == "unset"
+
+
+@pytest.mark.parametrize("http_request", HTTP_REQUESTS)
+def test_bearer_policy_only_applies_allowlisted_transport_options(http_request):
+    """Only allow-listed transport options (connection_cert) are honored; others are ignored so a
+    credential cannot override unrelated caller-provided transport settings."""
+
+    class MockTransport(HttpTransport):
+        def __init__(self):
+            self.connection_config = ConnectionConfiguration()
+            self.kwargs = None
+
+        def __exit__(self, *args):
+            pass
+
+        def close(self):
+            pass
+
+        def open(self):
+            pass
+
+        def send(self, request, **kwargs):
+            response = Response()
+            response.status_code = 200
+            self.kwargs = kwargs
+            return response
+
+    token = AccessTokenInfo(
+        "token",
+        int(time.time()) + 3600,
+        transport_options={
+            "connection_cert": ("cert.pem", "key.pem"),
+            "connection_timeout": 1,
+            "proxies": {"https": "http://malicious"},
+        },
+    )
+    credential = Mock(get_token=Mock(), get_token_info=Mock(return_value=token))
+    transport = MockTransport()
+    pipeline = Pipeline(transport=transport, policies=[BearerTokenCredentialPolicy(credential, "scope")])
+    pipeline.run(http_request("GET", "https://spam.eggs"))
+
+    assert transport.kwargs.get("connection_cert") == ("cert.pem", "key.pem")
+    assert "connection_timeout" not in transport.kwargs
+    assert "proxies" not in transport.kwargs
+
+
+@pytest.mark.parametrize("http_request", HTTP_REQUESTS)
+def test_update_request_transport_options_clears_previous_token_cert(http_request):
+    """On the reused request context (challenge/retry), a cert bound to an earlier token must be cleared
+    when the next token is not bound, and caller-provided options must be left untouched."""
+    from azure.core.pipeline.policies._authentication import _update_request_transport_options
+
+    # Token A binds a cert, then token B (refreshed on challenge) has none -> cert A must be removed.
+    request = PipelineRequest(http_request("GET", "https://spam.eggs"), PipelineContext(None))
+    token_a = AccessTokenInfo("a", int(time.time()), transport_options={"connection_cert": ("a.pem", "a.key")})
+    token_b = AccessTokenInfo("b", int(time.time()))
+
+    _update_request_transport_options(request, token_a)
+    assert request.context.options["connection_cert"] == ("a.pem", "a.key")
+
+    _update_request_transport_options(request, token_b)
+    assert "connection_cert" not in request.context.options
+
+    # A caller-provided connection_cert must not be cleared by an unbound token.
+    caller_request = PipelineRequest(
+        http_request("GET", "https://spam.eggs"),
+        PipelineContext(None, connection_cert=("caller.pem", "caller.key")),
+    )
+    _update_request_transport_options(caller_request, token_b)
+    assert caller_request.context.options["connection_cert"] == ("caller.pem", "caller.key")
 
 
 @pytest.mark.parametrize("http_request", HTTP_REQUESTS)

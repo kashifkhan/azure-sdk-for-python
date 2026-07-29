@@ -99,6 +99,48 @@ async def test_basic_options_aiohttp(port, http_request):
     assert isinstance(response.http_response.status_code, int)
 
 
+def test_aiohttp_build_ssl_config_accepts_ssl_context():
+    """An ssl.SSLContext passed as connection_cert should be used as-is (mTLS token binding)."""
+    import ssl
+
+    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    transport = AioHttpTransport()
+    assert transport._build_ssl_config(cert=ctx, verify=True) is ctx
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("http_request", HTTP_REQUESTS)
+async def test_asyncio_requests_transport_ssl_context_connection_cert(http_request):
+    """AsyncioRequestsTransport applies an ssl.SSLContext via an adapter instead of forwarding it as cert."""
+    import ssl
+    from requests import Response
+    from azure.core.pipeline.transport import AsyncioRequestsTransport
+    from azure.core.pipeline.transport._requests_basic import _SSLContextAdapter
+
+    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    transport = AsyncioRequestsTransport()
+    transport.open()
+
+    response = Response()
+    response.status_code = 200
+    response._content = b""
+    response._content_consumed = True
+    raw = mock.Mock()
+    raw.stream.return_value = iter([])
+    response.raw = raw
+
+    try:
+        with mock.patch.object(transport.session, "request", return_value=response) as mock_request:
+            await transport.send(http_request("GET", "https://spam.eggs"), connection_cert=ctx)
+
+        assert mock_request.call_args.kwargs["cert"] is None
+        adapter = transport.session.get_adapter("https://spam.eggs")
+        assert isinstance(adapter, _SSLContextAdapter)
+        assert adapter._ssl_context is ctx
+    finally:
+        transport.close()
+
+
 @pytest.mark.asyncio
 @pytest.mark.parametrize("http_request", HTTP_REQUESTS)
 async def test_multipart_send(http_request):

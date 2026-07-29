@@ -1,5 +1,11 @@
 # Release History
 
+## 1.42.0 (Unreleased)
+
+### Features Added
+
+- Added support for mTLS proof-of-possession token binding. `AccessTokenInfo` now accepts a `transport_options` mapping (for example `{"connection_cert": <ssl.SSLContext>}`) that the bearer token policies apply to each request, so a credential can bind a client certificate to a token. `connection_cert` now also accepts an in-memory `ssl.SSLContext` in the `RequestsTransport` and `AioHttpTransport` transports.
+
 ## 1.41.0 (2026-05-07)
 
 ### Features Added

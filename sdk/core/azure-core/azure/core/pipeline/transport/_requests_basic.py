@@ -24,7 +24,9 @@
 #
 # --------------------------------------------------------------------------
 import logging
+import ssl
 from typing import (
+    Any,
     Iterator,
     Optional,
     Union,
@@ -42,6 +44,7 @@ from urllib3.exceptions import (
     ConnectTimeoutError,
 )
 import requests
+from requests.adapters import BaseAdapter
 
 from azure.core.configuration import ConnectionConfiguration
 from azure.core.exceptions import (
@@ -75,6 +78,31 @@ AzureErrorUnion = Union[
 PipelineType = TypeVar("PipelineType")
 
 _LOGGER = logging.getLogger(__name__)
+
+
+class _SSLContextAdapter(BiggerBlockSizeHTTPAdapter):
+    """A requests adapter whose connection pool uses a caller-supplied :class:`ssl.SSLContext`.
+
+    ``requests`` only accepts client certificates as file paths via ``cert=``. This adapter lets
+    ``connection_cert`` be an in-memory ``ssl.SSLContext`` (for example one carrying a client
+    certificate for mTLS token binding) by configuring the underlying urllib3 pool with it. The
+    pool keys on the SSLContext, so mounting a new adapter for a rotated context yields fresh TLS
+    connections while old pooled connections age out.
+    """
+
+    def __init__(self, *args: Any, ssl_context: Optional[ssl.SSLContext] = None, **kwargs: Any) -> None:
+        self._ssl_context = ssl_context
+        super().__init__(*args, **kwargs)  # HTTPAdapter.__init__ calls init_poolmanager
+
+    def init_poolmanager(self, *args: Any, **kwargs: Any):  # type: ignore[override]
+        if self._ssl_context is not None:
+            kwargs["ssl_context"] = self._ssl_context
+        return super().init_poolmanager(*args, **kwargs)
+
+    def proxy_manager_for(self, *args: Any, **kwargs: Any):  # type: ignore[override]
+        if self._ssl_context is not None:
+            kwargs["ssl_context"] = self._ssl_context
+        return super().proxy_manager_for(*args, **kwargs)
 
 
 def _read_raw_stream(response, chunk_size=1):
@@ -276,6 +304,10 @@ class RequestsTransport(HttpTransport):
         self._use_env_settings = kwargs.pop("use_env_settings", True)
         # See https://github.com/Azure/azure-sdk-for-python/issues/25640 to understand why we track this
         self._has_been_opened = False
+        # Tracks the SSLContext currently mounted for https so we only remount on change (e.g. cert rotation).
+        self._mounted_ssl_context: Optional[ssl.SSLContext] = None
+        self._mounted_ssl_adapter: Optional[_SSLContextAdapter] = None
+        self._previous_https_adapter: Optional[BaseAdapter] = None
 
     def __enter__(self) -> "RequestsTransport":
         self.open()
@@ -297,6 +329,58 @@ class RequestsTransport(HttpTransport):
         for p in self._protocols:
             session.mount(p, adapter)
 
+    def _mount_ssl_context(self, ssl_context: ssl.SSLContext) -> None:
+        """Mount an https adapter using the given SSLContext, if not already mounted.
+
+        Only remounts when the context changes, so pooled connections are reused between requests
+        and dropped exactly once when the client certificate rotates (a new context is supplied).
+
+        :param ssl.SSLContext ssl_context: The SSLContext to use for https connections.
+        """
+        if ssl_context is self._mounted_ssl_context:
+            return
+        if self._mounted_ssl_context is None:
+            self._previous_https_adapter = self.session.get_adapter("https://")  # type: ignore[union-attr]
+
+        previous_ssl_adapter = self._mounted_ssl_adapter
+        disable_retries = Retry(total=False, redirect=False, raise_on_status=False)
+        adapter = _SSLContextAdapter(max_retries=disable_retries, ssl_context=ssl_context)
+        self.session.mount("https://", adapter)  # type: ignore[union-attr]
+        self._mounted_ssl_context = ssl_context
+        self._mounted_ssl_adapter = adapter
+        if previous_ssl_adapter:
+            previous_ssl_adapter.close()
+
+    def _unmount_ssl_context(self) -> None:
+        """Restore the previous https adapter after an SSLContext-backed request."""
+        if self._mounted_ssl_context is None:
+            return
+        if self._previous_https_adapter is not None:
+            self.session.mount("https://", self._previous_https_adapter)  # type: ignore[union-attr]
+        if self._mounted_ssl_adapter:
+            self._mounted_ssl_adapter.close()
+        self._mounted_ssl_context = None
+        self._mounted_ssl_adapter = None
+        self._previous_https_adapter = None
+
+    def _resolve_connection_cert(self, cert: Any) -> Any:
+        """Resolve ``connection_cert`` for a request, applying an in-memory SSLContext if given.
+
+        An ``ssl.SSLContext`` is applied via a dedicated https adapter (requests' ``cert=`` only accepts
+        file paths) and ``None`` is returned so the context is not forwarded as ``cert=``. For any other
+        value the previously mounted SSLContext adapter (if any) is unmounted so a bound certificate does
+        not leak onto this request.
+
+        :param cert: The ``connection_cert`` value (file path, (cert, key) tuple, ssl.SSLContext, or None).
+        :return: The value to pass to requests as ``cert=``.
+        :rtype: any
+        """
+        if isinstance(cert, ssl.SSLContext):
+            self._mount_ssl_context(cert)
+            return None
+        self._unmount_ssl_context()
+        return cert
+
     def open(self):
         """Opens the connection."""
         if self._has_been_opened and not self.session:
@@ -315,6 +399,8 @@ class RequestsTransport(HttpTransport):
 
     def close(self):
         """Closes the connection."""
+        if self.session:
+            self._unmount_ssl_context()
         if self._session_owner and self.session:
             self.session.close()
             self.session = None
@@ -378,6 +464,7 @@ class RequestsTransport(HttpTransport):
             else:
                 read_timeout = kwargs.pop("read_timeout", self.connection_config.read_timeout)
                 timeout = (connection_timeout, read_timeout)
+            cert = self._resolve_connection_cert(kwargs.pop("connection_cert", self.connection_config.cert))
             response = self.session.request(  # type: ignore
                 request.method,
                 request.url,
@@ -386,7 +473,7 @@ class RequestsTransport(HttpTransport):
                 files=request.files,
                 verify=kwargs.pop("connection_verify", self.connection_config.verify),
                 timeout=timeout,
-                cert=kwargs.pop("connection_cert", self.connection_config.cert),
+                cert=cert,
                 allow_redirects=False,
                 proxies=proxies,
                 **kwargs

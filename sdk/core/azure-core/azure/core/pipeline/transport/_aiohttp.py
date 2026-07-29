@@ -209,16 +209,21 @@ class AioHttpTransport(AsyncHttpTransport):
     def _build_ssl_config(self, cert, verify):
         """Build the SSL configuration.
 
-        :param tuple cert: Cert information
+        :param cert: Cert information. May be a file path, a (cert, key) tuple, or an ssl.SSLContext
+            (for example one carrying an in-memory client certificate for mTLS token binding).
         :param bool verify: SSL verification or path to CA file or directory
         :rtype: bool or str or ssl.SSLContext
         :return: SSL Configuration
         """
+        import ssl
+
+        # An already-configured SSLContext (e.g. carrying a client certificate) is used as-is.
+        if isinstance(cert, ssl.SSLContext):
+            return cert
+
         ssl_ctx = None
 
         if cert or verify not in (True, False):
-            import ssl
-
             if verify not in (True, False):
                 ssl_ctx = ssl.create_default_context(cafile=verify)
             else:

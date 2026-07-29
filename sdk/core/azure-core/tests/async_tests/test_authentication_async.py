@@ -262,6 +262,35 @@ async def test_bearer_policy_access_token_info_caching(http_request):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("http_request", HTTP_REQUESTS)
+async def test_bearer_policy_applies_token_transport_options(http_request):
+    """A token's transport_options (e.g. a bound client cert) should be applied per request and follow
+    the token as it rotates (mTLS proof-of-possession token binding)."""
+    tokens = [
+        AccessTokenInfo(
+            "token-a",
+            int(time.time()) - 1,  # already refreshable so each request rebinds
+            transport_options={"connection_cert": ("a-cert.pem", "a-key.pem")},
+        ),
+        AccessTokenInfo(
+            "token-b",
+            int(time.time()) - 1,
+            transport_options={"connection_cert": ("b-cert.pem", "b-key.pem")},
+        ),
+    ]
+    credential = Mock(get_token=Mock(), get_token_info=AsyncMock(side_effect=tokens))
+    transport = AsyncMock()
+    pipeline = AsyncPipeline(transport=transport, policies=[AsyncBearerTokenCredentialPolicy(credential, "scope")])
+
+    await pipeline.run(http_request("GET", "https://spam.eggs"))
+    await pipeline.run(http_request("GET", "https://spam.eggs"))
+
+    assert credential.get_token_info.await_count == 2
+    certs = [call.kwargs.get("connection_cert") for call in transport.send.await_args_list]
+    assert certs == [("a-cert.pem", "a-key.pem"), ("b-cert.pem", "b-key.pem")]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("http_request", HTTP_REQUESTS)
 async def test_bearer_policy_optionally_enforces_https(http_request):
     """HTTPS enforcement should be controlled by a keyword argument, and enabled by default"""
 

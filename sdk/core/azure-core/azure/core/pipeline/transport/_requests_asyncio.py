@@ -159,6 +159,7 @@ class AsyncioRequestsTransport(RequestsAsyncTransportBase):
         response = None
         error: Optional[AzureErrorUnion] = None
         data_to_send = await self._retrieve_request_data(request)
+        cert = self._resolve_connection_cert(kwargs.pop("connection_cert", self.connection_config.cert))
         try:
             response = await loop.run_in_executor(
                 None,
@@ -171,7 +172,7 @@ class AsyncioRequestsTransport(RequestsAsyncTransportBase):
                     files=request.files,
                     verify=kwargs.pop("connection_verify", self.connection_config.verify),
                     timeout=kwargs.pop("connection_timeout", self.connection_config.timeout),
-                    cert=kwargs.pop("connection_cert", self.connection_config.cert),
+                    cert=cert,
                     allow_redirects=False,
                     proxies=proxies,
                     **kwargs

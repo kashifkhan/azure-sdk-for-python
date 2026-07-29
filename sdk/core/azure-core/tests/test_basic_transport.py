@@ -7,6 +7,7 @@ from http.client import HTTPConnection
 from collections import OrderedDict
 import logging
 import pytest
+from requests import Response
 from unittest import mock
 from socket import timeout as SocketTimeout
 
@@ -1256,6 +1257,92 @@ def test_recursive_multipart_receive(http_request, mock_response):
 
 def test_close_unopened_transport():
     transport = RequestsTransport()
+    transport.close()
+
+
+def test_requests_transport_mounts_ssl_context_adapter():
+    import ssl
+    from azure.core.pipeline.transport._requests_basic import _SSLContextAdapter
+
+    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    transport = RequestsTransport()
+    transport.open()
+
+    transport._mount_ssl_context(ctx)
+    adapter = transport.session.get_adapter("https://example.com")
+    assert isinstance(adapter, _SSLContextAdapter)
+    assert adapter._ssl_context is ctx
+
+    # Same context: no remount, so pooled connections are preserved.
+    transport._mount_ssl_context(ctx)
+    assert transport.session.get_adapter("https://example.com") is adapter
+
+    # New context (rotation): remount with the new context.
+    ctx2 = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    transport._mount_ssl_context(ctx2)
+    new_adapter = transport.session.get_adapter("https://example.com")
+    assert new_adapter is not adapter
+    assert new_adapter._ssl_context is ctx2
+
+    transport.close()
+
+
+@pytest.mark.parametrize("http_request", HTTP_REQUESTS)
+def test_requests_transport_ssl_context_connection_cert(http_request):
+    """An ssl.SSLContext passed as connection_cert is applied via an adapter, not forwarded as requests' cert."""
+    import ssl
+    from azure.core.pipeline.transport._requests_basic import _SSLContextAdapter
+
+    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    transport = RequestsTransport()
+    transport.open()
+
+    response = Response()
+    response.status_code = 200
+    response._content = b""
+    response._content_consumed = True
+    raw = mock.Mock()
+    raw.stream.return_value = iter([])
+    response.raw = raw
+
+    with mock.patch.object(transport.session, "request", return_value=response) as mock_request:
+        transport.send(http_request("GET", "https://spam.eggs"), connection_cert=ctx)
+
+    # SSLContext must not be forwarded to requests' cert= (which only accepts file paths).
+    assert mock_request.call_args.kwargs["cert"] is None
+    adapter = transport.session.get_adapter("https://spam.eggs")
+    assert isinstance(adapter, _SSLContextAdapter)
+    assert adapter._ssl_context is ctx
+
+    transport.close()
+
+
+@pytest.mark.parametrize("http_request", HTTP_REQUESTS)
+def test_requests_transport_restores_https_adapter_without_ssl_context(http_request):
+    """A request without connection_cert should not keep using a previous SSLContext adapter."""
+    import ssl
+    from azure.core.pipeline.transport._requests_basic import _SSLContextAdapter
+
+    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    transport = RequestsTransport()
+    transport.open()
+    default_adapter = transport.session.get_adapter("https://spam.eggs")
+
+    response = Response()
+    response.status_code = 200
+    response._content = b""
+    response._content_consumed = True
+    raw = mock.Mock()
+    raw.stream.return_value = iter([])
+    response.raw = raw
+
+    with mock.patch.object(transport.session, "request", return_value=response):
+        transport.send(http_request("GET", "https://spam.eggs"), connection_cert=ctx)
+        assert isinstance(transport.session.get_adapter("https://spam.eggs"), _SSLContextAdapter)
+
+        transport.send(http_request("GET", "https://spam.eggs"))
+
+    assert transport.session.get_adapter("https://spam.eggs") is default_adapter
     transport.close()
 
 

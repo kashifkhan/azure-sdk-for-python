@@ -19,6 +19,7 @@ from azure.core.pipeline.policies import AsyncHTTPPolicy
 from azure.core.pipeline.policies._authentication import (
     _enforce_https,
     _should_refresh_token,
+    _update_request_transport_options,
     MAX_REFRESH_JITTER_SECONDS,
 )
 from azure.core.pipeline.transport import (
@@ -74,6 +75,7 @@ class AsyncBearerTokenCredentialPolicy(AsyncHTTPPolicy[HTTPRequestType, AsyncHTT
                 # double check because another coroutine may have acquired a token while we waited to acquire the lock
                 if self._token is None or self._need_new_token():
                     await self._request_token(*self._scopes)
+        _update_request_transport_options(request, self._token)
         bearer_token = cast(Union[AccessToken, AccessTokenInfo], self._token).token
         request.http_request.headers["Authorization"] = "Bearer " + bearer_token
 
@@ -89,6 +91,7 @@ class AsyncBearerTokenCredentialPolicy(AsyncHTTPPolicy[HTTPRequestType, AsyncHTT
 
         async with self._lock:
             await self._request_token(*scopes, **kwargs)
+        _update_request_transport_options(request, self._token)
         bearer_token = cast(Union[AccessToken, AccessTokenInfo], self._token).token
         request.http_request.headers["Authorization"] = "Bearer " + bearer_token
 

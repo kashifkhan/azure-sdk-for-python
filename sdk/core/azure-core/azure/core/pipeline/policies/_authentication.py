@@ -86,6 +86,57 @@ def _enforce_https(request: PipelineRequest[HTTPRequestType]) -> None:
         )
 
 
+# Transport options a token is permitted to bind to a request. Restricting this set prevents a credential
+# from silently overriding unrelated caller-provided transport settings; only the client certificate
+# required for mTLS token binding is honored for now.
+_TOKEN_BOUND_TRANSPORT_OPTIONS = frozenset({"connection_cert"})
+
+# Marker stored on the request context (not on the transport-facing options) recording which options this
+# policy injected, so they can be cleared before a subsequent token is applied to the same request context.
+_INJECTED_TRANSPORT_OPTIONS_KEY = "_token_bound_transport_options"
+
+
+def _update_request_transport_options(
+    request: PipelineRequest[HTTPRequestType],
+    token: Optional[Union["AccessToken", "AccessTokenInfo"]],
+) -> None:
+    """Apply the token-bound transport options carried by the token to the current request.
+
+    Supports mTLS proof-of-possession (token binding): the Identity credential returns an access token
+    together with the client certificate the token is bound to, surfaced as ``transport_options`` on the
+    token (e.g. ``{"connection_cert": <ssl.SSLContext>}``). The allow-listed options are applied to the
+    per-request transport options so the transport presents the bound certificate when sending the request
+    -- without which the service rejects the token. Rotation is implicit: the current token's certificate is
+    applied on every request, so a refreshed token (with a rotated certificate) takes effect on the next
+    request.
+
+    Only options in :data:`_TOKEN_BOUND_TRANSPORT_OPTIONS` are honored so that a credential cannot silently
+    override unrelated caller-provided transport settings. These options are credential-owned and take
+    precedence over caller options because the token and its bound certificate must match.
+
+    The same request context is reused across challenge/retry resends, so options previously injected by this
+    policy are removed before the current token's options are applied. This ensures a certificate bound to an
+    earlier token is not presented after a refresh returns a token without one. Caller-provided options are
+    left untouched because only policy-injected keys are cleared.
+
+    :param ~azure.core.pipeline.PipelineRequest request: the request
+    :param token: the token whose transport options should be applied, if any
+    :type token: ~azure.core.credentials.AccessToken or ~azure.core.credentials.AccessTokenInfo or None
+    """
+    options = request.context.options
+    for key in request.context.get(_INJECTED_TRANSPORT_OPTIONS_KEY) or ():
+        options.pop(key, None)
+
+    injected = []
+    transport_options = getattr(token, "transport_options", None)
+    if transport_options:
+        for key in _TOKEN_BOUND_TRANSPORT_OPTIONS:
+            if key in transport_options:
+                options[key] = transport_options[key]
+                injected.append(key)
+    request.context[_INJECTED_TRANSPORT_OPTIONS_KEY] = injected
+
+
 # pylint:disable=too-few-public-methods
 class _BearerTokenCredentialPolicyBase:
     """Base class for a Bearer Token Credential Policy.
@@ -165,6 +216,7 @@ class BearerTokenCredentialPolicy(_BearerTokenCredentialPolicyBase, HTTPPolicy[H
 
         if self._token is None or self._need_new_token:
             self._request_token(*self._scopes)
+        _update_request_transport_options(request, self._token)
         bearer_token = cast(Union["AccessToken", "AccessTokenInfo"], self._token).token
         self._update_headers(request.http_request.headers, bearer_token)
 
@@ -178,6 +230,7 @@ class BearerTokenCredentialPolicy(_BearerTokenCredentialPolicyBase, HTTPPolicy[H
         :param str scopes: required scopes of authentication
         """
         self._request_token(*scopes, **kwargs)
+        _update_request_transport_options(request, self._token)
         bearer_token = cast(Union["AccessToken", "AccessTokenInfo"], self._token).token
         self._update_headers(request.http_request.headers, bearer_token)
 

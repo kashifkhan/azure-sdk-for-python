@@ -24,7 +24,8 @@
 #
 # --------------------------------------------------------------------------
 from __future__ import annotations
-from typing import Union, Optional, Any, Generic, TypeVar, TYPE_CHECKING
+import ssl
+from typing import Union, Optional, Any, Generic, TypeVar, Tuple, TYPE_CHECKING
 
 HTTPResponseType = TypeVar("HTTPResponseType")
 HTTPRequestType = TypeVar("HTTPRequestType")
@@ -117,8 +118,11 @@ class ConnectionConfiguration:
     :keyword connection_verify: SSL certificate verification. Enabled by default. Set to False to disable,
      alternatively can be set to the path to a CA_BUNDLE file or directory with certificates of trusted CAs.
     :paramtype connection_verify: bool or str
-    :keyword str connection_cert: Client-side certificates. You can specify a local cert to use as client side
-     certificate, as a single file (containing the private key and the certificate) or as a tuple of both files' paths.
+    :keyword connection_cert: Client-side certificates. You can specify a local cert to use as client side
+     certificate, as a single file (containing the private key and the certificate) or as a tuple of both files'
+     paths, or as an already-configured :class:`ssl.SSLContext` (for example one carrying an in-memory client
+     certificate for mTLS token binding).
+    :paramtype connection_cert: str or tuple[str, str] or ssl.SSLContext
     :keyword int connection_data_block_size: The block size of data sent over the connection. Defaults to 4096 bytes.
 
     .. admonition:: Example:
@@ -137,7 +141,7 @@ class ConnectionConfiguration:
         connection_timeout: float = 300,
         read_timeout: float = 300,
         connection_verify: Union[bool, str] = True,
-        connection_cert: Optional[str] = None,
+        connection_cert: Optional[Union[str, Tuple[str, str], ssl.SSLContext]] = None,
         connection_data_block_size: int = 4096,
         **kwargs: Any,
     ) -> None:
