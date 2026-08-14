@@ -490,6 +490,54 @@ def _create_value(rf: typing.Optional["_RestField"], value: typing.Any) -> typin
     return _serialize(value, rf._format)
 
 
+def _create_value_from_wire(rf: typing.Optional["_RestField"], value: typing.Any) -> typing.Any:
+    """Build a stored value from an already-serialized (wire/JSON) payload.
+
+    Unlike :func:`_create_value`, this skips the redundant ``_serialize`` round-trip for
+    non-model fields: the incoming value is already in wire form, so re-serializing it is a
+    no-op that (for strings/floats/lists) is dominated by exception-driven fall-through in
+    ``_serialize``. Nested model-typed fields are stored verbatim and materialized lazily on
+    first attribute access (see :meth:`_RestField.__get__`); this keeps construction shallow
+    (no deep recursion) and avoids building sub-trees the caller never reads.
+
+    :param rf: The rest field describing the target attribute, if known.
+    :type rf: ~_RestField or None
+    :param value: The already-serialized value from the response body.
+    :type value: any
+    :return: The value to store in the model's backing dict.
+    :rtype: any
+    """
+    if not rf:
+        return _serialize(value, None)
+    if rf._is_multipart_file_input:
+        return value
+    if isinstance(value, ET.Element):
+        return _deserialize(rf._type, value)
+    # Store the wire form verbatim. Model fields are materialized lazily on access; primitive
+    # fields are already in wire form so re-serializing would be a no-op.
+    return value
+
+
+def _needs_materialization(item: typing.Any) -> bool:
+    """Return True if a stored model-typed value is still raw wire data (not yet built).
+
+    :param item: The stored value for a model-typed field.
+    :type item: any
+    :return: Whether the value must still be deserialized into model instance(s).
+    :rtype: bool
+    """
+    if _is_model(item):
+        return False
+    if isinstance(item, list):
+        # A list is materialized once its (homogeneous) elements are models.
+        return bool(item) and not _is_model(item[0])
+    if isinstance(item, dict):
+        # A Dict[str, Model] is materialized once its values are models. An empty dict is
+        # treated as materialized (building it is a no-op either way).
+        return bool(item) and not _is_model(next(iter(item.values())))
+    return True
+
+
 class Model(_MyMutableMapping):
     _is_model = True
     # label whether current class's _attr_to_rest_field has been calculated
@@ -500,11 +548,9 @@ class Model(_MyMutableMapping):
         class_name = self.__class__.__name__
         if len(args) > 1:
             raise TypeError(f"{class_name}.__init__() takes 2 positional arguments but {len(args) + 1} were given")
-        dict_to_pass = {
-            rest_field._rest_name: rest_field._default
-            for rest_field in self._attr_to_rest_field.values()
-            if rest_field._default is not _UNSET
-        }
+        # The set of default values is fixed per class; it is precomputed once in __new__ so we
+        # copy it here instead of rescanning every field on every instance.
+        dict_to_pass = dict(self._default_dict)
         if args:  # pylint: disable=too-many-nested-blocks
             if isinstance(args[0], ET.Element):
                 existed_attr_keys = []
@@ -554,8 +600,12 @@ class Model(_MyMutableMapping):
                     if e.tag not in existed_attr_keys:
                         dict_to_pass[e.tag] = _convert_element(e)
             else:
+                rest_field_by_rest_name = self._rest_field_by_rest_name
                 dict_to_pass.update(
-                    {k: _create_value(_get_rest_field(self._attr_to_rest_field, k), v) for k, v in args[0].items()}
+                    {
+                        k: _create_value_from_wire(rest_field_by_rest_name.get(k), v)
+                        for k, v in args[0].items()
+                    }
                 )
         else:
             non_attr_kwargs = [k for k in kwargs if k not in self._attr_to_rest_field]
@@ -595,6 +645,16 @@ class Model(_MyMutableMapping):
                 if not rf._rest_name_input:
                     rf._rest_name_input = attr
             cls._attr_to_rest_field: typing.Dict[str, _RestField] = dict(attr_to_rest_field.items())
+            # Reverse lookup (rest_name -> _RestField) built once per class to avoid an
+            # O(number-of-fields) linear scan for every key during deserialization.
+            cls._rest_field_by_rest_name: typing.Dict[str, _RestField] = {
+                rf._rest_name: rf for rf in attr_to_rest_field.values()
+            }
+            # Default values are fixed per class; precompute once so __init__ can copy them
+            # instead of rescanning every field on every instance.
+            cls._default_dict: typing.Dict[str, typing.Any] = {
+                rf._rest_name: rf._default for rf in attr_to_rest_field.values() if rf._default is not _UNSET
+            }
             cls._calculated.add(f"{cls.__module__}.{cls.__qualname__}")
 
         return super().__new__(cls)  # pylint: disable=no-value-for-parameter
@@ -702,7 +762,9 @@ def _deserialize_dict(
         return obj
     if isinstance(obj, ET.Element):
         obj = {child.tag: child for child in obj}
-    return {k: _deserialize(value_deserializer, v, module) for k, v in obj.items()}
+    # Drive the value transform through map() (C-level iteration) over a pre-bound callable.
+    element = functools.partial(_deserialize, value_deserializer, module=module)
+    return dict(zip(obj.keys(), map(element, obj.values())))
 
 
 def _deserialize_multiple_sequence(
@@ -715,6 +777,42 @@ def _deserialize_multiple_sequence(
     return type(obj)(_deserialize(deserializer, entry, module) for entry, deserializer in zip(obj, entry_deserializers))
 
 
+_PRIMITIVE_SEQUENCE_TYPES = (int, float)
+
+
+def _deserialize_primitive_sequence(builtin: typing.Callable, obj):
+    """Deserialize a sequence of scalars by mapping a C builtin over it (pure-C loop).
+
+    Falls back to the lenient per-element path only if the fast conversion raises, preserving
+    the "return raw value on failure" semantics of the default deserializer.
+
+    :param builtin: The scalar constructor to apply (``int``/``float``/``str``/``bool``).
+    :type builtin: callable
+    :param obj: The already-parsed JSON sequence.
+    :type obj: any
+    :return: A new sequence of converted scalars.
+    :rtype: any
+    """
+    if obj is None:
+        return obj
+    if isinstance(obj, ET.Element):
+        obj = list(obj)
+    try:
+        return type(obj)(map(builtin, obj))
+    except (TypeError, ValueError):
+        # Preserve the lenient "return the raw value on failure" behavior of _deserialize_default
+        # for any individual element that cannot be converted.
+        def _lenient(entry: typing.Any) -> typing.Any:
+            if entry is None:
+                return entry
+            try:
+                return builtin(entry)
+            except (TypeError, ValueError):
+                return entry
+
+        return type(obj)(_lenient(entry) for entry in obj)
+
+
 def _deserialize_sequence(
     deserializer: typing.Optional[typing.Callable],
     module: typing.Optional[str],
@@ -724,7 +822,9 @@ def _deserialize_sequence(
         return obj
     if isinstance(obj, ET.Element):
         obj = list(obj)
-    return type(obj)(_deserialize(deserializer, entry, module) for entry in obj)
+    # map() over a pre-bound single-arg callable keeps the per-element loop in C.
+    element = functools.partial(_deserialize, deserializer, module=module)
+    return type(obj)(map(element, obj))
 
 
 def _sorted_annotations(types: typing.List[typing.Any]) -> typing.List[typing.Any]:
@@ -734,7 +834,37 @@ def _sorted_annotations(types: typing.List[typing.Any]) -> typing.List[typing.An
     )
 
 
+_ANNOTATION_CALLABLE_CACHE: typing.Dict[typing.Any, typing.Optional[typing.Callable]] = {}
+
+
 def _get_deserialize_callable_from_annotation(  # pylint: disable=too-many-return-statements, too-many-branches
+    annotation: typing.Any,
+    module: typing.Optional[str],
+    rf: typing.Optional["_RestField"] = None,
+) -> typing.Optional[typing.Callable[[typing.Any], typing.Any]]:
+    if not annotation:
+        return None
+
+    # When no _RestField is involved, the resolution is pure (no side effects) and depends only
+    # on (annotation, module). This is the hot path hit once per deserialized instance, so memoize
+    # it to avoid re-walking the typing machinery (and repeated typing.__getitem__ calls).
+    cache_key = None
+    if rf is None:
+        try:
+            cache_key = (annotation, module)
+            cached = _ANNOTATION_CALLABLE_CACHE.get(cache_key, _UNSET)
+            if cached is not _UNSET:
+                return cached
+        except TypeError:  # unhashable annotation
+            cache_key = None
+
+    result = _resolve_deserialize_callable_from_annotation(annotation, module, rf)
+    if cache_key is not None:
+        _ANNOTATION_CALLABLE_CACHE[cache_key] = result
+    return result
+
+
+def _resolve_deserialize_callable_from_annotation(  # pylint: disable=too-many-return-statements, too-many-branches
     annotation: typing.Any,
     module: typing.Optional[str],
     rf: typing.Optional["_RestField"] = None,
@@ -822,6 +952,12 @@ def _get_deserialize_callable_from_annotation(  # pylint: disable=too-many-retur
             deserializer = _get_deserialize_callable_from_annotation(
                 annotation.__args__[0], module, rf  # pyright: ignore
             )
+
+            # Fast-path: a homogeneous sequence of scalars can be built with a pure-C
+            # ``map(builtin, obj)`` instead of a per-element Python deserialize.
+            element_annotation = annotation.__args__[0]  # pyright: ignore
+            if element_annotation in _PRIMITIVE_SEQUENCE_TYPES and not (rf and rf._format):
+                return functools.partial(_deserialize_primitive_sequence, element_annotation)
 
             return functools.partial(_deserialize_sequence, deserializer, module)
     except (TypeError, IndexError, AttributeError, SyntaxError):
@@ -951,6 +1087,12 @@ class _RestField:
         if item is None:
             return item
         if self._is_model:
+            # Nested models are materialized lazily on first access and then memoized back into
+            # the backing dict. This keeps construction shallow (no deep recursion) and only
+            # builds the sub-trees a caller actually reads.
+            if _needs_materialization(item):
+                item = _deserialize(self._type, item)
+                obj._data[self._rest_name] = item
             return item
         return _deserialize(self._type, _serialize(item, self._format), rf=self)
 
